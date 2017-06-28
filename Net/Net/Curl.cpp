@@ -1,19 +1,19 @@
 #include "stdafx.h"
 #include "Curl.h"
 
-IHttpDownload::IHttpDownload()
+IHttpRequest::IHttpRequest()
 {
 
 }
 
-IHttpDownload::~IHttpDownload()
+IHttpRequest::~IHttpRequest()
 {
 
 }
 
 CCurl::CCurl(string &url)
 	:m_headers(NULL),
-	m_pHttpDownload(NULL)
+	m_pHttpRequest(NULL)
 {
 	m_strUrl = url;
 	m_curl = curl_easy_init();
@@ -59,9 +59,14 @@ CURLcode CCurl::setRange(string range)
 	return curl_easy_setopt(m_curl, CURLOPT_RANGE, range);
 }
 
-void CCurl::setHttpDownload(IHttpDownload *pHttpDownload)
+CURLcode CCurl::setResumeRange(long length)
 {
-	m_pHttpDownload = pHttpDownload;
+	return curl_easy_setopt(m_curl, CURLOPT_RESUME_FROM_LARGE, length);
+}
+
+void CCurl::setHttpDownload(IHttpRequest *pHttpDownload)
+{
+	m_pHttpRequest = pHttpDownload;
 }
 
 static size_t OnWriteData(void* buffer, size_t size, size_t nmemb, void* lpVoid)
@@ -114,32 +119,76 @@ int CCurl::httpPost(string &strPost, string &strResponse)
 	return m_res;
 }
 
+int CCurl::httpCustomRequest(string cmd, string strParams, string &strResponse)
+{
+	CURLcode m_res;
+	curl_easy_setopt(m_curl, CURLOPT_CUSTOMREQUEST, cmd);
+	curl_easy_setopt(m_curl, CURLOPT_POSTFIELDS, strParams.c_str());
+	curl_easy_setopt(m_curl, CURLOPT_READFUNCTION, NULL);
+	curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, OnWriteData);
+	curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, (void *)&strResponse);
+
+	m_res = curl_easy_perform(m_curl);
+	curl_easy_cleanup(m_curl);
+	return m_res;
+}
+
 size_t CCurl::downloadCallback(void* pBuffer, size_t nSize, size_t nMemByte, void* pParam)
 {
-	IHttpDownload *pHttpDownload = static_cast<IHttpDownload *>(pParam);
+	IHttpRequest *pHttpDownload = static_cast<IHttpRequest *>(pParam);
 	return pHttpDownload->downloadCallback(pBuffer, nSize, nMemByte);
+}
+
+size_t CCurl::uploadCallback(void* pBuffer, size_t nSize, size_t nMemByte, void* pParam)
+{
+	printf("uploadCallback\n");
+	IHttpRequest *pHttpDownload = static_cast<IHttpRequest *>(pParam);
+	return pHttpDownload->uploadCallback(pBuffer, nSize, nMemByte);
 }
 
 int CCurl::progressCallback(void *clientp, double dltotal, double dlnow, double ultotal, double ulnow)
 {
-	IHttpDownload *pHttpDownload = static_cast<IHttpDownload *>(clientp);
+	IHttpRequest *pHttpDownload = static_cast<IHttpRequest *>(clientp);
 	return pHttpDownload->progressCallback(dltotal, dlnow, ultotal, ulnow);
 }
 
-int CCurl::downloadFile()
+CURLcode CCurl::downloadFile()
 {
 	CURLcode m_res;
 	curl_easy_setopt(m_curl, CURLOPT_HEADER, 0);
 	curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, 600);
 	curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, downloadCallback);
-	curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_pHttpDownload);
-	//curl_easy_setopt(m_curl, CURLOPT_MAXREDIRS, 5);
+	curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_pHttpRequest);
+	//设置重定向的最大次数
+	curl_easy_setopt(m_curl, CURLOPT_MAXREDIRS, 5);
+	//设置301、302跳转跟随location
 	curl_easy_setopt(m_curl, CURLOPT_FOLLOWLOCATION, 1);
 	curl_easy_setopt(m_curl, CURLOPT_NOPROGRESS, 0);
 	curl_easy_setopt(m_curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
-	curl_easy_setopt(m_curl, CURLOPT_PROGRESSDATA, m_pHttpDownload);
+	curl_easy_setopt(m_curl, CURLOPT_PROGRESSDATA, m_pHttpRequest);
 
 	m_res = curl_easy_perform(m_curl);
 	curl_easy_cleanup(m_curl);
+	printf("downloadFile\n");
+	return m_res;
+}
+
+CURLcode CCurl::uploadFile(long filesize)
+{
+	CURLcode m_res;
+	curl_easy_setopt(m_curl, CURLOPT_HEADER, 0);
+	//curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, 600);
+	curl_easy_setopt(m_curl, CURLOPT_UPLOAD, 1L);
+	curl_easy_setopt(m_curl, CURLOPT_PUT, 1L);
+	curl_easy_setopt(m_curl, CURLOPT_READFUNCTION, uploadCallback);
+	curl_easy_setopt(m_curl, CURLOPT_READDATA, m_pHttpRequest);
+	curl_easy_setopt(m_curl, CURLOPT_NOPROGRESS, 0);
+	curl_easy_setopt(m_curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
+	curl_easy_setopt(m_curl, CURLOPT_PROGRESSDATA, m_pHttpRequest);
+	curl_easy_setopt(m_curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)filesize);
+
+	m_res = curl_easy_perform(m_curl);
+	curl_easy_cleanup(m_curl);
+	printf("uploadFile\n");
 	return m_res;
 }
