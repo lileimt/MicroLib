@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/MicroLib"/>
+    <qresource prefix="/images">
+        <file alias="close">Resources/images/close.png</file>
+        <file alias="dir">Resources/images/dir.png</file>
+        <file alias="down">Resources/images/down.png</file>
+        <file alias="file">Resources/images/file.png</file>
+        <file alias="microlib">Resources/images/microlib.png</file>
+        <file alias="min">Resources/images/min.png</file>
+        <file alias="setting">Resources/images/setting.png</file>
+        <file alias="dang">Resources/images/dang.png</file>
+        <file alias="ming">Resources/images/ming.png</file>
+        <file alias="delete">Resources/images/delete.png</file>
+        <file alias="download">Resources/images/download.png</file>
+        <file alias="more">Resources/images/more.png</file>
+        <file alias="move">Resources/images/move.png</file>
+        <file alias="newfile">Resources/images/newfile.png</file>
+        <file alias="rename">Resources/images/rename.png</file>
+        <file alias="save">Resources/images/save.png</file>
+        <file alias="send">Resources/images/send.png</file>
+        <file alias="upload">Resources/images/upload.png</file>
+        <file alias="search">Resources/images/search.png</file>
+        <file alias="edit">Resources/images/edit.png</file>
+        <file alias="share">Resources/images/share.png</file>
+        <file alias="transport">Resources/images/transport.png</file>
+        <file alias="upArrow">Resources/images/up.png</file>
+    </qresource>
+    <qresource prefix="/qss">
+        <file alias="skin">Resources/qss/skin.qss</file>
+    </qresource>
+</RCC>
