@@ -1,7 +1,8 @@
 #ifndef QTITLEWIDGET_H
 #define QTITLEWIDGET_H
 
-#include "Base/qbasewidget.h"
+#include <QWidget>
+#include <QPaintEvent>
 #include "ui_titlewidget.h"
 
 class QTitleWidget : public QBaseWidget
@@ -12,8 +13,15 @@ public:
 	QTitleWidget(QWidget *parent = 0);
 	~QTitleWidget();
 
+protected:
+	void paintEvent(QPaintEvent *event);
+signals:
+	void sigMinClicked();
+	void sigCloseClicked();
+
 private:
 	Ui::QTitleWidget ui;
+	QLabel *m_pLabel;
 };
 
 #endif // QTITLEWIDGET_H

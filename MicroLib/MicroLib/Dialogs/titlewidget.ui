@@ -31,6 +31,11 @@ QToolButton#btnShare,QToolButton#btnFiles{
 QToolButton#btnShare:hover,QToolButton#btnFiles:hover{
 	background-color: rgba(255, 255, 255, 50);
 }
+/*
+QToolButton#btnClose:hover{
+	background-color: rgba(255,0,0,50);
+}
+*/
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -440,9 +445,12 @@ QToolButton#btnShare:hover,QToolButton#btnFiles:hover{
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>40</width>
+           <width>80</width>
            <height>20</height>
           </size>
          </property>

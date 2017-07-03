@@ -43,7 +43,7 @@ QLineEdit{
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="leftMargin">
     <number>9</number>

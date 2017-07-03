@@ -24,6 +24,15 @@
         <file alias="share">Resources/images/share.png</file>
         <file alias="transport">Resources/images/transport.png</file>
         <file alias="upArrow">Resources/images/up.png</file>
+        <file alias="circle">Resources/images/circle.png</file>
+        <file alias="downloadt">Resources/images/downloadt.png</file>
+        <file alias="error">Resources/images/error.png</file>
+        <file alias="filedelete">Resources/images/filedelete.png</file>
+        <file alias="ok">Resources/images/ok.png</file>
+        <file alias="pause">Resources/images/pause.png</file>
+        <file alias="start">Resources/images/play.png</file>
+        <file alias="restart">Resources/images/restart.png</file>
+        <file alias="uploadt">Resources/images/uploadt.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="skin">Resources/qss/skin.qss</file>
