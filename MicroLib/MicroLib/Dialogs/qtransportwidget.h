@@ -7,6 +7,7 @@
 #include <QList>
 #include <QScrollArea>
 #include <QVBoxLayout>
+#include <QListWidget>
 #include "Dialogs/qtransportitem.h"
 
 typedef QList<FILETRANSPORT> TRANSLIST;
@@ -22,12 +23,11 @@ public:
 private:
 	Ui::QTransportWidget ui;
 	QBaseTitleWidget *m_titleWidget;
-	QBaseWidget *m_tmpWidget;
-	QScrollArea *m_scrollArea;
 	QVBoxLayout *m_pLayout;
-	//QVBoxLayout *m_pListLayout;
 	TRANSLIST m_transList;
+	QListWidget *m_listWidget;
 
+	void addItem(QTransportItem *pItem);
 	void showList();
 };
 

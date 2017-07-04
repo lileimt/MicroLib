@@ -10,7 +10,7 @@ class QTransportItem : public QBaseWidget
 	Q_OBJECT
 
 public:
-	QTransportItem(FILETRANSPORT &stFileTransport,bool bFirst = false,QWidget *parent = 0);
+	QTransportItem(FILETRANSPORT *stFileTransport,bool bFirst = false,QWidget *parent = 0);
 	~QTransportItem();
 
 private:

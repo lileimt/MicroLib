@@ -1,4 +1,6 @@
 #include "microlib.h"
+#include "Base/qbasetransparentwidget.h"
+#include "Dialogs/qforwardwidget.h"
 
 MicroLib::MicroLib(QWidget *parent)
 	: QMainWindow(parent)
@@ -8,8 +10,15 @@ MicroLib::MicroLib(QWidget *parent)
 	setWindowTitle(QStringLiteral("Î¢¿â"));
 	setFixedSize(966, 640);
 
+	QForwardWidget *pWidget = new QForwardWidget;
+	pWidget->show();
+
 	QWidget *widget = new QWidget();
 	this->setCentralWidget(widget);
+
+	//QBaseTransparentWidget *m_pWidget = new QBaseTransparentWidget(this);
+	//m_pWidget->resize(966, 640);
+	//m_pWidget->show();
 
 	m_pLayout = new QVBoxLayout(widget);
 	m_titleWidget = new QTitleWidget(widget);

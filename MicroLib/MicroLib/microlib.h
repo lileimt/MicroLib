@@ -1,6 +1,7 @@
 #ifndef MICROLIB_H
 #define MICROLIB_H
 
+#include <QVBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include "ui_microlib.h"
 #include "Dialogs/qtitlewidget.h"
@@ -8,7 +9,6 @@
 #include "Dialogs/qsubtranswidget.h"
 #include "Base/qbasewebengineview.h"
 #include "Dialogs/qtransportwidget.h"
-#include <QVBoxLayout>
 
 class MicroLib : public QMainWindow
 {
