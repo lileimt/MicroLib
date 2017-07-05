@@ -16,6 +16,7 @@
   <property name="styleSheet">
    <string notr="true">QBaseTransparentWidget{
 	background-color: rgba(0, 0, 0, 75);
+	border-radius:8px;
 }</string>
   </property>
  </widget>

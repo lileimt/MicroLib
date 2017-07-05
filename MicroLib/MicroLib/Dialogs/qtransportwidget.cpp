@@ -45,7 +45,7 @@ void QTransportWidget::showList()
 	st.fileName = QStringLiteral("我的文件.exe");
 	st.fileIcon = QString(":/images/ok");
 	st.filePath = QStringLiteral("文件夹");
-	st.fileSize = QString("999.21M");
+	st.fileSize = QString("999.2M");
 	st.state = 0;
 	st.status = 0;
 

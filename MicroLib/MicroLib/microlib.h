@@ -2,6 +2,7 @@
 #define MICROLIB_H
 
 #include <QVBoxLayout>
+#include <QMouseEvent>
 #include <QtWidgets/QMainWindow>
 #include "ui_microlib.h"
 #include "Dialogs/qtitlewidget.h"
@@ -9,6 +10,8 @@
 #include "Dialogs/qsubtranswidget.h"
 #include "Base/qbasewebengineview.h"
 #include "Dialogs/qtransportwidget.h"
+#include "Base/qbasetransparentwidget.h"
+#include "Dialogs/qforwardwidget.h"
 
 class MicroLib : public QMainWindow
 {
@@ -17,6 +20,13 @@ class MicroLib : public QMainWindow
 public:
 	MicroLib(QWidget *parent = 0);
 	~MicroLib();
+
+	void showForwardWidget();
+
+protected:
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
 
 private:
 	Ui::MicroLibClass ui;
@@ -27,6 +37,12 @@ private:
 	QBaseWebEngineView *m_webEngine;
 	QSubTransWidget *m_subTransWidget;
 	QTransportWidget *m_transWidget;
+	QBaseTransparentWidget *m_baseTransWidget;
+	QForwardWidget *m_forwardWidget;
+
+	QPoint m_point;
+	bool m_bPressed;
+	bool m_bCovered;
 };
 
 #endif // MICROLIB_H

@@ -37,4 +37,25 @@
     <qresource prefix="/qss">
         <file alias="skin">Resources/qss/skin.qss</file>
     </qresource>
+    <qresource prefix="/filetype">
+        <file alias="apk">Resources/filetype/barcode_result_page_type_apk_icon.png</file>
+        <file alias="doc">Resources/filetype/barcode_result_page_type_doc_icon.png</file>
+        <file alias="dir">Resources/filetype/barcode_result_page_type_file_dir_icon.png</file>
+        <file alias="html">Resources/filetype/barcode_result_page_type_html_icon.png</file>
+        <file alias="img">Resources/filetype/barcode_result_page_type_img_icon.png</file>
+        <file alias="ipa">Resources/filetype/barcode_result_page_type_ipa_icon.png</file>
+        <file alias="music">Resources/filetype/barcode_result_page_type_music_icon.png</file>
+        <file alias="pdf">Resources/filetype/barcode_result_page_type_pdf_icon.png</file>
+        <file alias="ppt">Resources/filetype/barcode_result_page_type_ppt_icon.png</file>
+        <file alias="private">Resources/filetype/barcode_result_page_type_private_icon.png</file>
+        <file alias="share">Resources/filetype/barcode_result_page_type_share_icon.png</file>
+        <file alias="torrent">Resources/filetype/barcode_result_page_type_torrent_icon.png</file>
+        <file alias="txt">Resources/filetype/barcode_result_page_type_txt_icon.png</file>
+        <file alias="unkown">Resources/filetype/barcode_result_page_type_unkonwn_icon.png</file>
+        <file alias="vcf">Resources/filetype/barcode_result_page_type_vcf_icon.png</file>
+        <file alias="vedio">Resources/filetype/barcode_result_page_type_vedio_icon.png</file>
+        <file alias="vsd">Resources/filetype/barcode_result_page_type_vsd_icon.png</file>
+        <file alias="xls">Resources/filetype/barcode_result_page_type_xls_icon.png</file>
+        <file alias="zip">Resources/filetype/barcode_result_page_type_zip_icon.png</file>
+    </qresource>
 </RCC>

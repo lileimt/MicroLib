@@ -3,6 +3,11 @@
 
 #include <QString>
 
+#define WIDTH 966
+#define HEIGHT 640
+
+#define RELEASE(x) if(x){delete x;x= NULL;}
+
 typedef struct FileTransport
 {
 	QString fileName;
@@ -12,5 +17,7 @@ typedef struct FileTransport
 	int status;  //0 正常  1暂停 2错误
 	int state;   //0下载 1上传
 }FILETRANSPORT;
+
+
 
 #endif // !_COMMON_H_

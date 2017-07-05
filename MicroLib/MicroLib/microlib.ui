@@ -14,7 +14,7 @@
    <string>MicroLib</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow{
+   <string notr="true">MicroLibClass{
 	border-radius:8px;
 }</string>
   </property>

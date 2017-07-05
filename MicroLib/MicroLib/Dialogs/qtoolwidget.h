@@ -6,8 +6,6 @@
 #include "qsearchwidget.h"
 #include <QHBoxLayout>
 
-#define RELEASE(x) if(x){delete x;x= NULL;}
-
 class QToolWidget : public QBaseWidget
 {
 	Q_OBJECT

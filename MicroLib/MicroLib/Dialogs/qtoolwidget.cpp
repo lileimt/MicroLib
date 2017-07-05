@@ -1,4 +1,5 @@
 #include "qtoolwidget.h"
+#include "Common/common.h"
 
 QToolWidget::QToolWidget(QWidget *parent)
 	: QBaseWidget(parent)

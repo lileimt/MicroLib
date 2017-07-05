@@ -16,10 +16,20 @@
   <property name="styleSheet">
    <string notr="true">QForwardWidget{
 	background:white;
+	border-radius:8px;
 }
 QBaseWidget#titleWidget{
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(58, 168, 155, 255), stop:1 rgba(129, 179, 77, 255));
 	color:white;
+	border-top-left-radius:8px;
+	border-top-right-radius:8px;
+}
+QTreeWidget#treeWidget{
+	font: 12pt &quot;微软雅黑&quot;;
+	border:1px solid #f1f1f1;
+}
+QTreeWidget#treeWidget::item{
+	height:25px;	
 }
 QLabel#lblTitle{
 	color:white;
@@ -35,10 +45,18 @@ QToolButton#btnClose{
 	border-image: url(:/images/close);
 }
 QToolButton#btnForward{
+	font-size : 16px;
 	background:#3aa89b;
 	color:white;
+	border:1px soild black;
+	border-radius:2px;
 }
-</string>
+QToolButton#btnNew{
+	font-size : 16px;
+	background:#ececec;
+	border:1px soild black;
+	border-radius:2px;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
@@ -51,7 +69,7 @@ QToolButton#btnForward{
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>20</number>
+    <number>25</number>
    </property>
    <item>
     <widget class="QBaseWidget" name="titleWidget" native="true">
@@ -62,6 +80,12 @@ QToolButton#btnForward{
       </sizepolicy>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item>
        <widget class="QLabel" name="lblTitle">
         <property name="text">
@@ -150,15 +174,22 @@ QToolButton#btnForward{
      </item>
      <item>
       <widget class="QTreeWidget" name="treeWidget">
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
+       <property name="indentation">
+        <number>20</number>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>true</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="spacing">
+        <number>2</number>
+       </property>
        <item>
         <widget class="QCheckBox" name="chkBox">
          <property name="sizePolicy">
@@ -175,7 +206,10 @@ QToolButton#btnForward{
        <item>
         <widget class="QLabel" name="lblPath">
          <property name="text">
-          <string>TextLabel</string>
+          <string>我的文件</string>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -183,8 +217,20 @@ QToolButton#btnForward{
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
        <item>
         <widget class="QToolButton" name="btnNew">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="text">
           <string>新建文件夹</string>
          </property>
@@ -211,6 +257,12 @@ QToolButton#btnForward{
        </item>
        <item>
         <widget class="QToolButton" name="btnForward">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="text">
           <string>转存</string>
          </property>
