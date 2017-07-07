@@ -1,5 +1,4 @@
 <RCC>
-    <qresource prefix="/MicroLib"/>
     <qresource prefix="/images">
         <file alias="close">Resources/images/close.png</file>
         <file alias="dir">Resources/images/dir.png</file>
@@ -33,6 +32,11 @@
         <file alias="start">Resources/images/play.png</file>
         <file alias="restart">Resources/images/restart.png</file>
         <file alias="uploadt">Resources/images/uploadt.png</file>
+        <file alias="newdir">Resources/images/newdir.png</file>
+        <file alias="enum1">Resources/images/enum1.png</file>
+        <file alias="enum2">Resources/images/enum2.png</file>
+        <file alias="fnum1">Resources/images/fnum1.png</file>
+        <file alias="fnum2">Resources/images/fnum2.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="skin">Resources/qss/skin.qss</file>

@@ -6,6 +6,8 @@ MicroLib::MicroLib(QWidget *parent)
 	m_transWidget(NULL),
 	m_baseTransWidget(NULL),
 	m_forwardWidget(NULL),
+	m_staticsWidget(NULL),
+	m_newDirsWidget(NULL),
 	m_bPressed(false),
 	m_bCovered(false)
 {
@@ -45,7 +47,9 @@ MicroLib::MicroLib(QWidget *parent)
 	m_pLayout->setSpacing(0);
 	widget->setLayout(m_pLayout);
 
-	showForwardWidget();
+	//showForwardWidget();
+	//showStaticsWidget();
+	showNewDirsWidget();
 }
 
 MicroLib::~MicroLib()
@@ -69,6 +73,38 @@ void MicroLib::showForwardWidget()
 	m_baseTransWidget->show();
 
 	connect(m_forwardWidget, &QForwardWidget::sigCloseClicked, [=](){
+		m_baseTransWidget->close();
+		m_bCovered = false;
+	});
+}
+
+void MicroLib::showStaticsWidget()
+{
+	RELEASE(m_baseTransWidget);
+	m_bCovered = true;
+	m_baseTransWidget = new QBaseTransparentWidget(this);
+	m_baseTransWidget->resize(WIDTH, HEIGHT);
+	m_staticsWidget = new QStaticsWidget(m_baseTransWidget);
+	m_staticsWidget->move((WIDTH - m_staticsWidget->width()) / 2, (HEIGHT - m_staticsWidget->height()) / 2);
+	m_baseTransWidget->show();
+
+	connect(m_staticsWidget, &QStaticsWidget::sigCloseClicked, [=](){
+		m_baseTransWidget->close();
+		m_bCovered = false;
+	});
+}
+
+void MicroLib::showNewDirsWidget()
+{
+	RELEASE(m_baseTransWidget);
+	m_bCovered = true;
+	m_baseTransWidget = new QBaseTransparentWidget(this);
+	m_baseTransWidget->resize(WIDTH, HEIGHT);
+	m_newDirsWidget = new QNewDirsWidget(m_baseTransWidget);
+	m_newDirsWidget->move((WIDTH - m_newDirsWidget->width()) / 2, (HEIGHT - m_newDirsWidget->height()) / 2);
+	m_baseTransWidget->show();
+
+	connect(m_newDirsWidget, &QNewDirsWidget::sigCloseClicked, [=](){
 		m_baseTransWidget->close();
 		m_bCovered = false;
 	});

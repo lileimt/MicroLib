@@ -12,6 +12,8 @@
 #include "Dialogs/qtransportwidget.h"
 #include "Base/qbasetransparentwidget.h"
 #include "Dialogs/qforwardwidget.h"
+#include "Dialogs/qstaticswidget.h"
+#include "Dialogs/qnewdirswidget.h"
 
 class MicroLib : public QMainWindow
 {
@@ -22,7 +24,8 @@ public:
 	~MicroLib();
 
 	void showForwardWidget();
-
+	void showStaticsWidget();
+	void showNewDirsWidget();
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
@@ -39,6 +42,8 @@ private:
 	QTransportWidget *m_transWidget;
 	QBaseTransparentWidget *m_baseTransWidget;
 	QForwardWidget *m_forwardWidget;
+	QStaticsWidget *m_staticsWidget;
+	QNewDirsWidget *m_newDirsWidget;
 
 	QPoint m_point;
 	bool m_bPressed;
