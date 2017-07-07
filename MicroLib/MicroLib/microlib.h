@@ -1,6 +1,7 @@
 #ifndef MICROLIB_H
 #define MICROLIB_H
 
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QMouseEvent>
 #include <QtWidgets/QMainWindow>
@@ -14,6 +15,8 @@
 #include "Dialogs/qforwardwidget.h"
 #include "Dialogs/qstaticswidget.h"
 #include "Dialogs/qnewdirswidget.h"
+#include "Dialogs/qnewdirsnextwidget.h"
+#include "Dialogs/qsidewidget.h"
 
 class MicroLib : public QMainWindow
 {
@@ -26,6 +29,7 @@ public:
 	void showForwardWidget();
 	void showStaticsWidget();
 	void showNewDirsWidget();
+	void showNewDirsNextWidget();
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
@@ -35,6 +39,7 @@ private:
 	Ui::MicroLibClass ui;
 	
 	QVBoxLayout *m_pLayout;
+	QHBoxLayout *m_pHLayout;
 	QTitleWidget *m_titleWidget;
 	QToolWidget *m_toolWidget;
 	QBaseWebEngineView *m_webEngine;
@@ -44,6 +49,8 @@ private:
 	QForwardWidget *m_forwardWidget;
 	QStaticsWidget *m_staticsWidget;
 	QNewDirsWidget *m_newDirsWidget;
+	QNewDirsNextWidget *m_newDirsNextWidget;
+	QSideWidget *m_sideWidget;
 
 	QPoint m_point;
 	bool m_bPressed;

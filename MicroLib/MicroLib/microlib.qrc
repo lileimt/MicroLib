@@ -37,6 +37,7 @@
         <file alias="enum2">Resources/images/enum2.png</file>
         <file alias="fnum1">Resources/images/fnum1.png</file>
         <file alias="fnum2">Resources/images/fnum2.png</file>
+        <file alias="rightarrow">Resources/images/rightarrow.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="skin">Resources/qss/skin.qss</file>

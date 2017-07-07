@@ -8,6 +8,9 @@ QNewDirsWidget::QNewDirsWidget(QWidget *parent)
 	connect(ui.btnClose, &QToolButton::clicked, [=](){
 		emit sigCloseClicked();
 	});
+	connect(ui.btnNext, &QToolButton::clicked, [=](){
+		emit sigNextClicked();
+	});
 }
 
 QNewDirsWidget::~QNewDirsWidget()

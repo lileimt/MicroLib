@@ -13,6 +13,7 @@ public:
 	~QNewDirsWidget();
 signals:
 	void sigCloseClicked();
+	void sigNextClicked();
 private:
 	Ui::QNewDirsWidget ui;
 };
