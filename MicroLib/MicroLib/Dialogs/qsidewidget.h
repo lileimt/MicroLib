@@ -3,6 +3,7 @@
 
 #include "Base/qbasewidget.h"
 #include "ui_sidewidget.h"
+#include "Dialogs/qloguserwidget.h"
 
 class QSideWidget : public QBaseWidget
 {
@@ -11,7 +12,8 @@ class QSideWidget : public QBaseWidget
 public:
 	QSideWidget(QWidget *parent = 0);
 	~QSideWidget();
-
+	
+	void addItem(QLogUserWidget *pWidget);
 private:
 	Ui::QSideWidget ui;
 };

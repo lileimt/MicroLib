@@ -21,6 +21,10 @@ QTitleWidget::QTitleWidget(QWidget *parent)
 	m_pLabel->setPixmap(QPixmap(":/images/circle"));
 	m_pLabel->setScaledContents(true);
 
+	connect(ui.btnDang, &QToolButton::clicked, [=](){
+		emit sigDangClicked();
+	});
+
 	connect(ui.btnMin, &QToolButton::clicked, [=](){
 		emit sigMinClicked();
 	});

@@ -38,6 +38,11 @@
         <file alias="fnum1">Resources/images/fnum1.png</file>
         <file alias="fnum2">Resources/images/fnum2.png</file>
         <file alias="rightarrow">Resources/images/rightarrow.png</file>
+        <file alias="add">Resources/images/add.png</file>
+        <file alias="uploading">Resources/images/uploading.png</file>
+        <file alias="deleteuser">Resources/images/deleteuser.png</file>
+        <file alias="list">Resources/images/list.png</file>
+        <file alias="recvfile">Resources/images/recvfile.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="skin">Resources/qss/skin.qss</file>

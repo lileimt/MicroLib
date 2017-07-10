@@ -1,4 +1,4 @@
-#ifndef _COMMON_H_
+#ifndef _COMMON_H
 #define  _COMMON_H
 
 #include <QString>
@@ -8,8 +8,7 @@
 
 #define RELEASE(x) if(x){delete x;x= NULL;}
 
-typedef struct FileTransport
-{
+typedef struct{
 	QString fileName;
 	QString fileIcon;
 	QString fileSize;
@@ -18,6 +17,19 @@ typedef struct FileTransport
 	int state;   //0下载 1上传
 }FILETRANSPORT;
 
+typedef struct {
+	QString userName;
+	QString userImage;
+	QString fileName;
+	QString fileIcon;
+	QString time;
+	int state;   //0新建 1上传
+}USERLOGITEM;
 
+typedef struct{
+	QString userName;
+	QString fileName;
+	int type;   //0公共目录邀请 1收到文件
+}MSGITEM;
 
 #endif // !_COMMON_H_

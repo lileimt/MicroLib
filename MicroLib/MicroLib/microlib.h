@@ -17,6 +17,7 @@
 #include "Dialogs/qnewdirswidget.h"
 #include "Dialogs/qnewdirsnextwidget.h"
 #include "Dialogs/qsidewidget.h"
+#include "Dialogs/qmsgwidget.h"
 
 class MicroLib : public QMainWindow
 {
@@ -51,6 +52,7 @@ private:
 	QNewDirsWidget *m_newDirsWidget;
 	QNewDirsNextWidget *m_newDirsNextWidget;
 	QSideWidget *m_sideWidget;
+	QMsgWidget *m_msgWidget;
 
 	QPoint m_point;
 	bool m_bPressed;

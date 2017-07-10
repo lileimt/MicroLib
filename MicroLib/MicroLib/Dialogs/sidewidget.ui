@@ -39,7 +39,7 @@ QTabBar::tab{
     border-top-right-radius: 0px;
     max-width: 75px;
 	min-width:75px; 
-	min-height:25px;
+	height:40px;
     font:30 16px &quot;微软雅黑&quot;;
     padding: 0px;
 	beckground:white;
@@ -54,6 +54,9 @@ QTabBar::tab:selected{
 QTabWidget::pane{
 	border:none;
 	background:white;
+}
+QListWidget{
+	border:none;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -129,6 +132,9 @@ QTabWidget::pane{
         <height>20</height>
        </size>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -137,6 +143,9 @@ QTabWidget::pane{
         <width>20</width>
         <height>20</height>
        </size>
+      </property>
+      <property name="autoRepeatDelay">
+       <number>300</number>
       </property>
       <property name="autoRaise">
        <bool>true</bool>
@@ -159,7 +168,7 @@ QTabWidget::pane{
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabCommit">
       <attribute name="title">
@@ -175,6 +184,16 @@ QTabWidget::pane{
       <attribute name="title">
        <string>日志</string>
       </attribute>
+      <widget class="QListWidget" name="listWidget">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>50</y>
+         <width>201</width>
+         <height>251</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>

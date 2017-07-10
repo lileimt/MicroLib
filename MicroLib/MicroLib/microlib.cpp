@@ -9,6 +9,7 @@ MicroLib::MicroLib(QWidget *parent)
 	m_staticsWidget(NULL),
 	m_newDirsWidget(NULL),
 	m_newDirsNextWidget(NULL),
+	m_msgWidget(NULL),
 	m_bPressed(false),
 	m_bCovered(false)
 {
@@ -31,6 +32,11 @@ MicroLib::MicroLib(QWidget *parent)
 	});
 	connect(m_titleWidget, &QTitleWidget::sigCloseClicked, [=](){
 		qApp->quit();
+	});
+	connect(m_titleWidget, &QTitleWidget::sigDangClicked, [=](){
+		m_msgWidget = new QMsgWidget(this);
+		m_msgWidget->setGeometry(WIDTH - m_msgWidget->width(), m_titleWidget->height(), m_msgWidget->width(), m_msgWidget->height());
+		m_msgWidget->show();
 	});
 	m_toolWidget = new QToolWidget(widget);
 
@@ -74,6 +80,7 @@ MicroLib::~MicroLib()
 	RELEASE(m_subTransWidget);
 	RELEASE(m_forwardWidget);
 	RELEASE(m_baseTransWidget);
+	RELEASE(m_msgWidget);
 }
 
 void MicroLib::showForwardWidget()

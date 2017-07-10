@@ -18,7 +18,7 @@ protected:
 signals:
 	void sigMinClicked();
 	void sigCloseClicked();
-
+	void sigDangClicked();
 private:
 	Ui::QTitleWidget ui;
 	QLabel *m_pLabel;
