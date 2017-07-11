@@ -8,6 +8,8 @@
 
 #define RELEASE(x) if(x){delete x;x= NULL;}
 
+enum OPERTYPE{sharefiles,myfiles};   //当前操作的类型
+
 typedef struct{
 	QString fileName;
 	QString fileIcon;

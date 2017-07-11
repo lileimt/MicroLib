@@ -169,7 +169,7 @@ QToolButton#btnClose:hover{
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <property name="spacing">
-      <number>0</number>
+      <number>2</number>
      </property>
      <item>
       <widget class="QToolButton" name="btnShare">

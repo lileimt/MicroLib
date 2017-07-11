@@ -4,6 +4,7 @@
 #include "Base/qbasewidget.h"
 #include "ui_sidewidget.h"
 #include "Dialogs/qloguserwidget.h"
+#include <QHBoxLayout>
 
 class QSideWidget : public QBaseWidget
 {
@@ -16,6 +17,8 @@ public:
 	void addItem(QLogUserWidget *pWidget);
 private:
 	Ui::QSideWidget ui;
+
+	QHBoxLayout  *pLogLayout;
 };
 
 #endif // QSIDEWIDGET_H

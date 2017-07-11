@@ -35,7 +35,7 @@ QToolWidget::QToolWidget(QWidget *parent)
 	//设置默认显示项
 	showRootShareLayout();
 	//showRootMyFilesLayout();
-	showSubRootShareLayout();
+	//showSubRootShareLayout();
 }
 
 QToolWidget::~QToolWidget()

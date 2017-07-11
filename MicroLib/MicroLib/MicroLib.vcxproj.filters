@@ -239,6 +239,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_qmsgitem.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Common\qchannel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_qchannel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_qchannel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="microlib.h">
@@ -364,6 +373,9 @@
     <CustomBuild Include="Dialogs\msgitem.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Common\qchannel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_microlib.h">
@@ -431,5 +443,6 @@
     <None Include="Resources\qss\skin.qss">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="web\index.html" />
   </ItemGroup>
 </Project>

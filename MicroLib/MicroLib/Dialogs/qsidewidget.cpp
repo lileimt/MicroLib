@@ -1,6 +1,5 @@
 #include "qsidewidget.h"
 #include <QDebug>
-#include <QHBoxLayout>
 
 QSideWidget::QSideWidget(QWidget *parent)
 	: QBaseWidget(parent)
@@ -8,11 +7,11 @@ QSideWidget::QSideWidget(QWidget *parent)
 	ui.setupUi(this);
 	setFixedSize(250, 520);
 	ui.listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	QHBoxLayout  *pLayout = new QHBoxLayout(this);
-	pLayout->addWidget(ui.listWidget);
-	pLayout->setContentsMargins(0, 0, 0, 0);
-	pLayout->setSpacing(0);
-	ui.tabLog->setLayout(pLayout);
+	pLogLayout = new QHBoxLayout(this);
+	pLogLayout->addWidget(ui.listWidget);
+	pLogLayout->setContentsMargins(0, 0, 0, 0);
+	pLogLayout->setSpacing(0);
+	ui.tabLog->setLayout(pLogLayout);
 
 	USERLOGITEM logItem;
 	logItem.userName = QStringLiteral("ÀîÃ÷Ô¶");
@@ -35,7 +34,7 @@ QSideWidget::QSideWidget(QWidget *parent)
 
 QSideWidget::~QSideWidget()
 {
-
+	RELEASE(pLogLayout);
 }
 
 void QSideWidget::addItem(QLogUserWidget *pWidget)

@@ -21,6 +21,9 @@ QTitleWidget::QTitleWidget(QWidget *parent)
 	m_pLabel->setPixmap(QPixmap(":/images/circle"));
 	m_pLabel->setScaledContents(true);
 
+	ui.btnShare->setStyleSheet("background:rgba(255, 255, 255, 50);");
+
+
 	connect(ui.btnDang, &QToolButton::clicked, [=](){
 		emit sigDangClicked();
 	});
@@ -31,6 +34,20 @@ QTitleWidget::QTitleWidget(QWidget *parent)
 
 	connect(ui.btnClose, &QToolButton::clicked, [=](){
 		emit sigCloseClicked();
+	});
+
+	connect(ui.btnShare, &QToolButton::clicked, [=](){
+		emit sigShareClicked(sharefiles);
+		ui.btnShare->setStyleSheet("background:rgba(255, 255, 255, 50);");
+		ui.btnFiles->setStyleSheet("QToolButton#btnFiles{background:none;}"
+												 "QToolButton#btnFiles:hover{background-color: rgba(255, 255, 255, 50);}");
+	});
+
+	connect(ui.btnFiles, &QToolButton::clicked, [=](){
+		emit sigMyFilesClicked(myfiles);
+		ui.btnFiles->setStyleSheet("background:rgba(255, 255, 255, 50);");
+		ui.btnShare->setStyleSheet("QToolButton#btnShare{background:none;}"
+			"QToolButton#btnShare:hover{background-color: rgba(255, 255, 255, 50);}");
 	});
 }
 

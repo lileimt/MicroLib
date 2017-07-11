@@ -5,6 +5,7 @@
 #include "ui_toolwidget.h"
 #include "qsearchwidget.h"
 #include <QHBoxLayout>
+#include <QStackedLayout>
 
 class QToolWidget : public QBaseWidget
 {
@@ -22,6 +23,7 @@ private:
 	Ui::QToolWidget ui;
 	QSearchWidget *m_searchWidget;
 	QHBoxLayout *m_pLayout;
+	QStackedLayout *m_stackLayout;
 	//公共目录布局
 	QHBoxLayout *m_pRootShareLayout;
 	//我的文件布局

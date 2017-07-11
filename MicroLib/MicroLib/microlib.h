@@ -57,6 +57,7 @@ private:
 	QPoint m_point;
 	bool m_bPressed;
 	bool m_bCovered;
+	OPERTYPE m_eOperType;
 };
 
 #endif // MICROLIB_H

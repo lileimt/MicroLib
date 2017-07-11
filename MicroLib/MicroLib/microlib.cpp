@@ -11,7 +11,8 @@ MicroLib::MicroLib(QWidget *parent)
 	m_newDirsNextWidget(NULL),
 	m_msgWidget(NULL),
 	m_bPressed(false),
-	m_bCovered(false)
+	m_bCovered(false),
+	m_eOperType(sharefiles)
 {
 	ui.setupUi(this);
 	setWindowFlags(Qt::FramelessWindowHint);
@@ -24,6 +25,7 @@ MicroLib::MicroLib(QWidget *parent)
 
 	m_baseTransWidget = new QBaseTransparentWidget(this);
 	m_baseTransWidget->resize(WIDTH, HEIGHT);
+	m_baseTransWidget->hide();
 
 	m_pLayout = new QVBoxLayout(widget);
 	m_titleWidget = new QTitleWidget(widget);
@@ -38,16 +40,28 @@ MicroLib::MicroLib(QWidget *parent)
 		m_msgWidget->setGeometry(WIDTH - m_msgWidget->width(), m_titleWidget->height(), m_msgWidget->width(), m_msgWidget->height());
 		m_msgWidget->show();
 	});
+	connect(m_titleWidget, &QTitleWidget::sigShareClicked, [=](OPERTYPE type){
+		if (type != m_eOperType){
+			m_eOperType = type;
+			m_toolWidget->showRootShareLayout();
+		}
+	});
+	connect(m_titleWidget, &QTitleWidget::sigMyFilesClicked, [=](OPERTYPE type){
+		if (type != m_eOperType){
+			m_eOperType = type;
+			m_toolWidget->showRootMyFilesLayout();
+		}
+	});
 	m_toolWidget = new QToolWidget(widget);
 
 	m_pHLayout = new QHBoxLayout(widget);
-	
 	m_webEngine = new QBaseWebEngineView(widget);
-	m_webEngine->setUrl(QUrl("https://www.hao123.com"));
+
 	//m_subTransWidget = new QSubTransWidget(widget);
 	//QRect rect = m_webEngine->geometry();
 	//m_subTransWidget->setGeometry(rect.right() - 202, rect.bottom() - 36, 202, 36);
 	m_sideWidget = new QSideWidget(widget);
+	m_sideWidget->hide();
 	m_pHLayout->addWidget(m_webEngine);
 	m_pHLayout->addWidget(m_sideWidget);
 
@@ -68,7 +82,7 @@ MicroLib::MicroLib(QWidget *parent)
 
 	//showForwardWidget();
 	//showStaticsWidget();
-	showNewDirsWidget();
+	//showNewDirsWidget();
 	//showNewDirsNextWidget();
 }
 

@@ -168,19 +168,19 @@ QListWidget{
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tabCommit">
+     <widget class="QBaseWidget" name="tabCommit">
       <attribute name="title">
        <string>提交</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tabLookup">
+     <widget class="QBaseWidget" name="tabLookup">
       <attribute name="title">
        <string>查询</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tabLog">
+     <widget class="QBaseWidget" name="tabLog">
       <attribute name="title">
        <string>日志</string>
       </attribute>
