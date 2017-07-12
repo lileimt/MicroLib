@@ -10,6 +10,13 @@ class QChannel : public QObject
 public:
 	static QChannel *getInstance();
 
+signals:
+	//void sigTest();
+
+public slots:
+	//void demoTest();
+	//void test();
+
 private:
 	QChannel(QObject *parent = 0);
 	~QChannel();

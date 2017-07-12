@@ -9,6 +9,7 @@
 #define RELEASE(x) if(x){delete x;x= NULL;}
 
 enum OPERTYPE{sharefiles,myfiles};   //当前操作的类型
+enum TOOLINDEX{shareindex,myfilesindex,subshareindex};    //选择对应的工具栏索引
 
 typedef struct{
 	QString fileName;

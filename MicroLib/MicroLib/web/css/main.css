@@ -10,10 +10,12 @@ ul,li{
 }
 body,html{
 	height: 100%;
+	-webkit-user-select: none; 
 }
 .hui-resize-table {
 	width: 100%;
-	font-size: 12px;
+	font-size: 14px;
+	font-family: "微软雅黑";
 	height: 100%;
 }
 .hui-path{
@@ -32,6 +34,10 @@ body,html{
 }
 .hui-arrows{
 	margin-right: 14px;
+	cursor: default;
+}
+.hui-arrows:hover{
+	color:#3ba79a;
 }
 .hui-operate{
 	position: absolute;

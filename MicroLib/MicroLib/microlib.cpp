@@ -35,21 +35,28 @@ MicroLib::MicroLib(QWidget *parent)
 	connect(m_titleWidget, &QTitleWidget::sigCloseClicked, [=](){
 		qApp->quit();
 	});
+
 	connect(m_titleWidget, &QTitleWidget::sigDangClicked, [=](){
-		m_msgWidget = new QMsgWidget(this);
-		m_msgWidget->setGeometry(WIDTH - m_msgWidget->width(), m_titleWidget->height(), m_msgWidget->width(), m_msgWidget->height());
-		m_msgWidget->show();
+		if (m_msgWidget == NULL){
+			m_msgWidget = new QMsgWidget(this);
+			m_msgWidget->setGeometry(WIDTH - m_msgWidget->width(), m_titleWidget->height(), m_msgWidget->width(), m_msgWidget->height());
+		}
+		if (m_msgWidget->isVisible()){
+			m_msgWidget->hide();
+		}else{
+			m_msgWidget->show();
+		}
 	});
 	connect(m_titleWidget, &QTitleWidget::sigShareClicked, [=](OPERTYPE type){
 		if (type != m_eOperType){
 			m_eOperType = type;
-			m_toolWidget->showRootShareLayout();
+			m_toolWidget->showIndex(shareindex);
 		}
 	});
 	connect(m_titleWidget, &QTitleWidget::sigMyFilesClicked, [=](OPERTYPE type){
 		if (type != m_eOperType){
 			m_eOperType = type;
-			m_toolWidget->showRootMyFilesLayout();
+			m_toolWidget->showIndex(myfilesindex);
 		}
 	});
 	m_toolWidget = new QToolWidget(widget);

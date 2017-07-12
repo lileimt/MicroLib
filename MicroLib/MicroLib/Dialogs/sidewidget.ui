@@ -42,7 +42,7 @@ QTabBar::tab{
 	height:40px;
     font:30 16px &quot;微软雅黑&quot;;
     padding: 0px;
-	beckground:white;
+	background:white;
 }
 
 QTabBar::tab:selected{

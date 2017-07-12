@@ -1,4 +1,5 @@
 #include "qchannel.h"
+#include <QMessageBox>
 
 QChannel *QChannel::m_pInstance = NULL;
 
@@ -22,3 +23,13 @@ QChannel *QChannel::getInstance()
 	}
 	return m_pInstance;
 }
+
+//void QChannel::demoTest()
+//{
+//	QMessageBox::information(NULL, "Title", "Content", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+//}
+//
+//void QChannel::test()
+//{
+//	emit sigTest();
+//}

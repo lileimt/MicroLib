@@ -257,6 +257,7 @@ $(function(){
             $(listItem[i]).siblings().find(".list-checkbox").hide();
             $(listItem[i]).siblings().find('.list-checkbox').prop('checked',false);
             $(listItem[i]).siblings().find('.listWrap').removeClass('active');
+            $("#imgAllChecked").prop("checked", false);
             
             //重命名
             $('.rightKeyRename').bind('click',function(){

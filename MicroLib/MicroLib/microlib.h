@@ -18,6 +18,7 @@
 #include "Dialogs/qnewdirsnextwidget.h"
 #include "Dialogs/qsidewidget.h"
 #include "Dialogs/qmsgwidget.h"
+#include "Common/qchannel.h"
 
 class MicroLib : public QMainWindow
 {

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <title>jQuery表格列宽拖拽插件 colResizable - 素材家园</title>
+  <title>table</title>
   <link rel="stylesheet" type="text/css" href="css/main.css" />
-  <script  src="js/jquery.js"></script>
-  <script  src="js/colResizable-1.5.min.js"></script>
+  <script src="js/qwebchannel.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/channel.js"></script>
+  <script src="js/colResizable-1.5.min.js"></script>
   <script type="text/javascript">
-	$(function(){	
+  $(function(){	
+    //new QWebChannel(qt.webChannelTransport,function(channel){
+    //    window.channel = channel.objects.channel;
+    //});
 		$("#sample2").colResizable({
 			liveDrag:true, 
 			gripInnerHtml:"<div class='grip'></div>", 
-			draggingClass:"dragging"});
-		
+      draggingClass:"dragging"
+    });
 	});	
   </script>
   </head>
@@ -19,7 +24,7 @@
   <div class="hui-resize-table" id="resizeTable">
     <div class="hui-path">
         <div>
-          <span class="hui-arrows">←</span>
+          <a class="hui-arrows">←</a>
           <span>我的文件</span>
           <span> ＞ </span>
           <a class="hui-step" href="###">资源库</a>
