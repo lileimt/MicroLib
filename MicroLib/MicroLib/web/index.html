@@ -4,30 +4,94 @@
   <title>table</title>
   <link rel="stylesheet" type="text/css" href="css/main.css" />
   <script src="js/qwebchannel.js"></script>
-  <script src="js/jquery.js"></script>
+  <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/channel.js"></script>
   <script src="js/colResizable-1.5.min.js"></script>
+  <script src="js/oauth2.js"></script>
   <script type="text/javascript">
-  $(function(){	
-    //new QWebChannel(qt.webChannelTransport,function(channel){
-    //    window.channel = channel.objects.channel;
-    //});
-		$("#sample2").colResizable({
-			liveDrag:true, 
-			gripInnerHtml:"<div class='grip'></div>", 
-      draggingClass:"dragging"
-    });
-	});	
+
+    var table = [{
+        id:1,
+        isDir:true,
+        md5:"1234567890",
+        fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+        fileName:"iphone1",
+        ownerName:"lileimt",
+        fileSize:"11.1 MB",
+        createTime:"11:11",
+        children:[{
+            id:2,
+            isDir:true,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+            fileName:"iphone2",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11",
+            children:[{
+              id:5,
+              isDir:false,
+              md5:"1234567890",
+              fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+              fileName:"iphone3",
+              ownerName:"lileimt",
+              fileSize:"11.1 MB",
+              createTime:"11:11"
+          }]
+        }]
+      },
+      {
+        id:3,
+        isDir:true,
+        md5:"1234567890",
+        fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+        fileName:"iphone1",
+        ownerName:"lileimt",
+        fileSize:"11.1 MB",
+        createTime:"11:11",
+        children:[{
+            id:4,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+            fileName:"iphone2",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        }]
+      }];
+
+  $(function(){	  
+    $(document).ready(function(){
+      //new QWebChannel(qt.webChannelTransport,function(channel){
+      //    window.channel = channel.objects.channel;
+      //});
+      $("#sample2").colResizable({
+        liveDrag:true, 
+        gripInnerHtml:"<div class='grip'></div>", 
+        draggingClass:"dragging"
+      });
+
+
+      showListTable(table);
+    });	
+     
+  });
+  
   </script>
   </head>
   <body>
   <div class="hui-resize-table" id="resizeTable">
     <div class="hui-path">
         <div>
-          <a class="hui-arrows">←</a>
-          <span>我的文件</span>
-          <span> ＞ </span>
-          <a class="hui-step" href="###">资源库</a>
+          <a class="hui-arrows">
+            <img src="img/left.png" />
+          </a>
+          <a class="hui-step" href="###">我的文件</a>
+          <span> 
+            <span> ＞ </span>
+            <a class="hui-step" href="###">资源库</a>
+          </span>
         </div>
         <div class="hui-operate">
             <img id="refreshBtn" src="img/refresh.png" >
@@ -43,68 +107,19 @@
     <div class="refresh">
       <table id="sample2" class="hui-list-table" width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr class="hui-table-title">
-          <th>
+          <th width="60%">
             <input type="checkbox" class="hui-checkbox checkbox" id="allChecked" name="allChecked"/>
             名称
             <span class="rankImg">
               <img class="hui-icon-down" src="img/down.png" />
             </span>
-            
-            </th>
+          </th>
+          <th>创建者</th>
           <th>大小</th>
           <th>创建时间</th>
         </tr>
         <tbody id="tbody">
-        <tr>
-          <td>
-            <input type="checkbox" class="hui-checkbox checkbox" name="checked" />
-            <div class="hui-content">
-              <img class="hui-file-type" src="filetype/barcode_result_page_type_apk_icon.png" />
-              <div class="hui-popup">
-                <input type="text" class="hui-rename" />
-                <button class="hui-btn btn-sure"><img src="img/success.png" /></button>
-                <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>
-              </div>
-              <p class="hui-ellipsis check"><span class="fileName">登录聚少离多</span></p>
-              <div class="hui-table-operate">
-                <a href="###">下载</a>
-                <a href="###">发送</a>
-                <a href="###" class="more">更多</a>
-                <ul class="hui-moreBox">
-                  <li class="btn-delete">删除</li>
-                  <li class="btn-rename">重命名</li>
-                </ul>
-              </div>
-            </div>
-            </td>
-          <td class="check">单元格内容</td>
-          <td class="check">单元格内容</td>
-        </tr>
-        <tr>
-          <td>
-            <input type="checkbox" class="hui-checkbox checkbox" name="checked" />
-            <div class="hui-content">
-              <img class="hui-file-type" src="filetype/barcode_result_page_type_apk_icon.png" />
-              <div class="hui-popup">
-                <input type="text" class="hui-rename" />
-                <button class="hui-btn btn-sure"><img src="img/success.png" /></button>
-                <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>
-              </div>
-              <p class="hui-ellipsis check"><span class="fileName">大厦将颠看老实交代就拉斯克奖的了</span></p>
-              <div class="hui-table-operate">
-                <a href="###">下载</a>
-                <a href="###">发送</a>
-                <a href="###" class="more">更多</a>
-                <ul class="hui-moreBox">
-                  <li class="btn-delete">删除</li>
-                  <li class="btn-rename">重命名</li>
-                </ul>
-              </div>
-            </div>
-            </td>
-          <td class="check">单元格内容</td>
-          <td class="check">单元格内容</td>
-        </tr>
+
         </tbody>
       </table>
       <div id="sample1" class="hui-img-table">
@@ -115,43 +130,8 @@
               <img src="img/down.png" />
             </span>
         </div>
-        <ul class="listBox">
-            <li class="listBox-item">
-              <div class="listWrap">
-                  <img src="filetype/barcode_result_page_type_apk_icon.png" class="filetype" />
-                  <input type="checkbox" class="list-checkbox" name="selected" />
-              </div>
-              <div class="listTitle">新建文件夹</div>
-              <div class="popup">
-                <input type="text" class="rename" />
-                <button class="hui-btn btn-sure"><img src="img/success.png" /></button>
-                <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>
-              </div>
-            </li>
-            <li class="listBox-item">
-              <div class="listWrap">
-                  <img src="filetype/barcode_result_page_type_apk_icon.png" class="filetype" />
-                  <input type="checkbox" class="list-checkbox" name="selected" />
-              </div>
-              <div class="listTitle">新建文件夹</div>
-              <div class="popup">
-                <input type="text" class="rename" />
-                <button class="hui-btn btn-sure"><img src="img/success.png" /></button>
-                <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>
-              </div>
-            </li>
-            <li class="listBox-item">
-              <div class="listWrap">
-                  <img src="filetype/barcode_result_page_type_apk_icon.png" class="filetype" />
-                  <input type="checkbox" class="list-checkbox" name="selected" />
-              </div>
-              <div class="listTitle">新建文件夹</div>
-              <div class="popup">
-                <input type="text" class="rename" />
-                <button class="hui-btn btn-sure"><img src="img/success.png" /></button>
-                <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>
-              </div>
-            </li>
+        <ul id="vbody" class="listBox">
+            
         </ul>
       </div>
       <div id="rightKey">

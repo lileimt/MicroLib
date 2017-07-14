@@ -36,8 +36,13 @@ body,html{
 	margin-right: 14px;
 	cursor: default;
 }
+.hui-arrows img{
+	vertical-align: middle;
+	width: 24px;
+	height: 24px;
+}
 .hui-arrows:hover{
-	color:#3ba79a;
+	color: #3ba79a;
 }
 .hui-operate{
 	position: absolute;
@@ -223,6 +228,9 @@ body,html{
 }
 .fileName{
 	cursor: pointer;
+}
+.fileName:hover{
+	text-decoration: underline;
 }
 #rightKey,#operate{
 	position: absolute;

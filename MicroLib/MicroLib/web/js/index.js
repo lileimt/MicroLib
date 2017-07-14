@@ -12,7 +12,7 @@ $(function(){
         $("#operate").click(function(event){
             event.stopPropagation();
         });
-        $('#tbody,.listBox').bind("contextmenu", function(e){
+        $('#tbody,#vbody').bind("contextmenu", function(e){
             if(e.which ==3){
                 $('#operate').hide();
             }
@@ -36,7 +36,7 @@ $(function(){
             $('#rightKey').show().css({left:relativeX+'px',top:relativeY+36+'px'});
             var tby = $('#tbody').children('tr');
             $(tby[i]).find('.hui-checkbox').prop('checked',true);
-            $(tby[i]) .find('td').addClass('bground boderColor')
+            $(tby[i]).find('td').addClass('bground boderColor')
             $(tby[i]).siblings().find('.hui-checkbox').prop('checked',false);
             $(tby[i]).siblings().find('td').removeClass('bground boderColor')
             //重命名
@@ -55,7 +55,7 @@ $(function(){
                 if($(tby[i]).closest('tr').find('.hui-checkbox').prop('checked')){
                     $(tby[i]).closest('tr').remove();
                 }
-                    $('#rightKey').hide();
+                $('#rightKey').hide();
             });
             //鼠标点击除右键菜单外的其他地方，隐藏菜单
             $('html').click(function(){
@@ -74,54 +74,56 @@ $(function(){
     });
 
     //鼠标经过行变色和显示更多
-        $('#tbody tr').hover(function(){
-            if($(this).find("input[name='checked']").prop("checked")){
-                 $(this).find('td').addClass('boderColor').removeClass('bground');
-            }else{
-                $(this).find('td').addClass('boderColor');
-            }
-            if(!$(this).find('.hui-popup').is(":hidden")){
-                $(this).find('.hui-table-operate').hide();
-                $(this).find('.hui-content').css('padding-right','0')
-            }else{
-                $(this).find('.hui-table-operate').show();
-                $(this).find('.hui-content').css('padding-right','100px')
-            }
-            
-        },function(){
-            if($(this).find("input[name='checked']").prop("checked")){
-                 $(this).find('td').addClass('bground boderColor');
-            }else{
-                $(this).find('td').removeClass('boderColor bground');
-            }
+    $('#tbody').on('mouseenter','tr',function(){
+        if($(this).find("input[name='checked']").prop("checked")){
+             $(this).find('td').addClass('boderColor').removeClass('bground');
+        }else{
+            $(this).find('td').addClass('boderColor');
+        }
+        if(!$(this).find('.hui-popup').is(":hidden")){
             $(this).find('.hui-table-operate').hide();
             $(this).find('.hui-content').css('padding-right','0')
-        })
+        }else{
+            $(this).find('.hui-table-operate').show();
+            $(this).find('.hui-content').css('padding-right','100px')
+        }
+    })
+    $('tbody').on('mouseleave','tr',function(){
+        if($(this).find("input[name='checked']").prop("checked")){
+             $(this).find('td').addClass('bground boderColor');
+        }else{
+            $(this).find('td').removeClass('boderColor bground');
+        }
+        $(this).find('.hui-table-operate').hide();
+        $(this).find('.hui-content').css('padding-right','0')
+
+        $('.hui-moreBox').hide();
+    })
     //更多操作
-        $('.more').bind('click',function(){
-            $(this).next('.hui-moreBox').toggle();
-        });
-        $('.btn-rename,.btn-delete').bind('click',function(){
-            $('.hui-moreBox').hide();
-        })
+    $('#tbody').on('click','.more',function(){
+        $(this).next('.hui-moreBox').toggle();
+    })
+    $('#tbody').on('click','.btn-rename,.btn-delete',function(){
+        $('.hui-moreBox').hide();
+    })
     //重命名
-        $('.btn-rename').bind('click',function(){
-            var inputBox = $(this).closest('tr').find('.hui-popup');
-            var input = $(this).closest('tr').find('.hui-popup').children('.hui-rename');
-            var txt = $(this).closest('tr').find('.fileName').text();
-            inputBox.show();
-            input.val(txt);
-            input.focus();
-            $(this).closest('tr').find('.hui-checkbox').prop('checked',true);
-            $(this).closest('tr').siblings().find('.hui-popup').hide();
-        });
+    $('#tbody').on('click','.btn-rename',function(){
+        var inputBox = $(this).closest('tr').find('.hui-popup');
+        var input = $(this).closest('tr').find('.hui-popup').children('.hui-rename');
+        var txt = $(this).closest('tr').find('.fileName').text();
+        inputBox.show();
+        input.val(txt);
+        input.focus();
+        $(this).closest('tr').find('.hui-checkbox').prop('checked',true);
+        $(this).closest('tr').siblings().find('.hui-popup').hide();
+    })
     //取消重命名
-        $('.btn-cancel').bind('click',function(){
-            $(this).closest('.hui-popup').hide();
-            $(this).closest('tr').find('.hui-checkbox').prop('checked',false);
-        });
+    $('#tbody').on('click','.btn-cancel',function(){
+         $(this).closest('.hui-popup').hide();
+         $(this).closest('tr').find('.hui-checkbox').prop('checked',false);
+    })
     //确定重命名 ——按钮
-    $('.btn-sure').bind('click',function(){
+    $('#tbody').on('click','.btn-sure',function(){
         var txt = $(this).prev('.hui-rename').val();
         $(this).closest('.hui-popup').hide();
         $(this).closest('td').find('.fileName').text(txt);
@@ -154,7 +156,7 @@ $(function(){
         }
     }
     //选择框
-    $('.hui-checkbox').bind('click',function(){
+    $('#tbody').on('click','.hui-checkbox',function(){
         allSelect();
         if($(this).prop("checked")){
             $(this).closest('tr').find('td').addClass('bground boderColor');
@@ -163,12 +165,16 @@ $(function(){
         }
     });
     //点击行选中
-    $('.check').bind('click',function(){
+    $('#tbody').on('click','.check',function(){
         $(this).closest('tr').find('td').addClass('bground boderColor');
         $(this).closest('tr').find('.hui-checkbox').prop("checked",true);
         $(this).closest('tr').siblings().find('td').removeClass('bground boderColor');
         $(this).closest('tr').siblings().find('.hui-checkbox').prop("checked",false);
         $("#allChecked").prop("checked", false);
+    });
+    //删除
+    $('#tbody').on('click','.btn-delete',function(){
+        $(this).closest('tr').remove();
     });
     //排序类型
     $('#rankBtn').bind('click',function(){
@@ -180,10 +186,6 @@ $(function(){
         }else{
             $(this).find('img').attr('src','img/down.png');
         }
-    });
-    //删除
-    $('.btn-delete').bind('click',function(){
-        $(this).closest('tr').remove();
     });
     //切换排列
     $('#cutBtn').bind('click',function(){
@@ -199,14 +201,15 @@ $(function(){
         
     })
     //大图标 选择文件
-    $('.listBox-item').hover(function(){
+    $('#vbody').on('mouseenter','.listBox-item',function(){
         $(this).find("input[name='selected']").show();
-    },function(){
+    })
+    $('#vbody').on('mouseleave','.listBox-item',function(){
         if($(this).find("input[name='selected']").prop('checked')){
             $(this).find("input[name='selected']").show();
         }else{
             $(this).find("input[name='selected']").hide();
-            }
+        }
     })
      //全选
     $("#imgAllChecked").bind('click',function(){
@@ -219,7 +222,7 @@ $(function(){
          }
     });
     //单击选择
-    $('.listWrap,.list-checkbox').bind('click',function(){
+    $('#vbody').on('click','.listWrap,.list-checkbox',function(){
         if($(this).closest('.listWrap').find('.list-checkbox').prop('checked')){
             $(this).closest('.listWrap').find('.list-checkbox').prop('checked',false)
             $(this).closest('.listWrap').removeClass('active');
@@ -272,10 +275,10 @@ $(function(){
             });
             //取消重命名
             $('.popup .btn-cancel').bind('click',function(){
-                    $(this).closest('.popup').hide();
-                    $(this).closest('li').find('.list-checkbox').prop('checked',false);
-                    $(this).closest('li').find('.listWrap').removeClass('active');
-                });
+                $(this).closest('.popup').hide();
+                $(this).closest('li').find('.list-checkbox').prop('checked',false);
+                $(this).closest('li').find('.listWrap').removeClass('active');
+            });
             //确定重命名 ——按钮
             $('.popup .btn-sure').bind('click',function(){
                 var txt = $(this).prev('.rename').val();
