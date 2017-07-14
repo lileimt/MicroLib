@@ -5,12 +5,16 @@
   <link rel="stylesheet" type="text/css" href="css/main.css" />
   <script src="js/qwebchannel.js"></script>
   <script src="js/jquery-3.2.1.min.js"></script>
-  <script src="js/channel.js"></script>
   <script src="js/colResizable-1.5.min.js"></script>
+  <script src="js/sort.js"></script>
+  <script src="js/channel.js"></script>
   <script src="js/oauth2.js"></script>
   <script type="text/javascript">
 
-    var table = [{
+    var listData = [{
+      id:0,
+      isDir:true,
+      children:[{
         id:1,
         isDir:true,
         md5:"1234567890",
@@ -20,49 +24,127 @@
         fileSize:"11.1 MB",
         createTime:"11:11",
         children:[{
-            id:2,
+          id:2,
+          isDir:true,
+          md5:"1234567890",
+          fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+          fileName:"iphone2",
+          ownerName:"lileimt",
+          fileSize:"11.1 MB",
+          createTime:"11:11",
+          children:[{
+            id:5,
             isDir:true,
             md5:"1234567890",
             fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
-            fileName:"iphone2",
+            fileName:"iphone3",
             ownerName:"lileimt",
             fileSize:"11.1 MB",
             createTime:"11:11",
-            children:[{
-              id:5,
-              isDir:false,
-              md5:"1234567890",
-              fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
-              fileName:"iphone3",
-              ownerName:"lileimt",
-              fileSize:"11.1 MB",
-              createTime:"11:11"
+            children:[
+              {
+                id:6,
+                isDir:false,
+                md5:"1234567890",
+                fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+                fileName:"iphone4.apk",
+                ownerName:"lileimt",
+                fileSize:"11.1 MB",
+                createTime:"11:11"
+              }]
+            }]
           }]
-        }]
-      },
-      {
-        id:3,
-        isDir:true,
-        md5:"1234567890",
-        fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
-        fileName:"iphone1",
-        ownerName:"lileimt",
-        fileSize:"11.1 MB",
-        createTime:"11:11",
-        children:[{
+        },{
+          id:3,
+          isDir:true,
+          md5:"1234567890",
+          fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+          fileName:"iphone4",
+          ownerName:"lileimt",
+          fileSize:"11.1 MB",
+          createTime:"11:11",
+          children:[{
             id:4,
             isDir:false,
             md5:"1234567890",
-            fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
-            fileName:"iphone2",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone2.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+          }]
+        },{
+            id:4,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone2.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        },{
+            id:7,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone3.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        },{
+            id:8,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone5.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        },{
+            id:9,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone6.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        },{
+            id:10,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone7.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        },{
+            id:11,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone8.apk",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        },{
+            id:12,
+            isDir:false,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
+            fileName:"iphone9.apk",
             ownerName:"lileimt",
             fileSize:"11.1 MB",
             createTime:"11:11"
         }]
-      }];
+      }]
+
+  var currListData = {};
+  var curSort = 0   //0代表down，降序  1代表up，升序
 
   $(function(){	  
     $(document).ready(function(){
+      //Qt交互
       //new QWebChannel(qt.webChannelTransport,function(channel){
       //    window.channel = channel.objects.channel;
       //});
@@ -71,9 +153,17 @@
         gripInnerHtml:"<div class='grip'></div>", 
         draggingClass:"dragging"
       });
-
-
-      showListTable(table);
+      //获取接口数据
+      // oauth2.getFileById(0,{
+      //   success:function(data){
+      //     fileListData = data
+      //   },error:function(xhr,type,errorThrown){
+      //     console.log(xhr);
+      //   }
+      // })
+      currListData = listData[0].children
+      tablesort.sort(currListData,"fileName",curSort)
+      showListTable(currListData)
     });	
      
   });
@@ -83,15 +173,17 @@
   <body>
   <div class="hui-resize-table" id="resizeTable">
     <div class="hui-path">
-        <div>
+        <div id="tablebar">
           <a class="hui-arrows">
             <img src="img/left.png" />
           </a>
-          <a class="hui-step" href="###">我的文件</a>
-          <span> 
+          <span>
+            <a class="hui-step" href="###" id="0" onclick=gotoFile(this,0)>我的文件</a>
+          </span>
+          <!--span> 
             <span> ＞ </span>
             <a class="hui-step" href="###">资源库</a>
-          </span>
+          </span-->
         </div>
         <div class="hui-operate">
             <img id="refreshBtn" src="img/refresh.png" >
