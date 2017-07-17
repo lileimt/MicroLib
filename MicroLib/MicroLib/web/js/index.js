@@ -1,75 +1,72 @@
 $(function(){
-     //阻止他body里的右键点击事件
+    //阻止tbody里的右键点击事件
     $(".hui-resize-table").bind("contextmenu", function(e){
         if (e.which == 3) {
-        var offset = $(this).offset();
-        var relativeX = (e.pageX - offset.left);
-        var relativeY = (e.pageY - offset.top);
-        $('#operate').show().css({left:relativeX+'px',top:relativeY - 20 +'px'});
-        $('html').click(function(){
-            $('#operate').hide();
-        })
-        $("#operate").click(function(event){
-            event.stopPropagation();
-        });
-        $('#tbody,#vbody').bind("contextmenu", function(e){
-            if(e.which ==3){
+            var offset = $(this).offset();
+            var relativeX = (e.pageX - offset.left);
+            var relativeY = (e.pageY - offset.top);
+            $('#operate').show().css({left:relativeX+'px',top:relativeY - 30 +'px'});
+            $('html').click(function(){
                 $('#operate').hide();
-            }
-        })
-        return false;
-    }
+            })
+            $("#operate").click(function(event){
+                event.stopPropagation();
+            });
+            $('#tbody,#vbody').bind("contextmenu", function(e){
+                if(e.which ==3){
+                    $('#operate').hide();
+                }
+            })
+             return false;
+        }
     })
     $(".hui-table-title,.hui-path").bind("contextmenu", function(e){
         return false;
     })
     //右键菜单
-    $("#tbody").bind("contextmenu", function(e){
+    $("#tbody").on("contextmenu", 'tr',function(e){
         //右键为3
         if ( e.which == 3) {
-            var offset = $(this).offset();
-            var relativeX = (e.pageX - offset.left);
-            var relativeY = (e.pageY - offset.top);
-            console.log("X: " + relativeX + "  Y: " + relativeY);
-            var i =Math.floor(relativeY/36);
-            console.log(i);
-            $('#rightKey').show().css({left:relativeX+'px',top:relativeY+36+'px'});
-            var tby = $('#tbody').children('tr');
-            $(tby[i]).find('.hui-checkbox').prop('checked',true);
-            $(tby[i]).find('td').addClass('bground boderColor')
-            $(tby[i]).siblings().find('.hui-checkbox').prop('checked',false);
-            $(tby[i]).siblings().find('td').removeClass('bground boderColor')
+            var self = $(this);
+            $('#operate').hide();
+
+            $('#rightKey').show().css({left:e.pageX+'px',top:e.pageY-30+'px'});
+            self.find('.hui-checkbox').prop('checked',true);
+            self.find('td').addClass('bground boderColor')
+            self.siblings().find('.hui-checkbox').prop('checked',false);
+            self.siblings().find('td').removeClass('bground boderColor')
+           
             //重命名
-            $('.rightKeyRename').bind('click',function(){
-                var inputBox = $(tby[i]).find('.hui-popup');
-                var input = $(tby[i]).find('.hui-popup').children('.hui-rename');
-                var txt = $(tby[i]).find('.fileName').text();
+            $('.rightKeyRename').off('click').bind('click',function(){
+                var inputBox = self.find('.hui-popup');
+                var input = self.find('.hui-popup').children('.hui-rename');
+                var txt = self.find('.fileName').text();
                 inputBox.show();
                 input.val(txt);
                 input.focus();
-                $(tby[i]).siblings().find('.hui-popup').hide();
+                self.siblings().find('.hui-popup').hide();
                 $('#rightKey').hide();
             });
             //删除
-            $('.rightKeyDelete').bind('click',function(){
-                if($(tby[i]).closest('tr').find('.hui-checkbox').prop('checked')){
-                    var fileName = $(tby[i]).closest('tr').find('.fileName').text();
+            $('.rightKeyDelete').off('click').bind('click',function(){
+                if(self.find('.hui-checkbox').prop('checked')){
+                    var fileName = self.find('.fileName').text();
                     var index = getInfoByName(currListData,fileName);
                     currListData.splice(index,1);
-                    $(tby[i]).closest('tr').remove();
+                    self.remove();
                 }
                 $('#rightKey').hide();
             });
             //鼠标点击除右键菜单外的其他地方，隐藏菜单
-            $('html').click(function(){
+            $('html').off('click').click(function(){
                 $('#rightKey').hide();
             })
-            $('.hui-resize-table').bind("contextmenu", function(e){
+            $('.hui-resize-table').off('contextmenu').bind("contextmenu", function(e){
                 if(e.which ==3){
                     $('#rightKey').hide();
                 }
             })
-            $("#rightKey").click(function(event){
+            $('#rightKey').off('click').click(function(event){
                 event.stopPropagation();
             });
         }
@@ -138,11 +135,16 @@ $(function(){
     $(document).keyup(function(event){
         var target = event.target;
         if(event.keyCode ==13){
-           $(target).closest('tr').find(".btn-sure").trigger("click");
+            if($('#sample2').is(':visible')){
+                $(target).closest('tr').find(".btn-sure").trigger("click");
+            }else{
+                $(target).closest('li').find(".btn-sure").trigger("click");
+            }
         }
     });
     //全选
-    $("#allChecked").bind('click',function(){
+    $("#allChecked").bind('click',function(e){
+        e.stopPropagation();
         if($("#allChecked").prop("checked")){
              $("input[name='checked']").prop("checked", true);
              $('#tbody').find('td').addClass('bground boderColor');
@@ -161,7 +163,8 @@ $(function(){
         }
     }
     //选择框
-    $('#tbody').on('click','.hui-checkbox',function(){
+    $('#tbody').on('click','.hui-checkbox',function(e){
+        e.stopPropagation();
         allSelect();
         if($(this).prop("checked")){
             $(this).closest('tr').find('td').addClass('bground boderColor');
@@ -181,11 +184,22 @@ $(function(){
     $('#tbody').on('click','.btn-delete',function(){
         $(this).closest('tr').remove();
     });
+    //刷新
+    $('#refreshBtn').bind('click',function(){
+        tablesort.sort(currListData,"fileName",curSort)
+        if($('#sample2').is(':visible')){
+            clearListTable();
+            showListTable(currListData);
+        }else{
+            clearViewTable();
+            showViewTable(currListData);
+        }
+    })
     //排序类型
     $('#rankBtn').bind('click',function(){
        $('.rankBox').toggle();
     });
-    $('.rankIcon,.rankImg').bind('click',function(){
+    $('.rankIcon,.header_name').bind('click',function(){
         if($(this).find('img').attr('src')=='img/down.png'){
              $(this).find('img').attr('src','img/up.png');
              curSort = 1
@@ -204,12 +218,17 @@ $(function(){
             $(this).attr('src','img/tile.png')
             $('#sample2').hide();
             $('#sample1').show();
+            clearListTable();
+            showViewTable(currListData);
+            curMode = 1;
         }else{
             $(this).attr('src','img/list.png')
             $('#sample1').hide();
             $('#sample2').show();
-        }
-        
+            clearViewTable();
+            showListTable(currListData);
+            curMode = 0;
+        }    
     })
     //大图标 选择文件
     $('#vbody').on('mouseenter','.listBox-item',function(){
@@ -251,76 +270,51 @@ $(function(){
     });
 
     //右键菜单
-    $(".listBox").bind("contextmenu", function(e){
+    $("#vbody").on("contextmenu", "li",function(e){
         //右键为3
         if ( e.which == 3) {
-            var offset = $(this).offset();
-            var relativeX = (e.pageX - offset.left);
-            var relativeY = (e.pageY - offset.top);
-            console.log("X: " + relativeX + "  Y: " + relativeY);
-            var i =Math.floor((relativeX-50)/120);
-            var j =Math.floor(relativeY/160);
-            var z = Math.floor(($(window).width() - 110)/120);
-                i = j*z+i;
-            $('#rightKey').show().css({left:relativeX +'px',top:relativeY+ 36 +'px'});
-            var listItem = $('.listBox').children('li');
+            var self = $(this);
+
+            $('#rightKey').show().css({left:e.pageX+'px',top:e.pageY-30+'px'});
 
             //点击右键选中当前文件
-            $(listItem[i]).find('.list-checkbox').prop('checked',true);
-            $(listItem[i]) .find('.listWrap').addClass('active')
-            $(listItem[i]).siblings().find(".list-checkbox").hide();
-            $(listItem[i]).siblings().find('.list-checkbox').prop('checked',false);
-            $(listItem[i]).siblings().find('.listWrap').removeClass('active');
+            self.find('.list-checkbox').prop('checked',true);
+            self.find('.listWrap').addClass('active')
+            self.siblings().find(".list-checkbox").hide();
+            self.siblings().find('.list-checkbox').prop('checked',false);
+            self.siblings().find('.listWrap').removeClass('active');
             $("#imgAllChecked").prop("checked", false);
-            
+                   
             //重命名
-            $('.rightKeyRename').bind('click',function(){
-                var inputBox = $(listItem[i]).find('.popup');
-                var input = $(listItem[i]).find('.popup').children('.rename');
-                var txt = $(listItem[i]).find('.listTitle').text();
+            $('.rightKeyRename').off('click').bind('click',function(){
+                var inputBox = self.find('.popup');
+                var input = self.find('.popup').children('.rename');
+                var txt = self.find('.listTitle').text();
                 inputBox.show();
                 input.val(txt);
                 input.focus();
-                $(listItem[i]).siblings().find('.popup').hide();
+                self.siblings().find('.popup').hide();
                 $('#rightKey').hide();
-            });
-            //取消重命名
-            $('.popup .btn-cancel').bind('click',function(){
-                $(this).closest('.popup').hide();
-                $(this).closest('li').find('.list-checkbox').prop('checked',false);
-                $(this).closest('li').find('.listWrap').removeClass('active');
-            });
-            //确定重命名 ——按钮
-            $('.popup .btn-sure').bind('click',function(){
-                var txt = $(this).prev('.rename').val();
-                $(this).closest('.popup').hide();
-                $(this).closest('li').find('.listTitle').text(txt);
-                $(this).closest('li').find('.list-checkbox').prop('checked',false);
-                $(this).closest('li').find('.listWrap').removeClass('active');
-            })
-            //重命名 —— 回车
-            $(document).keyup(function(event){
-                var target = event.target;
-                if(event.keyCode ==13){
-                    $(target).closest('li').find(".btn-sure").trigger("click");
-                }
             });
 
             //删除
-            $('.rightKeyDelete').bind('click',function(){
-                if($(listItem[i]).closest('li').find('.list-checkbox').prop('checked')){
-                    $(listItem[i]).closest('li').remove();
+            $('.rightKeyDelete').off('click').bind('click',function(){
+                if(self.find('.list-checkbox').prop('checked')){
+                    var fileName = self.find('.listTitle').text();
+                    var index = getInfoByName(currListData,fileName);
+                    currListData.splice(index,1);
+                    self.remove();
                 }
-                    $('#rightKey').hide();
+                $('#rightKey').hide();
             });
             //鼠标点击除右键菜单外的其他地方，隐藏菜单
-            $('html').click(function(){
+            $('html').off('click').click(function(){
                 $('#rightKey').hide();
             })
-            $("#rightKey").click(function(event){
+            $("#rightKey").off('click').click(function(event){
                 event.stopPropagation();
             });
-            $('.hui-resize-table').bind("contextmenu", function(e){
+            $('.hui-resize-table').off('contextmenu').bind("contextmenu", function(e){
                 if(e.which ==3){
                     $('#rightKey').hide();
                 }
@@ -328,6 +322,23 @@ $(function(){
         }
         return false;
     });
+
+    //取消重命名
+    $('#vbody').on('click','.popup .btn-cancel',function(){
+        $(this).closest('li').find('.popup').hide();
+        $(this).closest('li').find('.list-checkbox').prop('checked',false);
+        $(this).closest('li').find('.listWrap').removeClass('active');
+    });
+    //确定重命名 ——按钮
+    $('#vbody').on('click','.popup .btn-sure',function(){
+        var newName = $(this).prev('.rename').val();
+        var oldName = $(this).closest('li').find('.listTitle').text();
+        renameFile(currListData,oldName,newName);
+        $(this).closest('li').find('.popup').hide();
+        $(this).closest('li').find('.listTitle').text(newName);
+        $(this).closest('li').find('.list-checkbox').prop('checked',false);
+        $(this).closest('li').find('.listWrap').removeClass('active');
+    })
     
     //点击返回按钮
     $(".hui-arrows").click(function(){
@@ -337,7 +348,7 @@ $(function(){
             span.remove();
             span = $("#tablebar > span").last();
             id = span.children("a.hui-step").attr("id");
-            openDir(id,false)
+            openDirByMode(id);
         }
     })
 });

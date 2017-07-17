@@ -10,7 +10,6 @@
   <script src="js/channel.js"></script>
   <script src="js/oauth2.js"></script>
   <script type="text/javascript">
-
     var listData = [{
       id:0,
       isDir:true,
@@ -19,7 +18,7 @@
         isDir:true,
         md5:"1234567890",
         fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
-        fileName:"iphone1",
+        fileName:"我的文件",
         ownerName:"lileimt",
         fileSize:"11.1 MB",
         createTime:"11:11",
@@ -96,7 +95,7 @@
             isDir:false,
             md5:"1234567890",
             fileIcon:"filetype/barcode_result_page_type_apk_icon.png",
-            fileName:"iphone5.apk",
+            fileName:"我的iphone5.apk",
             ownerName:"lileimt",
             fileSize:"11.1 MB",
             createTime:"11:11"
@@ -141,6 +140,7 @@
 
   var currListData = {};
   var curSort = 0   //0代表down，降序  1代表up，升序
+  var curMode = 0   //0代表列表模式 1代表视图模式
 
   $(function(){	  
     $(document).ready(function(){
@@ -199,7 +199,7 @@
     <div class="refresh">
       <table id="sample2" class="hui-list-table" width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr class="hui-table-title">
-          <th width="60%">
+          <th class="header_name" width="60%">
             <input type="checkbox" class="hui-checkbox checkbox" id="allChecked" name="allChecked"/>
             名称
             <span class="rankImg">
@@ -218,9 +218,9 @@
         <div class="allChecked">
             <input type="checkbox" class="checkbox" id="imgAllChecked" name="imgAllChecked"/>
             <span>全选</span>
-            <span class="rankImg">
+            <!-- <span class="rankImg">
               <img src="img/down.png" />
-            </span>
+            </span> -->
         </div>
         <ul id="vbody" class="listBox">
             
@@ -245,6 +245,6 @@
       </div>
     </div>
   </div>
-  <script  src="js/index.js"></script>
+  <script src="js/index.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 //追加列表
 function appendListTable(data){
     var html = '';
-    html += '   <tr>';
+    html += '   <tr class="check">';
     html += '      <td>';
     html += '        <input type="checkbox" class="hui-checkbox checkbox" name="checked" />';
     html += '        <div class="hui-content">';
@@ -12,7 +12,7 @@ function appendListTable(data){
     html += '            <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>';
     html += '          </div>';
     html += '          <p class="hui-ellipsis check">';
-    html += '            <span class="fileName" onclick=openDir('+data.id+')>'+data.fileName+'</span>';
+    html += '            <span class="fileName" isDir='+data.isDir+' onclick=openDir('+data.id+',this)>'+data.fileName+'</span>';
     html += '          </p>';
     html += '          <div class="hui-table-operate">';
     html += '            <a href="###">下载</a>';
@@ -33,14 +33,14 @@ function appendListTable(data){
     $("#tbody").append(html);
 }
 //追加视图显示
-function appendViewTable(table){
+function appendViewTable(data){
     var html = '';
-    html += '   <li class="listBox-item">';
+    html += '       <li class="listBox-item" isDir='+data.isDir+' ondblclick=openViewDir('+data.id+',this)>';
     html += '          <div class="listWrap">';
-    html += '              <img src='+table.fileIcon+' class="filetype" />';
+    html += '              <img src='+data.fileIcon+' class="filetype" />';
     html += '              <input type="checkbox" class="list-checkbox" name="selected" />';
     html += '          </div>';
-    html += '          <div class="listTitle">'+table.fileName+'</div>';
+    html += '          <div class="listTitle" >'+data.fileName+'</div>';
     html += '          <div class="popup">';
     html += '            <input type="text" class="rename" />';
     html += '            <button class="hui-btn btn-sure"><img src="img/success.png" /></button>';
@@ -67,10 +67,20 @@ function clearListTable(){
     $("#tbody").html('');
 }
 
+function clearViewTable(){
+    $("#vbody").html('');
+}
+
 //显示列表
 function showListTable(data){
     $.each(data,function(index,value){
         appendListTable(value);
+    })
+}
+//显示视图
+function showViewTable(data){
+    $.each(data,function(index,value){
+        appendViewTable(value);
     })
 }
 //通过id值获取信息
@@ -95,18 +105,59 @@ function getInfoByName(data,fileName){
     }
 }
 //打开文件夹
-function openDir(id,addHeader=true){
-    getInfoById(listData,id,function(obj){
-        if(obj.isDir){
-            clearListTable();
-            if(addHeader){
-                appendTableHeader(obj);
+function openDir(id,obj=true,addHeader=true){
+    var isDir = false;
+    if(typeof obj == 'boolean'){
+        isDir = obj;
+    }else{
+        isDir = $(obj).attr('isDir');
+    }  
+    if(isDir){
+        getInfoById(listData,id,function(data){
+            if(data.isDir){
+                clearListTable();
+                if(addHeader){
+                    appendTableHeader(data);
+                }
+                currListData = data.children;
+                tablesort.sort(currListData,"fileName",curSort)
+                showListTable(data.children);
             }
-            currListData = obj.children;
-            tablesort.sort(currListData,"fileName",curSort)
-            showListTable(obj.children);
-        }
-    });
+        });
+    }
+
+    // oauth2.getFileById(id,{
+    //     success:function(data){
+    //       fileListData = data
+    //       clearListTable();
+    //       showListTable(data.children);  
+    //     },error:function(xhr,type,errorThrown){
+    //       console.log(xhr);
+    //     }
+    // })
+}
+
+function openViewDir(id,obj=true,addHeader=true){
+    var isDir = false;
+    if(typeof obj == 'boolean'){
+        isDir = obj;
+    }else{
+        isDir = $(obj).attr('isDir');
+    } 
+    if(isDir){
+        console.log("openview")
+        getInfoById(listData,id,function(data){
+            if(data.isDir){
+                clearViewTable();
+                if(addHeader){
+                    appendTableHeader(data);
+                }
+                currListData = data.children;
+                tablesort.sort(currListData,"fileName",curSort)
+                showViewTable(data.children);
+            }
+        });
+    }
 
     // oauth2.getFileById(id,{
     //     success:function(data){
@@ -120,10 +171,18 @@ function openDir(id,addHeader=true){
 }
 //点击表头跳转到相应的文件夹
 function gotoFile(obj,id){
-    openDir(id,false)
+    openDirByMode(id);
     var data = $(obj).parent().nextAll(); 
     for(var i=0; i<data.length; i++){
         data[i].remove();
+    }
+}
+
+function openDirByMode(id){
+    if(curMode == 0){
+        openDir(id,true,false)
+    }else{
+        openViewDir(id,true,false)
     }
 }
 
