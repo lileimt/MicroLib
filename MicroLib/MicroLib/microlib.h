@@ -59,6 +59,8 @@ private:
 	bool m_bPressed;
 	bool m_bCovered;
 	OPERTYPE m_eOperType;
+
+	void openUploadFileDialog();
 };
 
 #endif // MICROLIB_H

@@ -6,7 +6,8 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 	ui.setupUi(this);
 	if (!bFirst){
 		ui.lblOperation->setVisible(false);
-		setStyleSheet("QLabel{color:#000000;font: 14pt Î¢ÈíÑÅºÚ;}QToolButton{border:none;}");
+		setStyleSheet("QLabel{color:#000000;font: 14pt Î¢ÈíÑÅºÚ;}"
+							  "QToolButton{border:none;}");
 
 		if (stFileTransport->state){
 			ui.lblPix->setPixmap(QPixmap(":/images/uploadt"));
@@ -35,7 +36,9 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 		ui.lblIcon->setVisible(false);
 		ui.btnStatus->setVisible(false);
 		ui.btnOperate->setVisible(false);
-		setStyleSheet("QLabel{color:#858585;font: 14pt Î¢ÈíÑÅºÚ;}QToolButton{border:none;}");
+		setStyleSheet("QTransportItem{background:white;}"
+							 "QLabel{color:#858585;font: 14pt Î¢ÈíÑÅºÚ;}"
+							 "QToolButton{border:none;}");
 	}
 }
 

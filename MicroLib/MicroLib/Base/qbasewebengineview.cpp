@@ -1,4 +1,4 @@
-#include "qbasewebengineview.h"
+﻿#include "qbasewebengineview.h"
 #include <QDir>
 #include "Common/common.h"
 

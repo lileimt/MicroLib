@@ -7,12 +7,14 @@
   <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/colResizable-1.5.min.js"></script>
   <script src="js/sort.js"></script>
+  <script src="js/table.js"></script>
   <script src="js/channel.js"></script>
   <script src="js/oauth2.js"></script>
   <script type="text/javascript">
     var listData = [{
       id:0,
       isDir:true,
+      fileName:"公共目录",
       children:[{
         id:1,
         isDir:true,
@@ -141,13 +143,14 @@
   var currListData = {};
   var curSort = 0   //0代表down，降序  1代表up，升序
   var curMode = 0   //0代表列表模式 1代表视图模式
+  var curDirName = "公共目录";
 
   $(function(){	  
     $(document).ready(function(){
       //Qt交互
-      //new QWebChannel(qt.webChannelTransport,function(channel){
-      //    window.channel = channel.objects.channel;
-      //});
+      new QWebChannel(qt.webChannelTransport,function(channel){
+          window.bridge = channel.objects.channel;
+      });
       $("#sample2").colResizable({
         liveDrag:true, 
         gripInnerHtml:"<div class='grip'></div>", 
@@ -164,8 +167,7 @@
       currListData = listData[0].children
       tablesort.sort(currListData,"fileName",curSort)
       showListTable(currListData)
-    });	
-     
+    });
   });
   
   </script>
@@ -178,12 +180,8 @@
             <img src="img/left.png" />
           </a>
           <span>
-            <a class="hui-step" href="###" id="0" onclick=gotoFile(this,0)>我的文件</a>
+            <a class="hui-step" href="###" id="0" onclick=gotoFile(this,0)>公共目录</a>
           </span>
-          <!--span> 
-            <span> ＞ </span>
-            <a class="hui-step" href="###">资源库</a>
-          </span-->
         </div>
         <div class="hui-operate">
             <img id="refreshBtn" src="img/refresh.png" >
@@ -218,9 +216,6 @@
         <div class="allChecked">
             <input type="checkbox" class="checkbox" id="imgAllChecked" name="imgAllChecked"/>
             <span>全选</span>
-            <!-- <span class="rankImg">
-              <img src="img/down.png" />
-            </span> -->
         </div>
         <ul id="vbody" class="listBox">
             

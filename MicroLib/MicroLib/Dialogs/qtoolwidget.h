@@ -17,6 +17,8 @@ public:
 	~QToolWidget();
 
 	void showIndex(TOOLINDEX index);
+signals:
+	void sigUploadClicked();
 private:
 	Ui::QToolWidget ui;
 	QSearchWidget *m_searchWidget;

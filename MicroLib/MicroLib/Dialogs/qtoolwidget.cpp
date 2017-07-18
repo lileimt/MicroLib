@@ -68,6 +68,9 @@ QToolWidget::QToolWidget(QWidget *parent)
 	setLayout(m_pLayout);
 
 	showIndex(shareindex);
+
+	connect(m_uploadFile, SIGNAL(clicked()), this, SIGNAL(sigUploadClicked()));
+	connect(m_uploadFile1, SIGNAL(clicked()), this, SIGNAL(sigUploadClicked()));
 }
 
 QToolWidget::~QToolWidget()

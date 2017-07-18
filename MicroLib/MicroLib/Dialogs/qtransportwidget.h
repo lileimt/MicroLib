@@ -20,15 +20,20 @@ public:
 	QTransportWidget(QString strTitle, bool bShowMin = false, QWidget *parent = 0);
 	~QTransportWidget();
 
+	void insertList(FILETRANSPORT &st);
+signals:
+	void sigMinClicked();
 private:
 	Ui::QTransportWidget ui;
 	QBaseTitleWidget *m_titleWidget;
 	QVBoxLayout *m_pLayout;
 	TRANSLIST m_transList;
-	QListWidget *m_listWidget;
+	QListWidget *m_listWidget; 
+	QTransportItem *m_pHeader;
 
 	void addItem(QTransportItem *pItem);
 	void showList();
+	void clearList();
 };
 
 #endif // QTRANSPORTWIDGET_H

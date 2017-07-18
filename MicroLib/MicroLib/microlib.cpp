@@ -1,4 +1,7 @@
 #include "microlib.h"
+#include <QFileDialog>
+#include <QFileInfo>
+#include "Common/commonhelper.h"
 
 MicroLib::MicroLib(QWidget *parent)
 	: QMainWindow(parent),
@@ -60,24 +63,36 @@ MicroLib::MicroLib(QWidget *parent)
 		}
 	});
 	m_toolWidget = new QToolWidget(widget);
+	connect(m_toolWidget, &QToolWidget::sigUploadClicked, [=](){
+		openUploadFileDialog();
+	});
 
 	m_pHLayout = new QHBoxLayout(widget);
 	m_webEngine = new QBaseWebEngineView(widget);
 
-	//m_subTransWidget = new QSubTransWidget(widget);
-	//QRect rect = m_webEngine->geometry();
-	//m_subTransWidget->setGeometry(rect.right() - 202, rect.bottom() - 36, 202, 36);
 	m_sideWidget = new QSideWidget(widget);
 	m_sideWidget->hide();
 	m_pHLayout->addWidget(m_webEngine);
 	m_pHLayout->addWidget(m_sideWidget);
 
-	//m_transWidget = new QTransportWidget(QStringLiteral("1项未完成传输"),true,widget);
+	m_subTransWidget = new QSubTransWidget(widget);
+	connect(m_subTransWidget, &QSubTransWidget::clicked, [=](){
+		m_subTransWidget->hide();
+		m_transWidget->show();
+	});
+	m_subTransWidget->hide();
+	m_transWidget = new QTransportWidget(QStringLiteral("传输列表"),true,widget);
+	connect(m_transWidget, &QTransportWidget::sigMinClicked, [=](){
+		m_transWidget->hide();
+		QRect rect = m_webEngine->geometry();
+		m_subTransWidget->setGeometry(rect.right() - 202, rect.bottom() - 36, 202, 36);
+		m_subTransWidget->show();
+	});
 	//m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
+	m_transWidget->hide();
 
 	m_pLayout->addWidget(m_titleWidget);
 	m_pLayout->addWidget(m_toolWidget);
-	//m_pLayout->addWidget(m_webEngine);
 	m_pLayout->addLayout(m_pHLayout);
 	m_pHLayout->setContentsMargins(0, 0, 0, 0);
 	m_pHLayout->setMargin(0);
@@ -198,5 +213,31 @@ void MicroLib::mouseMoveEvent(QMouseEvent *event)
 	if (m_bPressed){
 		QPoint pt = event->globalPos();
 		move(pt - m_point);
+	}
+}
+
+void MicroLib::openUploadFileDialog()
+{
+	QFileDialog dialog(this);
+	dialog.setWindowTitle(QStringLiteral("请选择上传的文件"));
+	dialog.setFileMode(QFileDialog::ExistingFiles);
+	dialog.setViewMode(QFileDialog::Detail);
+	dialog.setLabelText(QFileDialog::Accept, QStringLiteral("上传"));
+	if (dialog.exec() == QDialog::Accepted){
+		QStringList fileNames = dialog.selectedFiles();
+		for (int i = 0; i < fileNames.length(); i++){
+			QFileInfo fileInfo(fileNames[i]);
+			FILETRANSPORT st;
+			st.fileName = fileInfo.fileName();
+			st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
+			st.filePath = fileInfo.filePath();
+			st.fileSize = QString::number(fileInfo.size());
+			st.state = 1;//上传
+			st.status = 0;//正常
+			m_transWidget->insertList(st);
+		}
+		QRect rect = m_webEngine->geometry();
+		m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
+		m_transWidget->show();
 	}
 }
