@@ -28,4 +28,7 @@ var oauth2 = {};
     obj.getFileById = function(/*access_token,*/ id,callback){
         obj.requestApi('/microlib/v1/files/'+id,'get',{},callback);
     }
+    obj.getShareById = function(/*access_token,*/ id,callback){
+        obj.requestApi('/microlib/v1/share/'+id,'get',{},callback);
+    }
 })(jQuery,oauth2);

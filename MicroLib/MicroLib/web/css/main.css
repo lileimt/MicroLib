@@ -11,7 +11,7 @@ ul,li{
 body,html{
 	height: 100%;
 	-webkit-user-select: none; 
-	overflow:hidden;
+	overflow-x:hidden;
 }
 .hui-resize-table {
 	width: 100%;

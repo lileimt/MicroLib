@@ -6,10 +6,13 @@
   <script src="js/qwebchannel.js"></script>
   <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/colResizable-1.5.min.js"></script>
+  <script src="js/oauth2.js"></script>
   <script src="js/sort.js"></script>
+  <script src="js/util.js"></script>
   <script src="js/table.js"></script>
   <script src="js/channel.js"></script>
-  <script src="js/oauth2.js"></script>
+  <script src="js/data.js"></script>
+
   <script type="text/javascript">
     var listData = [{
       id:0,
@@ -141,32 +144,44 @@
       }]
 
   var currListData = {};
+  var curType = 0   //0代表公共目录，1代表我的文件
   var curSort = 0   //0代表down，降序  1代表up，升序
   var curMode = 0   //0代表列表模式 1代表视图模式
   var curDirName = "公共目录";
 
+  var shareFile = new ListType(0,"公共目录")
+  var myFile = new ListType(1,"我的文件")
+
   $(function(){	  
     $(document).ready(function(){
-      //Qt交互
-      new QWebChannel(qt.webChannelTransport,function(channel){
-          window.bridge = channel.objects.channel;
-      });
       $("#sample2").colResizable({
         liveDrag:true, 
         gripInnerHtml:"<div class='grip'></div>", 
         draggingClass:"dragging"
       });
-      //获取接口数据
-      // oauth2.getFileById(0,{
-      //   success:function(data){
-      //     fileListData = data
-      //   },error:function(xhr,type,errorThrown){
-      //     console.log(xhr);
-      //   }
-      // })
-      currListData = listData[0].children
-      tablesort.sort(currListData,"fileName",curSort)
-      showListTable(currListData)
+     
+      //Qt交互
+      new QWebChannel(qt.webChannelTransport,function(obj){
+        window.bridge = obj.objects.channel;
+
+        //获取接口数据
+        // oauth2.getFileById(0,{
+        //   success:function(data){
+        //     fileListData = data
+        //   },error:function(xhr,type,errorThrown){
+        //     console.log(xhr);
+        //   }
+        // })
+
+        util.setTableSort(listData[0].children)
+        $(".hui-step").text(listData[0].fileName);
+        channel.setCurDir(listData[0].fileName);
+        showListTable(currListData)
+
+        channel.getDataByType();
+        channel.setNewDir();
+      });
+      
     });
   });
   
@@ -180,7 +195,7 @@
             <img src="img/left.png" />
           </a>
           <span>
-            <a class="hui-step" href="###" id="0" onclick=gotoFile(this,0)>公共目录</a>
+            <a class="hui-step" href="###" id="0" onclick=gotoFile(this,0)></a>
           </span>
         </div>
         <div class="hui-operate">

@@ -1,5 +1,5 @@
 //追加列表
-function appendListTable(data){
+function htmlListTable(data){
     var html = '';
     html += '   <tr class="check">';
     html += '      <td>';
@@ -30,6 +30,11 @@ function appendListTable(data){
     html += '      <td class="check">'+data.createTime+'</td>';
     html += '    </tr>';
 
+    return html;
+}
+
+function appendListTable(data){
+    var html = htmlListTable(data);
     $("#tbody").append(html);
 }
 //追加视图显示
@@ -89,6 +94,8 @@ function getInfoById(data,id,callback){
         var value = data[i];
         if(value.isDir){
             if(value.id == id){
+                //设置当前的目录
+                channel.setCurDir(value.fileName)
                 callback(value);
                 return false;
             }
@@ -119,8 +126,7 @@ function openDir(id,obj=true,addHeader=true){
                 if(addHeader){
                     appendTableHeader(data);
                 }
-                currListData = data.children;
-                tablesort.sort(currListData,"fileName",curSort)
+                util.setTableSort(data.children)
                 showListTable(data.children);
             }
         });
@@ -145,15 +151,13 @@ function openViewDir(id,obj=true,addHeader=true){
         isDir = $(obj).attr('isDir');
     } 
     if(isDir){
-        console.log("openview")
         getInfoById(listData,id,function(data){
             if(data.isDir){
                 clearViewTable();
                 if(addHeader){
                     appendTableHeader(data);
                 }
-                currListData = data.children;
-                tablesort.sort(currListData,"fileName",curSort)
+                util.setTableSort(data.children)
                 showViewTable(data.children);
             }
         });
@@ -169,6 +173,7 @@ function openViewDir(id,obj=true,addHeader=true){
     //     }
     // })
 }
+
 //点击表头跳转到相应的文件夹
 function gotoFile(obj,id){
     openDirByMode(id);
@@ -192,4 +197,24 @@ function renameFile(data,oldName,newName){
             value.fileName = newName
         }
     })
+}
+
+function newDir(){
+    if(curMode == 0){  //列表模式
+        var data = {
+            id:100,
+            isDir:true,
+            md5:"1234567890",
+            fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
+            fileName:"新建文件夹",
+            ownerName:"lileimt",
+            fileSize:"11.1 MB",
+            createTime:"11:11"
+        }
+        var html = htmlListTable(data)
+        $("#tbody").prepend(html);
+        currListData.children.splice(0,0,data)
+    }else{
+
+    }
 }
