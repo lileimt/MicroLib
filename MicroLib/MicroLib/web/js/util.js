@@ -1,9 +1,12 @@
 var util = {
     setTableSort:function(curList){
-        currListData = curList
-        tablesort.sort(currListData,"fileName",curSort)
+        curListData = curList;
+        tablesort.sort(curListData,"fileName",curSort);
     },
-    checkFileName:function(curList,fileName){
-
+    showTable:function(obj) {
+        this.setTableSort(obj.curListData.children);
+        $(".hui-step").text(obj.curDir.fileName);
+        channel.setCurDir(obj.curDir.fileName);
+        showListTable(obj.curListData.children);
     }
 }

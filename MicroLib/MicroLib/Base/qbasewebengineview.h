@@ -15,9 +15,12 @@ public:
 	QBaseWebEngineView(QWidget *parent);
 	~QBaseWebEngineView();
 
+	QChannel *getChannel();
+
 private:
 	QWebEnginePage *m_page;
-	QWebChannel *m_channel;
+	QWebChannel *m_webChannel;
+	QChannel *m_channel;
 };
 
 #endif // QBASEWEBENGINEVIEW_H

@@ -61,6 +61,8 @@ private:
 	OPERTYPE m_eOperType;
 
 	void openUploadFileDialog();
+	void sigConnect();
+	QChannel *getChannel();
 };
 
 #endif // MICROLIB_H

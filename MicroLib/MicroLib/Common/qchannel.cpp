@@ -1,7 +1,6 @@
 #include "qchannel.h"
 #include <QMessageBox>
 
-QChannel *QChannel::m_pInstance = NULL;
 
 QChannel::QChannel(QObject *parent)
 	: QObject(parent)
@@ -11,25 +10,29 @@ QChannel::QChannel(QObject *parent)
 
 QChannel::~QChannel()
 {
-	if (m_pInstance){
-		delete m_pInstance;
-	}
+
 }
 
-QChannel *QChannel::getInstance()
+QString QChannel::getCurDir()
 {
-	if (m_pInstance == NULL){
-		m_pInstance = new QChannel;
-	}
-	return m_pInstance;
+	return m_curDir;
 }
 
-//void QChannel::demoTest()
-//{
-//	QMessageBox::information(NULL, "Title", "Content", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-//}
-//
-//void QChannel::test()
-//{
-//	emit sigTest();
-//}
+void QChannel::slotCurDir(QString curDir)
+{
+	m_curDir = curDir;
+}
+
+void QChannel::setNewDir()
+{
+	emit sigNewDir();
+}
+void QChannel::setToken(QString token)
+{
+	emit sigToken(token);
+}
+//公共目录还是我的文件
+void QChannel::setCurType(int type)
+{
+	emit sigCurType(type);
+}

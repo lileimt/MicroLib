@@ -19,6 +19,9 @@ public:
 	void showIndex(TOOLINDEX index);
 signals:
 	void sigUploadClicked();
+	void sigNewShareClicked();
+	void sigNewDirClicked();
+	void sigEditShareClicked();
 private:
 	Ui::QToolWidget ui;
 	QSearchWidget *m_searchWidget;

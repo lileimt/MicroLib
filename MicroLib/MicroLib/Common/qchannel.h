@@ -8,20 +8,23 @@ class QChannel : public QObject
 	Q_OBJECT
 
 public:
-	static QChannel *getInstance();
-
-signals:
-	//void sigTest();
-
-public slots:
-	//void demoTest();
-	//void test();
-
-private:
 	QChannel(QObject *parent = 0);
 	~QChannel();
 
-	static QChannel *m_pInstance;
+	QString getCurDir();
+	void setNewDir();
+	void setToken(QString token);
+	void setCurType(int type);
+signals:
+	void sigToken(QString token);
+	void sigCurType(int type);  //设置当前是公共目录还是我的文件
+	void sigNewDir();   //js端新建文件夹(绑定js事件)
+
+public slots :
+	void slotCurDir(QString curDir);   //C++端更新当前路径(js调用)
+
+private:
+	QString m_curDir;
 };
 
 #endif // QCHANNEL_H

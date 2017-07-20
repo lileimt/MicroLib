@@ -2,6 +2,7 @@ function ListType(type,curDir){
     this.curListData = {};   //当前列表的数据
     this.curType = type;     //当前列表的类型 0代表公共目录，1代表我的文件
     this.curDir = curDir;    //当前显示的文件夹的名称
+    this.titleArr = [].push(curDir);
 }
 
 ListType.prototype.getCurData = function(id,callback){
@@ -15,8 +16,8 @@ ListType.prototype.getCurData = function(id,callback){
         //         console.log(xhr);
         //     }
         // })
-         curListData = listData
-         tablesort.sort(curListData,"fileName",curSort)
+         curListData = listData;
+         tablesort.sort(curListData,"fileName",curSort);
     }else{
         // oauth2.getFileById(id,{
         //     success:function(data){
@@ -27,6 +28,8 @@ ListType.prototype.getCurData = function(id,callback){
         //         console.log(xhr);
         //     }
         // })
+        curListData = listData;
+        tablesort.sort(curListData,"fileName",curSort);
     }
 }
 
@@ -34,9 +37,19 @@ ListType.prototype.setCurDir = function(curDir){
     this.curDir = curDir;
 }
 
+ListType.prototype.appendTitleArr = function(fileName){
+    titleArr.push(fileName);
+}
+
+ListType.prototype.removeTitleArr = function(count){
+    var length = titleArr.length;
+    titleArr.splice(titleArr.length-count-1,count);
+}
+
 ListType.prototype.checkFile = function(fileName){
-    for(var i=0; i<curListData.length; i++){
-        var data = curListData[i]
+    var children = curListData.children;
+    for(var i=0; i<children.length; i++){
+        var data = children[i];
         if(data.fileName == fileName){
             return true;
         }
@@ -45,14 +58,15 @@ ListType.prototype.checkFile = function(fileName){
 }
 
 ListType.prototype.getIndexOfRename = function(fileName){
-    var tempList = curListData
+    var tempList = curListData;
     if(curSort == 0){//降序
-        tablesort.sort(tempList,"fileName",1)
+        tablesort.sort(tempList,"fileName",1);
     }
     var count = 0;
     //var re = new RegExp("^"+fileName+"(\\(\\d+\\))?$","g")
-    for(var i=0; i<curListData.length; i++){
-        var data = curListData[i]
+    var children = tempList.children;;
+    for(var i=0; i<children.length; i++){
+        var data = children[i];
         if(data.fileName.indexof(fileName) > 0){
             count++;
             continue;
@@ -64,8 +78,8 @@ ListType.prototype.getIndexOfRename = function(fileName){
 }
 
 ListType.prototype.getNewFileName = function(fileName,isDir){
-    var index = getIndexOfRename(fileName)
-    var newName = ''
+    var index = getIndexOfRename(fileName);
+    var newName = '';
     if(!isDir){
         var fileExtension = fileName.split('.').pop();
         var realName = fileName.split('.').pop();

@@ -32,40 +32,7 @@ MicroLib::MicroLib(QWidget *parent)
 
 	m_pLayout = new QVBoxLayout(widget);
 	m_titleWidget = new QTitleWidget(widget);
-	connect(m_titleWidget, &QTitleWidget::sigMinClicked, [=](){
-		showMinimized();
-	});
-	connect(m_titleWidget, &QTitleWidget::sigCloseClicked, [=](){
-		qApp->quit();
-	});
-
-	connect(m_titleWidget, &QTitleWidget::sigDangClicked, [=](){
-		if (m_msgWidget == NULL){
-			m_msgWidget = new QMsgWidget(this);
-			m_msgWidget->setGeometry(WIDTH - m_msgWidget->width(), m_titleWidget->height(), m_msgWidget->width(), m_msgWidget->height());
-		}
-		if (m_msgWidget->isVisible()){
-			m_msgWidget->hide();
-		}else{
-			m_msgWidget->show();
-		}
-	});
-	connect(m_titleWidget, &QTitleWidget::sigShareClicked, [=](OPERTYPE type){
-		if (type != m_eOperType){
-			m_eOperType = type;
-			m_toolWidget->showIndex(shareindex);
-		}
-	});
-	connect(m_titleWidget, &QTitleWidget::sigMyFilesClicked, [=](OPERTYPE type){
-		if (type != m_eOperType){
-			m_eOperType = type;
-			m_toolWidget->showIndex(myfilesindex);
-		}
-	});
 	m_toolWidget = new QToolWidget(widget);
-	connect(m_toolWidget, &QToolWidget::sigUploadClicked, [=](){
-		openUploadFileDialog();
-	});
 
 	m_pHLayout = new QHBoxLayout(widget);
 	m_webEngine = new QBaseWebEngineView(widget);
@@ -76,18 +43,8 @@ MicroLib::MicroLib(QWidget *parent)
 	m_pHLayout->addWidget(m_sideWidget);
 
 	m_subTransWidget = new QSubTransWidget(widget);
-	connect(m_subTransWidget, &QSubTransWidget::clicked, [=](){
-		m_subTransWidget->hide();
-		m_transWidget->show();
-	});
 	m_subTransWidget->hide();
 	m_transWidget = new QTransportWidget(QStringLiteral("传输列表"),true,widget);
-	connect(m_transWidget, &QTransportWidget::sigMinClicked, [=](){
-		m_transWidget->hide();
-		QRect rect = m_webEngine->geometry();
-		m_subTransWidget->setGeometry(rect.right() - 202, rect.bottom() - 36, 202, 36);
-		m_subTransWidget->show();
-	});
 	//m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
 	m_transWidget->hide();
 
@@ -102,10 +59,78 @@ MicroLib::MicroLib(QWidget *parent)
 	m_pLayout->setSpacing(0);
 	widget->setLayout(m_pLayout);
 
+	//connect处理
+	sigConnect();
 	//showForwardWidget();
 	//showStaticsWidget();
 	//showNewDirsWidget();
 	//showNewDirsNextWidget();
+}
+
+QChannel *MicroLib::getChannel()
+{
+	return m_webEngine->getChannel();
+}
+
+void MicroLib::sigConnect()
+{
+	//标题栏
+	connect(m_titleWidget, &QTitleWidget::sigMinClicked, [=](){
+		showMinimized();
+	});
+	connect(m_titleWidget, &QTitleWidget::sigCloseClicked, [=](){
+		qApp->quit();
+	});
+	connect(m_titleWidget, &QTitleWidget::sigShareClicked, [=](OPERTYPE type){
+		if (type != m_eOperType){
+			m_eOperType = type;
+			getChannel()->setCurType(type);
+			m_toolWidget->showIndex(shareindex);
+		}
+	});
+	connect(m_titleWidget, &QTitleWidget::sigMyFilesClicked, [=](OPERTYPE type){
+		if (type != m_eOperType){
+			m_eOperType = type;
+			getChannel()->setCurType(type);
+			m_toolWidget->showIndex(myfilesindex);
+		}
+	});
+	connect(m_titleWidget, &QTitleWidget::sigDangClicked, [=](){
+		if (m_msgWidget == NULL){
+			m_msgWidget = new QMsgWidget(this);
+			m_msgWidget->setGeometry(WIDTH - m_msgWidget->width(), m_titleWidget->height(), m_msgWidget->width(), m_msgWidget->height());
+		}
+		if (m_msgWidget->isVisible()){
+			m_msgWidget->hide();
+		}else{
+			m_msgWidget->show();
+		}
+	});
+	//工具栏
+	connect(m_toolWidget, &QToolWidget::sigUploadClicked, [=](){
+		openUploadFileDialog();
+	});
+	connect(m_toolWidget, &QToolWidget::sigNewShareClicked, [=](){
+		showNewDirsWidget();
+	});
+	connect(m_toolWidget, &QToolWidget::sigNewDirClicked, [=](){
+		getChannel()->setNewDir();
+	});
+	connect(m_toolWidget, &QToolWidget::sigEditShareClicked, [=](){
+		
+	});
+	//下载子窗口
+	connect(m_subTransWidget, &QSubTransWidget::clicked, [=](){
+		m_subTransWidget->hide();
+		m_transWidget->show();
+	});
+	//下载窗口
+	connect(m_transWidget, &QTransportWidget::sigMinClicked, [=](){
+		m_transWidget->hide();
+		QRect rect = m_webEngine->geometry();
+		m_subTransWidget->setGeometry(rect.right() - 202, rect.bottom() - 36, 202, 36);
+		m_subTransWidget->show();
+	});
 }
 
 MicroLib::~MicroLib()
@@ -159,6 +184,7 @@ void MicroLib::showNewDirsWidget()
 	m_baseTransWidget->show();
 
 	connect(m_newDirsWidget, &QNewDirsWidget::sigCloseClicked, [=](){
+		m_newDirsWidget->close();
 		m_baseTransWidget->close();
 		m_bCovered = false;
 	});
@@ -177,6 +203,7 @@ void MicroLib::showNewDirsNextWidget()
 	m_newDirsNextWidget->show();
 
 	connect(m_newDirsNextWidget, &QNewDirsNextWidget::sigCloseClicked, [=](){
+		m_newDirsNextWidget->close();
 		m_baseTransWidget->close();
 		m_bCovered = false;
 	});

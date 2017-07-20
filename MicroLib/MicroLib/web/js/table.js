@@ -67,6 +67,11 @@ function appendTableHeader(obj){
     $('#tablebar').append(html);
 } 
 
+function clearTableHeader()
+{
+    $('#tablebar').html('');
+}
+
 //清空表格内容
 function clearListTable(){
     $("#tbody").html('');
@@ -78,36 +83,41 @@ function clearViewTable(){
 
 //显示列表
 function showListTable(data){
+    clearListTable();
     $.each(data,function(index,value){
         appendListTable(value);
     })
 }
 //显示视图
 function showViewTable(data){
+    clearViewTable();
     $.each(data,function(index,value){
         appendViewTable(value);
     })
 }
 //通过id值获取信息
 function getInfoById(data,id,callback){
-    for(var i=0; i<data.length; i++){
-        var value = data[i];
-        if(value.isDir){
-            if(value.id == id){
-                //设置当前的目录
-                channel.setCurDir(value.fileName)
-                callback(value);
-                return false;
+    if(id == data.id){
+        //设置当前的目录
+        channel.setCurDir(data.fileName)
+        callback(data);
+        return false;
+    }else{
+        if(data.isDir){
+            var children = data.children;
+            for(var i=0; i<children.length; i++){
+                var value = children[i];
+                getInfoById(value,id,callback);
             }
-            getInfoById(value.children,id,callback);
         }
     }
 }
+
 function getInfoByName(data,fileName){
     for(var i=0; i<data.length; i++){
-        var value = data[i]
+        var value = data[i];
         if(value.fileName == fileName){
-            return i
+            return i;
         }
     }
 }
@@ -122,7 +132,7 @@ function openDir(id,obj=true,addHeader=true){
     if(isDir){
         getInfoById(listData,id,function(data){
             if(data.isDir){
-                clearListTable();
+                //clearListTable();
                 if(addHeader){
                     appendTableHeader(data);
                 }
@@ -153,7 +163,7 @@ function openViewDir(id,obj=true,addHeader=true){
     if(isDir){
         getInfoById(listData,id,function(data){
             if(data.isDir){
-                clearViewTable();
+                //clearViewTable();
                 if(addHeader){
                     appendTableHeader(data);
                 }
@@ -194,7 +204,7 @@ function openDirByMode(id){
 function renameFile(data,oldName,newName){
     $.each(data,function(index,value){
         if(value.fileName == oldName){
-            value.fileName = newName
+            value.fileName = newName;
         }
     })
 }

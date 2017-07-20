@@ -19,13 +19,20 @@ QBaseWebEngineView::QBaseWebEngineView(QWidget *parent)
 	m_page->settings()->setDefaultTextEncoding("utf-8");
 	setPage(m_page);
 	setUrl(QUrl::fromLocalFile(path));
-	m_channel = new QWebChannel(parent);
-	m_channel->registerObject(QString("channel"), QChannel::getInstance());
-	m_page->setWebChannel(m_channel);
+	m_webChannel = new QWebChannel(parent);
+	m_channel = new QChannel();
+	m_webChannel->registerObject(QString("channel"), m_channel);
+	m_page->setWebChannel(m_webChannel);
 }
 
 QBaseWebEngineView::~QBaseWebEngineView()
 {
 	RELEASE(m_channel);
+	RELEASE(m_webChannel);
 	RELEASE(m_page);
+}
+
+QChannel *QBaseWebEngineView::getChannel()
+{
+	return m_channel;
 }
