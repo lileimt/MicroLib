@@ -50,9 +50,11 @@ $(function(){
             //删除
             $('.rightKeyDelete').off('click').bind('click',function(){
                 if(self.find('.hui-checkbox').prop('checked')){
-                    var fileName = self.find('.fileName').text();
-                    var index = getInfoByName(currListData,fileName);
-                    curListData.splice(index,1);
+                    var id = self.find('.fileName').attr('value');
+                    //var fileName = self.find('.fileName').text();
+                    //var index = getIndexByName(util.getCurPage(),fileName);
+                    //util.getCurPage().splice(index,1);
+                    deleteFile(id);
                     self.remove();
                 }
                 $('#rightKey').hide();
@@ -126,7 +128,7 @@ $(function(){
     $('#tbody').on('click','.btn-sure',function(){
         var newName = $(this).prev('.hui-rename').val();
         var oldName = $(this).closest('td').find('.fileName').text();
-        renameFile(curListData,oldName,newName);
+        renameFile(util.getCurPage(),oldName,newName);
         $(this).closest('.hui-popup').hide();
         $(this).closest('td').find('.fileName').text(newName);
         $(this).closest('tr').find('.hui-checkbox').prop('checked',false);
@@ -134,7 +136,7 @@ $(function(){
     //重命名 —— 回车
     $(document).keyup(function(event){
         var target = event.target;
-        if(event.keyCode ==13){
+        if(event.keyCode==13){
             if($('#sample2').is(':visible')){
                 $(target).closest('tr').find(".btn-sure").trigger("click");
             }else{
@@ -186,13 +188,13 @@ $(function(){
     });
     //刷新
     $('#refreshBtn').bind('click',function(){
-        tablesort.sort(curListData,"fileName",curSort)
+        tablesort.sort(util.getCurPage(),"fileName",curSort)
         if($('#sample2').is(':visible')){
             clearListTable();
-            showListTable(curListData);
+            showListTable(util.getCurPage());
         }else{
             clearViewTable();
-            showViewTable(curListData);
+            showViewTable(util.getCurPage());
         }
     })
     //排序类型
@@ -203,14 +205,14 @@ $(function(){
         if($(this).find('img').attr('src')=='img/down.png'){
              $(this).find('img').attr('src','img/up.png');
              curSort = 1
-             tablesort.sort(curListData,"fileName",curSort)
+             tablesort.sort(util.getCurPage(),"fileName",curSort)
         }else{
             $(this).find('img').attr('src','img/down.png');
             curSort = 0
-            tablesort.sort(curListData,"fileName",curSort)
+            tablesort.sort(util.getCurPage(),"fileName",curSort)
         }
         clearListTable();
-        showListTable(curListData);
+        showListTable(util.getCurPage());
     });
     //切换排列
     $('#cutBtn').bind('click',function(){
@@ -219,16 +221,16 @@ $(function(){
             $('#sample2').hide();
             $('#sample1').show();
             clearListTable();
-            showViewTable(curListData);
+            showViewTable(util.getCurPage());
             curMode = 1;
         }else{
             $(this).attr('src','img/list.png')
             $('#sample1').hide();
             $('#sample2').show();
             clearViewTable();
-            showListTable(curListData);
+            showListTable(util.getCurPage());
             curMode = 0;
-        }    
+        }
     })
     //大图标 选择文件
     $('#vbody').on('mouseenter','.listBox-item',function(){
@@ -301,8 +303,8 @@ $(function(){
             $('.rightKeyDelete').off('click').bind('click',function(){
                 if(self.find('.list-checkbox').prop('checked')){
                     var fileName = self.find('.listTitle').text();
-                    var index = getInfoByName(curListData,fileName);
-                    curListData.splice(index,1);
+                    var index = getIndexByName(util.getCurPage(),fileName);
+                    util.getCurPage().splice(index,1);
                     self.remove();
                 }
                 $('#rightKey').hide();
@@ -333,7 +335,7 @@ $(function(){
     $('#vbody').on('click','.popup .btn-sure',function(){
         var newName = $(this).prev('.rename').val();
         var oldName = $(this).closest('li').find('.listTitle').text();
-        renameFile(curListData,oldName,newName);
+        renameFile(util.getCurPage(),oldName,newName);
         $(this).closest('li').find('.popup').hide();
         $(this).closest('li').find('.listTitle').text(newName);
         $(this).closest('li').find('.list-checkbox').prop('checked',false);
@@ -346,6 +348,7 @@ $(function(){
         var id = span.children("a.hui-step").attr("id");
         if(id != 0){
             span.remove();
+            util.getCurType().removeTitleArr(1);
             span = $("#tablebar > span").last();
             id = span.children("a.hui-step").attr("id");
             openDirByMode(id);

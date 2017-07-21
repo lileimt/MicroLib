@@ -1,12 +1,42 @@
 var util = {
     setTableSort:function(curList){
-        curListData = curList;
-        tablesort.sort(curListData,"fileName",curSort);
+        tablesort.sort(curList,"fileName",curSort);
     },
-    showTable:function(obj) {
-        this.setTableSort(obj.curListData.children);
-        $(".hui-step").text(obj.curDir.fileName);
+    showTable:function() {
+        var obj = this.getCurType();
+        this.setTableSort(obj.curPage);
+        this.showHeader();
         channel.setCurDir(obj.curDir.fileName);
-        showListTable(obj.curListData.children);
+        if(curMode == 0){
+            showListTable(obj.curPage);
+        }else{
+            showViewTable(obj.curPage);
+        }
+    },
+    showHeader:function(){
+        clearTableHeader();
+        showFirstHeader(this.getCurType().curDir.fileName)
+        showTableHeader(this.getCurType().titleArr);
+    },
+    getCurType:function(){
+        if(curType == 0){
+            return shareFile;
+        }else{
+            return myFile;
+        }
+    },
+    getCurPage:function(){
+        if(curType == 0){
+            return shareFile.curPage;
+        }else{
+            return myFile.curPage;
+        }
+    },
+    getTotalDir:function(){
+        if(curType == 0){
+            return shareFile.totalDir;
+        }else{
+            return myFile.totalDir;
+        }
     }
 }

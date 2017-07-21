@@ -12,12 +12,7 @@ var channel = {};
     obj.getDataByType = function(){
         bridge.sigCurType.connect(function(type){
             curType = type;
-            console.log(curType)
-            if(curType == 0){
-                util.showTable(shareFile);
-            }else{
-                util.showTable(myFile);
-            }
+            util.showTable();
         });
     }
 })(jQuery,channel);

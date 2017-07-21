@@ -1,8 +1,10 @@
 function ListType(type,curDir){
-    this.curListData = {};   //当前列表的数据
+    this.totalDir = {};   //当前列表的数据
+    this.curPage = {};
     this.curType = type;     //当前列表的类型 0代表公共目录，1代表我的文件
     this.curDir = curDir;    //当前显示的文件夹的名称
-    this.titleArr = [].push(curDir);
+    this.titleArr = new Array;
+    //this.titleArr.push(curDir);
 }
 
 ListType.prototype.getCurData = function(id,callback){
@@ -16,8 +18,8 @@ ListType.prototype.getCurData = function(id,callback){
         //         console.log(xhr);
         //     }
         // })
-         curListData = listData;
-         tablesort.sort(curListData,"fileName",curSort);
+         //curListData = listData;
+         tablesort.sort(curPage,"fileName",curSort);
     }else{
         // oauth2.getFileById(id,{
         //     success:function(data){
@@ -28,8 +30,8 @@ ListType.prototype.getCurData = function(id,callback){
         //         console.log(xhr);
         //     }
         // })
-        curListData = listData;
-        tablesort.sort(curListData,"fileName",curSort);
+        //curListData = listData;
+        tablesort.sort(curPage,"fileName",curSort);
     }
 }
 
@@ -37,17 +39,21 @@ ListType.prototype.setCurDir = function(curDir){
     this.curDir = curDir;
 }
 
-ListType.prototype.appendTitleArr = function(fileName){
-    titleArr.push(fileName);
+ListType.prototype.setCurPage = function(curPage){
+    this.curPage = curPage;
 }
 
+ListType.prototype.appendTitleArr = function(fileName){
+    this.titleArr.push(fileName);
+}
+//删除路径导航栏
 ListType.prototype.removeTitleArr = function(count){
-    var length = titleArr.length;
-    titleArr.splice(titleArr.length-count-1,count);
+    var length = this.titleArr.length;
+    this.titleArr.splice(length-count-1,count);
 }
 
 ListType.prototype.checkFile = function(fileName){
-    var children = curListData.children;
+    var children = curPage.children;
     for(var i=0; i<children.length; i++){
         var data = children[i];
         if(data.fileName == fileName){
@@ -58,7 +64,7 @@ ListType.prototype.checkFile = function(fileName){
 }
 
 ListType.prototype.getIndexOfRename = function(fileName){
-    var tempList = curListData;
+    var tempList = curPage;
     if(curSort == 0){//降序
         tablesort.sort(tempList,"fileName",1);
     }

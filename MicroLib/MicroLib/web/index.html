@@ -271,16 +271,18 @@
         }]
       }
 
-  var curListData = {};
+  //var curListData = {};
   var curType = 0   //0代表公共目录，1代表我的文件
   var curSort = 0   //0代表down，降序  1代表up，升序
   var curMode = 0   //0代表列表模式 1代表视图模式
   var curDirName = "公共目录";
 
   var shareFile = new ListType(0,{id:0,fileName:"公共目录"})
-  shareFile.curListData = listData
+  shareFile.totalDir = listData
+  shareFile.curPage = listData.children
   var myFile = new ListType(1,{id:0,fileName:"我的文件"})
-  myFile.curListData = listData1
+  myFile.totalDir = listData1
+  myFile.curPage = listData1.children
 
   $(function(){	  
     $(document).ready(function(){
@@ -303,11 +305,7 @@
         //   }
         // })
 
-        //util.setTableSort(listData.children)
-        //$(".hui-step").text(listData.fileName);
-        //channel.setCurDir(listData.fileName);
-        //showListTable(currListData);
-        util.showTable(shareFile);
+        util.showTable();
 
         channel.getDataByType();
         channel.setNewDir();
@@ -320,12 +318,14 @@
   <body>
   <div class="hui-resize-table" id="resizeTable">
     <div class="hui-path">
-        <div id="tablebar">
+        <div>
           <a class="hui-arrows">
             <img src="img/left.png" />
           </a>
-          <span>
-            <a class="hui-step" href="###" id="0" onclick=gotoFile(this,0)></a>
+          <span id="tablebar">
+          <!-- <span>
+            <a class="hui-step first" href="###" id="0" onclick=gotoFile(this,0)></a>
+          </span> -->
           </span>
         </div>
         <div class="hui-operate">

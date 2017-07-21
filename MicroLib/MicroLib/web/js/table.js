@@ -12,7 +12,7 @@ function htmlListTable(data){
     html += '            <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>';
     html += '          </div>';
     html += '          <p class="hui-ellipsis check">';
-    html += '            <span class="fileName" isDir='+data.isDir+' onclick=openDir('+data.id+',this)>'+data.fileName+'</span>';
+    html += '            <span class="fileName" value='+data.id+' isDir='+data.isDir+' onclick=openDir('+data.id+',this)>'+data.fileName+'</span>';
     html += '          </p>';
     html += '          <div class="hui-table-operate">';
     html += '            <a href="###">下载</a>';
@@ -57,6 +57,15 @@ function appendViewTable(data){
 }
 
 //追加列表头
+function showFirstHeader(text){
+    var html = '';
+    html += '<span>';
+    html += '    <a class="hui-step first" href="###" id="0" onclick=gotoFile(this,0)>'+text+'</a>';
+    html += '</span>';
+
+    $('#tablebar').append(html);
+}
+
 function appendTableHeader(obj){
     var html = '';
     html += '<span>';
@@ -67,8 +76,7 @@ function appendTableHeader(obj){
     $('#tablebar').append(html);
 } 
 
-function clearTableHeader()
-{
+function clearTableHeader(){
     $('#tablebar').html('');
 }
 
@@ -86,15 +94,23 @@ function showListTable(data){
     clearListTable();
     $.each(data,function(index,value){
         appendListTable(value);
-    })
+    });
 }
 //显示视图
 function showViewTable(data){
     clearViewTable();
     $.each(data,function(index,value){
         appendViewTable(value);
-    })
+    });
 }
+
+//显示路径导航栏
+function showTableHeader(data){
+    $.each(data,function(index,value){
+        appendTableHeader(value);
+    });
+}
+
 //通过id值获取信息
 function getInfoById(data,id,callback){
     if(id == data.id){
@@ -113,14 +129,15 @@ function getInfoById(data,id,callback){
     }
 }
 
-function getInfoByName(data,fileName){
+function getIndexById(data,id){
     for(var i=0; i<data.length; i++){
         var value = data[i];
-        if(value.fileName == fileName){
+        if(value.id == id){
             return i;
         }
     }
 }
+
 //打开文件夹
 function openDir(id,obj=true,addHeader=true){
     var isDir = false;
@@ -130,13 +147,16 @@ function openDir(id,obj=true,addHeader=true){
         isDir = $(obj).attr('isDir');
     }  
     if(isDir){
-        getInfoById(listData,id,function(data){
+        getInfoById(util.getTotalDir(),id,function(data){
             if(data.isDir){
-                //clearListTable();
                 if(addHeader){
+                    var curPage = {id:data.id,fileName:data.fileName};
+                    util.getCurType().appendTitleArr(curPage);
+                    console.log(util.getCurType().titleArr);
                     appendTableHeader(data);
                 }
-                util.setTableSort(data.children)
+                util.setTableSort(data.children);
+                util.getCurType().setCurPage(data.children)
                 showListTable(data.children);
             }
         });
@@ -145,6 +165,7 @@ function openDir(id,obj=true,addHeader=true){
     // oauth2.getFileById(id,{
     //     success:function(data){
     //       fileListData = data
+
     //       clearListTable();
     //       showListTable(data.children);  
     //     },error:function(xhr,type,errorThrown){
@@ -161,13 +182,15 @@ function openViewDir(id,obj=true,addHeader=true){
         isDir = $(obj).attr('isDir');
     } 
     if(isDir){
-        getInfoById(listData,id,function(data){
+        getInfoById(util.getTotalDir(),id,function(data){
             if(data.isDir){
-                //clearViewTable();
                 if(addHeader){
+                    var curPage = {id:data.id,fileName:data.fileName};
+                    util.getCurType().appendTitleArr(curPage);
                     appendTableHeader(data);
                 }
-                util.setTableSort(data.children)
+                util.setTableSort(data.children);
+                util.getCurType().setCurPage(data.children)
                 showViewTable(data.children);
             }
         });
@@ -191,14 +214,20 @@ function gotoFile(obj,id){
     for(var i=0; i<data.length; i++){
         data[i].remove();
     }
+    util.getCurType().removeTitleArr(data.length);
 }
 
 function openDirByMode(id){
     if(curMode == 0){
-        openDir(id,true,false)
+        openDir(id,true,false);
     }else{
-        openViewDir(id,true,false)
+        openViewDir(id,true,false);
     }
+}
+
+function deleteFile(id){
+    var index = getIndexById(util.getCurPage(),id);
+    util.getCurPage().splice(index,1);
 }
 
 function renameFile(data,oldName,newName){
@@ -206,7 +235,7 @@ function renameFile(data,oldName,newName){
         if(value.fileName == oldName){
             value.fileName = newName;
         }
-    })
+    });
 }
 
 function newDir(){
@@ -220,10 +249,10 @@ function newDir(){
             ownerName:"lileimt",
             fileSize:"11.1 MB",
             createTime:"11:11"
-        }
-        var html = htmlListTable(data)
+        };
+        var html = htmlListTable(data);
         $("#tbody").prepend(html);
-        currListData.children.splice(0,0,data)
+        util.getCurPage().splice(0,0,data)
     }else{
 
     }
