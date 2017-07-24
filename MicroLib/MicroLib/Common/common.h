@@ -11,6 +11,8 @@
 enum OPERTYPE{sharefiles,myfiles};   //当前操作的类型
 enum TOOLINDEX{shareindex,myfilesindex,subshareindex};    //选择对应的工具栏索引
 
+#define USERURL  "http://api-x.sunfuedu.com/admin/v1/users"
+
 typedef struct{
 	QString fileName;
 	QString fileIcon;

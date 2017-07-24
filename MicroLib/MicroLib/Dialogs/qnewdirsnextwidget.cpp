@@ -1,9 +1,12 @@
 #include "qnewdirsnextwidget.h"
 
-QNewDirsNextWidget::QNewDirsNextWidget(QWidget *parent)
+QNewDirsNextWidget::QNewDirsNextWidget(QWidget *parent, QUser *user)
 	: QBaseWidget(parent)
 {
 	ui.setupUi(this);
+	m_user = user;
+	setTreeWidget();
+
 	connect(ui.btnClose, &QToolButton::clicked, [=](){
 		emit sigCloseClicked();
 	});
@@ -16,6 +19,11 @@ QNewDirsNextWidget::QNewDirsNextWidget(QWidget *parent)
 }
 
 QNewDirsNextWidget::~QNewDirsNextWidget()
+{
+
+}
+
+void QNewDirsNextWidget::setTreeWidget()
 {
 
 }

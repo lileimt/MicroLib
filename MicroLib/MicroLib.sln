@@ -10,12 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MicroLib", "MicroLib\MicroL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroLib", "MicroLib", "{B4C1BC44-1594-4FEB-8EB4-2A6F17C2A8A8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Net", "..\Net\Net\Net.vcxproj", "{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetTest", "..\Net\NetTest\NetTest.vcxproj", "{2EE0CA1B-722E-479F-A2C7-6B1C51E3EC58}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F} = {B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Net", "Net\Net\Net.vcxproj", "{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +26,6 @@ Global
 		{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F}.Debug|Win32.Build.0 = Debug|Win32
 		{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F}.Release|Win32.ActiveCfg = Release|Win32
 		{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F}.Release|Win32.Build.0 = Release|Win32
-		{2EE0CA1B-722E-479F-A2C7-6B1C51E3EC58}.Debug|Win32.ActiveCfg = Debug|Win32
-		{2EE0CA1B-722E-479F-A2C7-6B1C51E3EC58}.Debug|Win32.Build.0 = Debug|Win32
-		{2EE0CA1B-722E-479F-A2C7-6B1C51E3EC58}.Release|Win32.ActiveCfg = Release|Win32
-		{2EE0CA1B-722E-479F-A2C7-6B1C51E3EC58}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +33,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B12702AD-ABFB-343A-A199-8E24837244A3} = {B4C1BC44-1594-4FEB-8EB4-2A6F17C2A8A8}
 		{B5EDCDE2-3DC7-4BF4-B5A5-F7D50955B21F} = {B4C1BC44-1594-4FEB-8EB4-2A6F17C2A8A8}
-		{2EE0CA1B-722E-479F-A2C7-6B1C51E3EC58} = {B4C1BC44-1594-4FEB-8EB4-2A6F17C2A8A8}
 	EndGlobalSection
 EndGlobal

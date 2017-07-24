@@ -2,6 +2,9 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include "Common/commonhelper.h"
+#include "../Net/Net/Net.h"
+
+#pragma  comment(lib,"../Debug/Net.lib")
 
 MicroLib::MicroLib(QWidget *parent)
 	: QMainWindow(parent),
@@ -18,6 +21,11 @@ MicroLib::MicroLib(QWidget *parent)
 	m_eOperType(sharefiles)
 {
 	ui.setupUi(this);
+
+	globalInitCurl();
+	m_user = new QUser;
+	getUserInfo();
+
 	setWindowFlags(Qt::FramelessWindowHint);
 	setMouseTracking(true);
 	setWindowTitle(QStringLiteral("Î¢¿â"));
@@ -142,6 +150,7 @@ MicroLib::~MicroLib()
 	RELEASE(m_forwardWidget);
 	RELEASE(m_baseTransWidget);
 	RELEASE(m_msgWidget);
+	globalCleanUpCurl();
 }
 
 void MicroLib::showForwardWidget()
@@ -198,7 +207,7 @@ void MicroLib::showNewDirsNextWidget()
 {
 	m_bCovered = true;
 	RELEASE(m_newDirsNextWidget);
-	m_newDirsNextWidget = new QNewDirsNextWidget(m_baseTransWidget);
+	m_newDirsNextWidget = new QNewDirsNextWidget(m_baseTransWidget,m_user);
 	m_newDirsNextWidget->move((WIDTH - m_newDirsNextWidget->width()) / 2, (HEIGHT - m_newDirsNextWidget->height()) / 2);
 	m_newDirsNextWidget->show();
 
@@ -267,4 +276,10 @@ void MicroLib::openUploadFileDialog()
 		m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
 		m_transWidget->show();
 	}
+}
+
+void MicroLib::getUserInfo()
+{
+	string userInfo = httpGet(USERURL, "9f2405958adc49e6b70a9294c238e179");
+	m_parseJson.getUserInfo(userInfo,m_user);
 }

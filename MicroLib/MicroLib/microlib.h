@@ -19,6 +19,8 @@
 #include "Dialogs/qsidewidget.h"
 #include "Dialogs/qmsgwidget.h"
 #include "Common/qchannel.h"
+#include "Common/quser.h"
+#include "Common/qparsejson.h"
 
 class MicroLib : public QMainWindow
 {
@@ -28,9 +30,13 @@ public:
 	MicroLib(QWidget *parent = 0);
 	~MicroLib();
 
+	//显示转存文件窗口
 	void showForwardWidget();
+	//显示统计信息窗口
 	void showStaticsWidget();
+	//显示新建公共目录窗口
 	void showNewDirsWidget();
+	//显示新建公共目录下一步窗口
 	void showNewDirsNextWidget();
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -55,14 +61,22 @@ private:
 	QSideWidget *m_sideWidget;
 	QMsgWidget *m_msgWidget;
 
+	QParseJson m_parseJson;
+	QUser *m_user;
+
 	QPoint m_point;
 	bool m_bPressed;
 	bool m_bCovered;
 	OPERTYPE m_eOperType;
 
+	//打开上传文件对话框
 	void openUploadFileDialog();
+	//信号关联
 	void sigConnect();
+	//获取和js通信的channel对象
 	QChannel *getChannel();
+	//获取用户数据
+	void getUserInfo();
 };
 
 #endif // MICROLIB_H

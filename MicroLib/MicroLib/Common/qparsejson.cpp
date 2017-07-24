@@ -1,5 +1,5 @@
 #include "qparsejson.h"
-#include <QDebug>
+//#include <QDebug>
 
 QParseJson::QParseJson(QObject *parent)
 	: QObject(parent)
@@ -24,23 +24,28 @@ QString QParseJson::getUserJsonParams(QString username, QString password)
 	return QString(byte_array);
 }
 
-//QJsonParseError json_error;
-//QJsonDocument parse_doucment = QJsonDocument::fromJson(str.data(), &json_error);
-//if (json_error.error == QJsonParseError::NoError)
-//{
-//	qDebug() << str.data();
-//	if (parse_doucment.isObject()){
-//		QJsonObject obj = parse_doucment.object();
-//		parseUserJson(obj, m_user);
-//	}
-//}
+
+void QParseJson::getUserInfo(string data, QUser *user)
+{
+	QJsonParseError json_error;
+	QJsonDocument parse_doucment = QJsonDocument::fromJson(data.data(), &json_error);
+	if (json_error.error == QJsonParseError::NoError)
+	{
+		//qDebug() << data.data();
+		if (parse_doucment.isObject()){
+			QJsonObject obj = parse_doucment.object();
+			parseUserJson(obj, user);
+		}
+	}
+}
+
 void QParseJson::parseUserJson(QJsonObject obj, QUser *user)
 {
 	if (obj.contains("children")){
 		QJsonValue arrays_value = obj.take("children");
 		if (arrays_value.isArray()){//判断他是不是json数组  
 			QJsonArray arrays = arrays_value.toArray();
-			qDebug() << "size = " << arrays.size();
+			//qDebug() << "size = " << arrays.size();
 			for (int i = 0; i < arrays.size(); i++){
 				QJsonObject childObj = arrays.at(i).toObject();
 				QUser *childUser = new QUser;
@@ -54,19 +59,19 @@ void QParseJson::parseUserJson(QJsonObject obj, QUser *user)
 				if (childObj.contains("name")){
 					QJsonValue value = childObj.take("name");
 					if (value.isString()){
-						qDebug() << "name" << value.toString();
+						//qDebug() << "name" << value.toString();
 						childUser->setName(value.toString());
 					}
 				}
 				if (childObj.contains("type")){
 					QJsonValue value = childObj.take("type");
 					if (value.isString()){
-						qDebug() << "type" << value.toString();
+						//qDebug() << "type" << value.toString();
 						childUser->setType(value.toString());
 					}
 				}
 				if (childObj.contains("children")){
-					qDebug() << "children";
+					//qDebug() << "children";
 					parseUserJson(childObj, childUser);
 				}
 				user->append(childUser);
@@ -80,14 +85,14 @@ void QParseJson::parseTokenJson(QJsonObject obj)
 	if (obj.contains("access_token")){
 		QJsonValue value = obj.take("access_token");
 		if (value.isString()){
-			qDebug() << "access_token" << value.toString();
+			//qDebug() << "access_token" << value.toString();
 			m_token = value.toString();
 		}
 	}
 	if (obj.contains("user_id")){
 		QJsonValue value = obj.take("user_id");
 		if (value.toDouble()){
-			qDebug() << "user_id" << value.toInt();
+			//qDebug() << "user_id" << value.toInt();
 		}
 	}
 }
