@@ -17,3 +17,13 @@ QNewDirsWidget::~QNewDirsWidget()
 {
 
 }
+
+QString QNewDirsWidget::getFileName()
+{
+	return ui.edtNewDir->text();
+}
+
+QString QNewDirsWidget::getComment()
+{
+	return ui.edtText->toPlainText();
+}

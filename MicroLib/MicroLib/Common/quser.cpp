@@ -46,7 +46,26 @@ int QUser::getChildCount()
 	return m_children.count();
 }
 
+USERLIST QUser::getChildren()
+{
+	return m_children;
+}
+
 void QUser::append(QUser *user)
 {
 	m_children.append(user);
+}
+
+QUser *QUser::getUserById(int id)
+{
+	if (id == m_id){
+		return this;
+	}
+	auto it = m_children.begin();
+	for (; it != m_children.end(); it++){
+		QUser *user = dynamic_cast<QUser *>(*it);
+		if (user->getId() == id){
+			return user;
+		}
+	}
 }

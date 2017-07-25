@@ -24,9 +24,11 @@ public:
 	QString getType();
 	void setType(QString type);
 	int getChildCount();
+	USERLIST getChildren();
 
 	void append(QUser *user);
-private:
+	QUser *getUserById(int id);
+private: 
 	int m_id;
 	QString m_name;
 	QString m_type;

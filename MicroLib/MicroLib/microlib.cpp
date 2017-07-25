@@ -119,6 +119,16 @@ void MicroLib::sigConnect()
 		openUploadFileDialog();
 	});
 	connect(m_toolWidget, &QToolWidget::sigNewShareClicked, [=](){
+		//创建子窗口
+		RELEASE(m_newDirsWidget);
+		RELEASE(m_newDirsNextWidget);
+		m_newDirsWidget = new QNewDirsWidget(m_baseTransWidget);
+		m_newDirsWidget->move((WIDTH - m_newDirsWidget->width()) / 2, (HEIGHT - m_newDirsWidget->height()) / 2);
+		m_newDirsWidget->hide();
+		m_newDirsNextWidget = new QNewDirsNextWidget(m_baseTransWidget, m_user);
+		m_newDirsNextWidget->move((WIDTH - m_newDirsNextWidget->width()) / 2, (HEIGHT - m_newDirsNextWidget->height()) / 2);
+		m_newDirsNextWidget->hide();
+
 		showNewDirsWidget();
 	});
 	connect(m_toolWidget, &QToolWidget::sigNewDirClicked, [=](){
@@ -186,9 +196,6 @@ void MicroLib::showStaticsWidget()
 void MicroLib::showNewDirsWidget()
 {
 	m_bCovered = true;
-	RELEASE(m_newDirsWidget);
-	m_newDirsWidget = new QNewDirsWidget(m_baseTransWidget);
-	m_newDirsWidget->move((WIDTH - m_newDirsWidget->width()) / 2, (HEIGHT - m_newDirsWidget->height()) / 2);
 	m_newDirsWidget->show();
 	m_baseTransWidget->show();
 
@@ -198,17 +205,16 @@ void MicroLib::showNewDirsWidget()
 		m_bCovered = false;
 	});
 	connect(m_newDirsWidget, &QNewDirsWidget::sigNextClicked, [=](){
-		m_newDirsWidget->close();
-		showNewDirsNextWidget();
+		if (!m_newDirsWidget->getFileName().isEmpty()){
+			m_newDirsWidget->close();
+			showNewDirsNextWidget();
+		}
 	});
 }
 
 void MicroLib::showNewDirsNextWidget()
 {
 	m_bCovered = true;
-	RELEASE(m_newDirsNextWidget);
-	m_newDirsNextWidget = new QNewDirsNextWidget(m_baseTransWidget,m_user);
-	m_newDirsNextWidget->move((WIDTH - m_newDirsNextWidget->width()) / 2, (HEIGHT - m_newDirsNextWidget->height()) / 2);
 	m_newDirsNextWidget->show();
 
 	connect(m_newDirsNextWidget, &QNewDirsNextWidget::sigCloseClicked, [=](){
@@ -222,8 +228,11 @@ void MicroLib::showNewDirsNextWidget()
 		showNewDirsWidget();
 	});
 	connect(m_newDirsNextWidget, &QNewDirsNextWidget::sigCreateClicked, [=](){
+		m_newDirsNextWidget->close();
 		m_baseTransWidget->close();
 		m_bCovered = false;
+
+
 	});
 }
 

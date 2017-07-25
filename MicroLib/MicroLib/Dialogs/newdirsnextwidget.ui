@@ -39,7 +39,7 @@ QLabel#lblIcon{
 QLabel#lblIcon2{
 	border-image: url(:/images/fnum2);
 }
-QLabel#lblImage{
+QToolButton#btnArrow{
 	border-image: url(:/images/rightarrow);
 }
 QToolButton{
@@ -64,10 +64,6 @@ QListWidget{
 	border:none;
 	font: 10pt &quot;微软雅黑&quot;;
 }
-QListWidget#listWidget::item{
-	height:20px;
-}
-
 QToolButton{
 	border:none;
 	font: 75 10pt &quot;微软雅黑&quot;;
@@ -339,7 +335,7 @@ QToolButton#btnCreate{
          </widget>
         </item>
         <item>
-         <widget class="QTreeWidget" name="treeWidget">
+         <widget class="QBaseTreeWidget" name="treeWidget">
           <attribute name="headerVisible">
            <bool>false</bool>
           </attribute>
@@ -348,61 +344,6 @@ QToolButton#btnCreate{
             <string>1</string>
            </property>
           </column>
-          <item>
-           <property name="text">
-            <string>日坛中学</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>校部</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>校长</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>永安里校区</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>校长</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>南校区</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>校长</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>技术服务中心</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>员工</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>技术服务专员</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>员工</string>
-             </property>
-            </item>
-           </item>
-          </item>
          </widget>
         </item>
         <item>
@@ -448,13 +389,7 @@ QToolButton#btnCreate{
         </spacer>
        </item>
        <item alignment="Qt::AlignHCenter">
-        <widget class="QLabel" name="lblImage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QToolButton" name="btnArrow">
          <property name="minimumSize">
           <size>
            <width>30</width>
@@ -464,10 +399,25 @@ QToolButton#btnCreate{
          <property name="text">
           <string/>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="radioButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>仅查看</string>
          </property>
@@ -515,16 +465,9 @@ QToolButton#btnCreate{
         </property>
         <item>
          <widget class="QListWidget" name="listWidget">
-          <item>
-           <property name="text">
-            <string>校长</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>校长</string>
-           </property>
-          </item>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
          </widget>
         </item>
         <item>
@@ -679,6 +622,11 @@ QToolButton#btnCreate{
    <extends>QWidget</extends>
    <header>qbasewidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QBaseTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>qbasetreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

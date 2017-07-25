@@ -1,5 +1,5 @@
 #include "qparsejson.h"
-//#include <QDebug>
+#include <QVariant>
 
 QParseJson::QParseJson(QObject *parent)
 	: QObject(parent)
@@ -52,7 +52,7 @@ void QParseJson::parseUserJson(QJsonObject obj, QUser *user)
 				if (childObj.contains("id")){
 					QJsonValue value = childObj.take("id");
 					if (value.isDouble()){
-						qDebug() << "id" << value.toVariant().toInt();
+						//qDebug() << "id" << value.toVariant().toInt();
 						childUser->setId(value.toVariant().toInt());
 					}
 				}

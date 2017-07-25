@@ -11,6 +11,9 @@ class QNewDirsWidget : public QBaseWidget
 public:
 	QNewDirsWidget(QWidget *parent = 0);
 	~QNewDirsWidget();
+
+	QString getFileName();
+	QString getComment();
 signals:
 	void sigCloseClicked();
 	void sigNextClicked();
