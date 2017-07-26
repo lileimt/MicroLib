@@ -112,31 +112,32 @@ function showTableHeader(data){
 }
 
 //通过id值获取信息
-function getInfoById(data,id,callback){
-    if(id == data.id){
-        //设置当前的目录
-        channel.setCurDir(data.fileName)
-        callback(data);
-        return false;
-    }else{
-        if(data.isDir){
-            var children = data.children;
-            for(var i=0; i<children.length; i++){
-                var value = children[i];
-                getInfoById(value,id,callback);
-            }
-        }
-    }
+function getInfoById(/*data,*/id,callback){
+    // if(id == data.id){
+    //     //设置当前的目录
+    //     channel.setCurDir(data.fileName)
+    //     callback(data);
+    //     return false;
+    // }else{
+    //     if(data.isDir){
+    //         var children = data.children;
+    //         for(var i=0; i<children.length; i++){
+    //             var value = children[i];
+    //             getInfoById(value,id,callback);
+    //         }
+    //     }
+    // }
+    util.getCurType().getCurData(id,callback);
 }
 
-function getIndexById(data,id){
-    for(var i=0; i<data.length; i++){
-        var value = data[i];
-        if(value.id == id){
-            return i;
-        }
-    }
-}
+// function getIndexById(data,id){
+//     for(var i=0; i<data.length; i++){
+//         var value = data[i];
+//         if(value.id == id){
+//             return i;
+//         }
+//     }
+// }
 
 //打开文件夹
 function openDir(id,obj=true,addHeader=true){
@@ -147,31 +148,22 @@ function openDir(id,obj=true,addHeader=true){
         isDir = $(obj).attr('isDir');
     }  
     if(isDir){
-        getInfoById(util.getTotalDir(),id,function(data){
+        getInfoById(/*util.getTotalDir(),*/id,function(data){
             if(data.isDir){
                 if(addHeader){
-                    var curPage = {id:data.id,fileName:data.fileName};
+                    var curPage = {id:data.id,fileName:data.filename};
                     util.getCurType().appendTitleArr(curPage);
                     console.log(util.getCurType().titleArr);
                     appendTableHeader(data);
                 }
+                //设置当前的目录
+                channel.setCurDir(data.filename)
                 util.setTableSort(data.children);
                 util.getCurType().setCurPage(data.children)
                 showListTable(data.children);
             }
         });
     }
-
-    // oauth2.getFileById(id,{
-    //     success:function(data){
-    //       fileListData = data
-
-    //       clearListTable();
-    //       showListTable(data.children);  
-    //     },error:function(xhr,type,errorThrown){
-    //       console.log(xhr);
-    //     }
-    // })
 }
 
 function openViewDir(id,obj=true,addHeader=true){
@@ -182,29 +174,21 @@ function openViewDir(id,obj=true,addHeader=true){
         isDir = $(obj).attr('isDir');
     } 
     if(isDir){
-        getInfoById(util.getTotalDir(),id,function(data){
+        getInfoById(/*util.getTotalDir(),*/id,function(data){
             if(data.isDir){
                 if(addHeader){
                     var curPage = {id:data.id,fileName:data.fileName};
                     util.getCurType().appendTitleArr(curPage);
                     appendTableHeader(data);
                 }
+                //设置当前的目录
+                channel.setCurDir(data.fileName)
                 util.setTableSort(data.children);
                 util.getCurType().setCurPage(data.children)
                 showViewTable(data.children);
             }
         });
     }
-
-    // oauth2.getFileById(id,{
-    //     success:function(data){
-    //       fileListData = data
-    //       clearListTable();
-    //       showListTable(data.children);  
-    //     },error:function(xhr,type,errorThrown){
-    //       console.log(xhr);
-    //     }
-    // })
 }
 
 //点击表头跳转到相应的文件夹

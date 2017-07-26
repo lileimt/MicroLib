@@ -1,0 +1,336 @@
+1.	公共目录(/v1/sharefiles)
+	1)获取当前id所有文件
+        地址：GET  /v1/sharefiles/:id
+        返回值：
+        {
+	        id:0,
+            isdir:1,   //0代表文件，1代表文件夹
+            filename:”公共目录”,
+            children:[{
+                id:1,
+                pid:0,
+                isdir：0,
+                permission:0,  //当前用户的权限，0代表仅查看，1代表查看和上传
+                filename:”我的文档.docx”,
+                ownername:”张三”,
+                filesize:”1.2MB”,
+                createtime:”2017-02-26 14:14”  //时间戳
+            },{
+                id:2,
+                pid:0,
+                isdir：0,
+                permission:1, 
+                filename:”我的文档.docx”,
+                ownername:”张三”,
+                filesize:”1.2MB”,
+                createtime:”2017-02-26 14:14”
+            }]
+        }
+    2)新建公共目录
+        地址:	 POST  /v1/sharefiles/documents
+        参数：
+        {
+            pid:0,
+            filename:”新建公共目录”,
+            comment:”这是一个新建的公共目录”,
+            submitter：[{id:1,permission:0},{id:2,permission:1}],  //用户的id,permission用户的权限，0代表仅查看，1代表查看和上传
+            notice:1,//是否发生提醒，0不发送，1发送
+            msg:”通知提醒消息”  //提醒内容
+        }
+        返回值:
+        {
+            id:123   //返回新建公共目录的id
+        }
+    3)转存
+        地址:PUT /v1/sharefiles/files
+        参数:
+        {
+            ids:[1,2,3],   //文件的id
+            destid:5      //转存的目的文件夹的id
+        }
+        返回值:
+        {
+            error_code:0,
+            msg:"转存成功"
+        }
+    4)编辑提交统计
+        地址:POST  /v1/sharefiles/commit
+        参数:
+        {
+            start:"2017-07-26",
+            end:"2017-07-28",
+            ids:[12,32,4,43]   //纳入统计的用户的id
+        }
+        返回值:
+        {
+            error_code:0,
+            msg:"编辑提交统计成功"
+        }
+    5)编辑查阅统计
+        地址:POST  /v1/sharefiles/lookup
+        参数:
+        {
+            start:"2017-07-26",
+            end:"2017-07-28",
+            filename:"我的文件.exe",   //统计的文件
+            id:23,                    //统计的文件的id
+            ids:[12,32,4,43]   //纳入统计的用户的id
+        }
+        返回值:
+        {
+            error_code:0,
+            msg:"编辑查阅统计成功"
+        }
+    6)获取提交记录
+        地址:GET  /v1/sharefiles/commit/:id   //id为统计的文件夹
+        参数:
+        返回值:
+        {
+            total:15,
+            current:10,
+            submitter:["张三"，"李四","王五"],
+            noSubmitter:["张三"，"李四"]
+        }
+    7）获取查阅记录
+        地址:POST  /v1/sharefiles/lookup/:id
+        参数:
+        返回值:
+        {
+            total:15,
+            current:10,
+            submitter:["张三"，"李四","王五"],
+            noSubmitter:["张三"，"李四"]
+        }
+    8)获取操作历史
+        地址：GET  /v1/sharefiles/history
+        参数：
+        返回值：
+        {
+            data:[
+                {
+                    today:[
+                        {
+                            operation:0,   //操作，0代表上传，1代表下载
+                            username:"张三", //操作者名字
+                            time:"2017-07-26 16:17",  //操作时间
+                            isdir:1,    //0代表文件，1代表文件夹
+                            filename:"我的文件夹"
+                        }
+                    ]
+                },{
+                    yesterday:[
+                        {
+                            operation:0,   //操作，0代表上传，1代表下载
+                            username:"张三", //操作者名字
+                            time:"2017-07-26 16:17",  //操作时间
+                            isdir:1,    //0代表文件，1代表文件夹
+                            filename:"我的文件夹"
+                        }
+                    ]
+                }
+            ]
+        }
+2.	我的文件(/v1/myfiles)
+    1)获取所有文件夹（第一个文件夹是"收到的文件"）
+        地址:GET  /v1/myfiles/documents
+        参数:
+        返回值:
+        {
+            children：[
+                {
+                    id:1,
+                    pid:0,
+                    filename:"收到的文件",       
+                    children:[
+                        {
+                            id:2,
+                            pid:1,
+                            filename:"目录2"    
+                        }
+                    ]
+                },{
+                    id:3,
+                    pid:0,
+                    filename:"目录2",
+                    children:[
+                        {
+                            id:4,
+                            pid:3,
+                            filename:"目录3"    
+                        }
+                    ]
+                }
+            ]
+        }
+    2)获取当前id的文件
+        地址:GET  /v1/myfiles/:id （id为0的第一个子文件夹是"收到的文件"）
+        参数:
+        返回值:
+        {
+            id:0,
+            filename:"我的文件",
+            children:[
+                {
+                    id:1,
+                    pid:0,
+                    isdir:1,
+                    filename:"收到的文件",
+                    createtime:"2017-07-26 15:27",
+                    children:[
+                        {
+                            id:1,
+                            pid:0,
+                            isdir:1,
+                            filename:"文件夹",
+                            children:[
+                                id:3,
+                                pid:1,
+                                isdir:0,
+                                filename:"我的文档.docx"
+                                filesize:"100MB",
+                                createtime:"2017-07-26 15:27"
+                            ]
+                        }
+                    ]
+                },{
+                    id:2,
+                    pid:0,
+                    isdir:0,
+                    filename:"我的文档.docx",
+                    filesize:"100MB",
+                    createtime:"2017-07-26 15:27"
+                }
+            ]
+        }
+    3)获取收到的文件的内容
+        地址:GET  /v1/myfiles/receives
+        参数:
+        返回值:
+        {
+            items:[
+                {
+                    id:1,
+                    filename:"微库.exe"，
+                    filesize:"1000MB",
+                    updatetime:"2017-07-26 15:35",
+                    sendid:123,//发送者的id
+                    sendname:"张三"  //发送者的姓名
+                },{
+                    id:2,
+                    filename:"QQ.exe"，
+                    filesize:"1000MB",
+                    updatetime:"2017-07-26 15:35",
+                    sendid:123,//发送者的id
+                    sendname:"张三"  //发送者的姓名
+                }
+            ] 
+        }
+    4)分享到公共目录
+        地址:POST  /v1/myfiles/sharefiles
+        参数：
+        {
+            ids:[1,23,3],  //要分享的文件的id
+            filename:”新建公共目录”,
+            comment:”这是一个新建的公共目录”,
+            submitter：[{id:1,permission:0},{id:2,permission:1}],//用户的id,permission用户的权限，0代表仅查看，1代表查看和上传
+            notice:1,//是否发生提醒，0不发送，1发送
+            msg:”通知提醒消息”  //提醒内容
+        }
+        返回值:
+        {
+            id:123   //返回新建公共目录的id
+        }
+    5)发送文件
+        地址:POST /v1/myfiles/content
+        参数：
+        {
+            ids:[1,2,3],   //要发送的文件的id
+            receiveids:[12,323,43]   //接收文件的用户的id
+            comment:"发送文件"
+        }
+        返回值:
+        {
+            error_code:0,
+            msg:"发送成功"
+        }
+        {
+            error_code:1,
+            ids:[12,43],  //发送失败的用户id
+            msg:"发送失败"
+        }
+    6)移动文件
+        地址:PUT  /v1/myfiles/path
+        参数:
+        {
+            ids:[12,23,343],   //要移动的文件的id
+            destid:13          //目的文件的id
+        }
+        返回值:
+        {
+            error_code:0,
+            msg:”移动文件成功”
+        }
+    7)复制文件
+        地址:POST  /v1/myfiles/path
+        参数:
+        {
+            ids:[12,23,343],   //要移动的文件的id
+            destid:13          //目的文件的id
+        }
+        返回值:
+        {
+            error_code:0,
+            msg:”复制文件成功”
+        }
+3.	其他(/v1/files)
+    1)删除文件
+        地址:DELETE  /v1/files/ids/status
+	    参数:
+        {
+			ids:[1,2,3]
+        }
+        返回值：
+        {
+	        error_code:0,
+	        msg:”删除成功”
+        }
+    2)重命名文件
+        地址:PUT /v1/files/:id/name
+        参数：
+        {
+		    newname：”我的文件”
+        }
+        返回值：
+        {
+	        error_code:0,
+	        msg:”重命名成功”
+        }
+    3）消息中心
+        地址:GET  /v1/files/msgs
+        参数：
+        返回值:
+        {
+            data:[
+                {
+                    today:[
+                        {
+                            title:"收到文件",
+                            username:"张三",
+                            filename:"我的文件",
+                            time:"2017-07-26 16:27"
+                        }
+                    ]
+                },{
+                    yesterday:[
+                        {
+                            title:"收到文件",
+                            username:"张三",
+                            filename:"我的文件",
+                            time:"2017-07-26 16:27"
+                        }
+                    ]
+                }
+                
+            ]
+        }
+

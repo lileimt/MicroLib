@@ -6,7 +6,7 @@ var oauth2 = {};
     });
 
     obj.requestApi = function(/*access_token,*/ url, method,data, callback) {
-		url = obj.BASE_URL + '/' + url;
+		url = obj.BASE_URL + url;
 		
         if (method.toLowerCase() != 'get') {
             data = JSON.stringify(data);
@@ -25,10 +25,10 @@ var oauth2 = {};
         $.ajax(url, settings);
     };
 
-    obj.getFileById = function(/*access_token,*/ id,callback){
-        obj.requestApi('/microlib/v1/files/'+id,'get',{},callback);
+    obj.getShareFilesById = function(/*access_token,*/ id,callback){
+        obj.requestApi('/microlib/v1/sharefiles/'+id,'get',{},callback);
     }
-    obj.getShareById = function(/*access_token,*/ id,callback){
-        obj.requestApi('/microlib/v1/share/'+id,'get',{},callback);
+    obj.getMyFilesById = function(/*access_token,*/ id,callback){
+        obj.requestApi('/microlib/v1/myfiles/'+id,'get',{},callback);
     }
 })(jQuery,oauth2);

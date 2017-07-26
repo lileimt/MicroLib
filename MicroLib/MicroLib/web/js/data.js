@@ -4,34 +4,29 @@ function ListType(type,curDir){
     this.curType = type;     //当前列表的类型 0代表公共目录，1代表我的文件
     this.curDir = curDir;    //当前显示的文件夹的名称
     this.titleArr = new Array;
-    //this.titleArr.push(curDir);
 }
 
 ListType.prototype.getCurData = function(id,callback){
     if(curType == 0){//获取公共目录的数据
-        // oauth2.getShareById(id,{
-        //     success:function(data){
-        //         curListData = data
-        //         tablesort.sort(curListData,"fileName",curSort)
-        //         callback()
-        //     },error:function(xhr,type,errorThrown){
-        //         console.log(xhr);
-        //     }
-        // })
-         //curListData = listData;
-         tablesort.sort(curPage,"fileName",curSort);
+        oauth2.getShareFilesById(id,{
+            success:function(data){
+                curPage = data
+                tablesort.sort(curPage,"fileName",curSort)
+                callback(data)
+            },error:function(xhr,type,errorThrown){
+                console.log(xhr);
+            }
+        });
     }else{
-        // oauth2.getFileById(id,{
-        //     success:function(data){
-        //         curListData = data
-        //         tablesort.sort(curListData,"fileName",curSort)
-        //         callback()
-        //     },error:function(xhr,type,errorThrown){
-        //         console.log(xhr);
-        //     }
-        // })
-        //curListData = listData;
-        tablesort.sort(curPage,"fileName",curSort);
+        oauth2.getMyFilesByIds(id,{
+            success:function(data){
+                curPage = data
+                tablesort.sort(curPage,"fileName",curSort)
+                callback(FormData)
+            },error:function(xhr,type,errorThrown){
+                console.log(xhr);
+            }
+        })
     }
 }
 

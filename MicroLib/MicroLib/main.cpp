@@ -1,6 +1,7 @@
 #include "microlib.h"
 #include <QtWidgets/QApplication>
 #include "Common/commonhelper.h"
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {

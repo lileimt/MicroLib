@@ -13,7 +13,7 @@
   <script src="js/data.js"></script>
   <script src="js/util.js"></script>
   <script type="text/javascript">
-    var listData = {
+    var shareFilesData = {
       id:0,
       isDir:true,
       fileName:"公共目录",
@@ -142,7 +142,7 @@
         }]
       }
 
-    var listData1 = {
+    var myFilesData = {
       id:0,
       isDir:true,
       fileName:"我的文件",
@@ -278,11 +278,11 @@
   var curDirName = "公共目录";
 
   var shareFile = new ListType(0,{id:0,fileName:"公共目录"})
-  shareFile.totalDir = listData
-  shareFile.curPage = listData.children
+  //shareFile.totalDir = shareFilesData
+  //shareFile.curPage = shareFilesData.children
   var myFile = new ListType(1,{id:0,fileName:"我的文件"})
-  myFile.totalDir = listData1
-  myFile.curPage = listData1.children
+  //myFile.totalDir = myFilesData
+  //myFile.curPage = myFilesData.children
 
   $(function(){	  
     $(document).ready(function(){
@@ -297,16 +297,25 @@
         window.bridge = obj.objects.channel;
 
         //获取接口数据
-        // oauth2.getFileById(0,{
-        //   success:function(data){
-        //     fileListData = data
-        //   },error:function(xhr,type,errorThrown){
-        //     console.log(xhr);
-        //   }
-        // })
-
-        util.showTable();
-
+        //oauth2.getShareFilesById(0,{
+        //  success:function(data){
+        //    shareFilesData = data
+            shareFile.totalDir = shareFilesData
+            shareFile.curPage = shareFilesData.children
+            util.showTable();
+        //  },error:function(xhr,type,errorThrown){
+        //    console.log(xhr);
+        //  }
+        //});
+        //oauth2.getMyFilesById(0,{
+        //  success:function(data){
+        //    myFilesData = data
+            myFile.totalDir = myFilesData
+            myFile.curPage = myFilesData.children
+        //  },error:function(xhr,type,errorThrown){
+        //    console.log(xhr);
+        //  }
+        //});
         channel.getDataByType();
         channel.setNewDir();
       });
