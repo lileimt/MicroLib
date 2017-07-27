@@ -36,3 +36,8 @@ void QChannel::setCurType(int type)
 {
 	emit sigCurType(type);
 }
+
+void QChannel::slotChangeToolBar(int index)
+{
+	emit sigChangeToolBar(index);
+}

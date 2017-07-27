@@ -145,7 +145,7 @@ $(function(){
         }
     });
     //全选
-    $("#allChecked").bind('click',function(e){
+    $(".hui-table-title").on('click','#allChecked',function(e){
         e.stopPropagation();
         if($("#allChecked").prop("checked")){
              $("input[name='checked']").prop("checked", true);
@@ -201,7 +201,20 @@ $(function(){
     $('#rankBtn').bind('click',function(){
        $('.rankBox').toggle();
     });
-    $('.rankIcon,.header_name').bind('click',function(){
+    $('.rankIcon').bind('click',function(){
+        if($(this).find('img').attr('src')=='img/down.png'){
+             $(this).find('img').attr('src','img/up.png');
+             curSort = 1
+             tablesort.sort(util.getCurPage(),"fileName",curSort)
+        }else{
+            $(this).find('img').attr('src','img/down.png');
+            curSort = 0
+            tablesort.sort(util.getCurPage(),"fileName",curSort)
+        }
+        clearListTable();
+        showListTable(util.getCurPage());
+    });
+    $('.hui-table-title').on('click','.header_name',function(){
         if($(this).find('img').attr('src')=='img/down.png'){
              $(this).find('img').attr('src','img/up.png');
              curSort = 1

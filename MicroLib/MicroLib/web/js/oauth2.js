@@ -18,7 +18,7 @@ var oauth2 = {};
             contentType: 'application/json',
             timeout: 10000,
             headers: {
-                'Authorization': 'Bearer ' + '104d87302efe4b99acefb18268f80e88'//access_token
+                'Authorization': 'Bearer ' + 'cacad8ee62c543f88f516f2deb9e658b'//access_token
             }
         }, callback);
 
@@ -26,7 +26,7 @@ var oauth2 = {};
     };
 
     obj.getShareFilesById = function(/*access_token,*/ id,callback){
-        obj.requestApi('/microlib/v1/sharefiles/'+id,'get',{},callback);
+        obj.requestApi('/microlib/v1/documents/'+id,'get',{},callback);
     }
     obj.getMyFilesById = function(/*access_token,*/ id,callback){
         obj.requestApi('/microlib/v1/myfiles/'+id,'get',{},callback);

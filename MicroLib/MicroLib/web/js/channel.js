@@ -17,4 +17,8 @@ var channel = {};
             util.showTable();
         });
     }
+    //设置公共目录的工具栏
+    obj.setToolBar = function(index){
+        bridge.slotChangeToolBar(index);
+    }
 })(jQuery,channel);

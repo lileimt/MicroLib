@@ -151,7 +151,7 @@
         isDir:true,
         md5:"1234567890",
         fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
-        fileName:"我的",
+        fileName:"收到的文件",
         ownerName:"lileimt",
         fileSize:"11.1 MB",
         createTime:"11:11",
@@ -299,9 +299,10 @@
         //获取接口数据
         //oauth2.getShareFilesById(0,{
         //  success:function(data){
-        //    shareFilesData = data
-            shareFile.totalDir = shareFilesData
-            shareFile.curPage = shareFilesData.children
+        //    console.log(data);
+        //    shareFilesData = data;
+            shareFile.totalDir = shareFilesData;
+            shareFile.curPage = shareFilesData.children;
             util.showTable();
         //  },error:function(xhr,type,errorThrown){
         //    console.log(xhr);
@@ -309,9 +310,9 @@
         //});
         //oauth2.getMyFilesById(0,{
         //  success:function(data){
-        //    myFilesData = data
-            myFile.totalDir = myFilesData
-            myFile.curPage = myFilesData.children
+        //    myFilesData = data;
+            myFile.totalDir = myFilesData;
+            myFile.curPage = myFilesData.children;
         //  },error:function(xhr,type,errorThrown){
         //    console.log(xhr);
         //  }
@@ -351,16 +352,16 @@
     <div class="refresh">
       <table id="sample2" class="hui-list-table" width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr class="hui-table-title">
-          <th class="header_name" width="60%">
+          <!--th class="header_name" width="60%">
             <input type="checkbox" class="hui-checkbox checkbox" id="allChecked" name="allChecked"/>
             名称
             <span class="rankImg">
               <img class="hui-icon-down" src="img/down.png" />
             </span>
-          </th>
-          <th>创建者</th>
+          </th-->
+          <!-- <th>创建者</th>
           <th>大小</th>
-          <th>创建时间</th>
+          <th>创建时间</th> -->
         </tr>
         <tbody id="tbody">
 

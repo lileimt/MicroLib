@@ -1,5 +1,37 @@
+//设置列表的标题栏
+function setTableHeader(){
+    $('.hui-table-title').html(''); 
+
+    var html = '';
+    html += '<th class="header_name" width="60%">';
+    html += '    <input type="checkbox" class="hui-checkbox checkbox" id="allChecked" name="allChecked"/>';
+    html += '        名称';
+    html += '    <span class="rankImg">';
+    html += '        <img class="hui-icon-down" src="img/down.png" />';
+    html += '    </span>';
+    html += '</th>';
+    if(curType == 0){
+        html += '<th>创建者</th>';
+        html += '<th>大小</th>';
+        html += '<th>创建时间</th>'; 
+    }else{
+        var curDir = util.getCurDir();
+        if(curDir.id == 1){ //收到的文件的标题
+            html += '<th>发送者</th>';
+            html += '<th>大小</th>';
+            html += '<th>发送时间</th>'; 
+        }else{
+            html += '<th>大小</th>';
+            html += '<th>创建时间</th>'; 
+        }
+    }
+
+    $('.hui-table-title').append(html);
+}
 //追加列表
 function htmlListTable(data){
+    data.fileIcon = util.getFileIcon(data);
+
     var html = '';
     html += '   <tr class="check">';
     html += '      <td>';
@@ -39,6 +71,8 @@ function appendListTable(data){
 }
 //追加视图显示
 function appendViewTable(data){
+    data.fileIcon = util.getFileIcon(data);
+
     var html = '';
     html += '       <li class="listBox-item" isDir='+data.isDir+' ondblclick=openViewDir('+data.id+',this)>';
     html += '          <div class="listWrap">';
@@ -139,6 +173,28 @@ function getInfoById(/*data,*/id,callback){
 //     }
 // }
 
+function openDirParse(data,addHeader)
+{
+    if(addHeader){
+        var curDir = {id:data.id,fileName:data.filename};
+        util.getCurType().appendTitleArr(curDir);
+        appendTableHeader(data);
+    }
+    
+    if(curType == 0){//切换公共目录的工具栏
+        if(util.getCurType().curDir.id == 0){  //根目录
+            channel.setToolBar(0);
+        }else{//子目录
+            channel.setToolBar(2);
+        }
+    }
+    setTableHeader();
+    util.setTableSort(data.children);
+    util.getCurType().setCurPage(data.children);
+    //设置当前的目录
+    channel.setCurDir(data.filename);
+}
+
 //打开文件夹
 function openDir(id,obj=true,addHeader=true){
     var isDir = false;
@@ -150,16 +206,7 @@ function openDir(id,obj=true,addHeader=true){
     if(isDir){
         getInfoById(/*util.getTotalDir(),*/id,function(data){
             if(data.isDir){
-                if(addHeader){
-                    var curPage = {id:data.id,fileName:data.filename};
-                    util.getCurType().appendTitleArr(curPage);
-                    console.log(util.getCurType().titleArr);
-                    appendTableHeader(data);
-                }
-                //设置当前的目录
-                channel.setCurDir(data.filename)
-                util.setTableSort(data.children);
-                util.getCurType().setCurPage(data.children)
+                openDirParse(data,addHeader);
                 showListTable(data.children);
             }
         });
@@ -176,15 +223,7 @@ function openViewDir(id,obj=true,addHeader=true){
     if(isDir){
         getInfoById(/*util.getTotalDir(),*/id,function(data){
             if(data.isDir){
-                if(addHeader){
-                    var curPage = {id:data.id,fileName:data.fileName};
-                    util.getCurType().appendTitleArr(curPage);
-                    appendTableHeader(data);
-                }
-                //设置当前的目录
-                channel.setCurDir(data.fileName)
-                util.setTableSort(data.children);
-                util.getCurType().setCurPage(data.children)
+                openDirParse(data,addHeader);
                 showViewTable(data.children);
             }
         });
@@ -227,8 +266,6 @@ function newDir(){
         var data = {
             id:100,
             isDir:true,
-            md5:"1234567890",
-            fileIcon:"filetype/barcode_result_page_type_file_dir_icon.png",
             fileName:"新建文件夹",
             ownerName:"lileimt",
             fileSize:"11.1 MB",

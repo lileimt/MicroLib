@@ -38,8 +38,8 @@ ListType.prototype.setCurPage = function(curPage){
     this.curPage = curPage;
 }
 
-ListType.prototype.appendTitleArr = function(fileName){
-    this.titleArr.push(fileName);
+ListType.prototype.appendTitleArr = function(curDir){
+    this.titleArr.push(curDir);
 }
 //删除路径导航栏
 ListType.prototype.removeTitleArr = function(count){
@@ -91,15 +91,40 @@ ListType.prototype.getNewFileName = function(fileName,isDir){
     return newName;
 }
 
-ListType.prototype.createNewDir = function(fileName,callback){
-    callback()
+ListType.prototype.createNewShareDir = function(data,callback){
+    oauth2.requestApi("/microlib/v1/sharefiles/documents","post",data,{
+        success:function(data){
+            callback(data)
+        },error:function(xhr,type,errorThrown){
+            console.log(xhr);
+        }
+    })
 }
 
-ListType.prototype.renameFile = function(fileName,isDir,callback){
-    //调用接口
-    callback()
+ListType.prototype.renameFile = function(id,newName,callback){
+    var data = {
+        newName:newName,
+        src_type:"files"
+    }
+    oauth2.requestApi("/microlib/v1/files/"+id+"/name","put",data,{
+        success:function(data){
+            callback(data)
+        },error:function(xhr,type,errorThrown){
+            console.log(xhr);
+        }
+    })
 }
 
-ListType.prototype.deleteFile = function(fileName,callback){
-    callback()
+ListType.prototype.deleteFile = function(ids,callback){
+    var data = {
+        ids:ids,
+        src_type:"files"
+    }
+    oauth2.requestApi("/microlib//v1/files/ids/status","delete",data,{
+        success:function(data){
+            callback(data)
+        },error:function(xhr,type,errorThrown){
+            console.log(xhr);
+        }
+    })
 }

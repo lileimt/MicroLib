@@ -149,6 +149,10 @@ void MicroLib::sigConnect()
 		m_subTransWidget->setGeometry(rect.right() - 202, rect.bottom() - 36, 202, 36);
 		m_subTransWidget->show();
 	});
+	//js¶Ë¿ØÖÆ´°¿Ú
+	connect(getChannel(), &QChannel::sigChangeToolBar, [=](int index){
+		m_toolWidget->showIndex((TOOLINDEX)index);
+	});
 }
 
 MicroLib::~MicroLib()

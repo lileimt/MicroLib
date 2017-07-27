@@ -287,7 +287,8 @@
         地址:DELETE  /v1/files/ids/status
 	    参数:
         {
-			ids:[1,2,3]
+			ids:[1,2,3],
+            src_type:"files"  //files 我的文件 collects 公共目录
         }
         返回值：
         {
