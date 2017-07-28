@@ -22,6 +22,7 @@ signals:
 	void sigNewShareClicked();
 	void sigNewDirClicked();
 	void sigEditShareClicked();
+	void sigDownloadClicked();
 private:
 	Ui::QToolWidget ui;
 	QSearchWidget *m_searchWidget;

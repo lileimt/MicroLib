@@ -2,27 +2,30 @@
 function setTableHeader(){
     $('.hui-table-title').html(''); 
 
+    var img = "down"
+    if(curSort == 1)img = "up";
+
     var html = '';
     html += '<th class="header_name" width="60%">';
     html += '    <input type="checkbox" class="hui-checkbox checkbox" id="allChecked" name="allChecked"/>';
     html += '        名称';
     html += '    <span class="rankImg">';
-    html += '        <img class="hui-icon-down" src="img/down.png" />';
+    html += '        <img class="hui-icon-down" src="img/'+img+'.png" />';
     html += '    </span>';
     html += '</th>';
     if(curType == 0){
         html += '<th>创建者</th>';
         html += '<th>大小</th>';
-        html += '<th>创建时间</th>'; 
+        html += '<th width="20%">创建时间</th>'; 
     }else{
         var curDir = util.getCurDir();
         if(curDir.id == 1){ //收到的文件的标题
             html += '<th>发送者</th>';
             html += '<th>大小</th>';
-            html += '<th>发送时间</th>'; 
+            html += '<th width="20%">发送时间</th>'; 
         }else{
             html += '<th>大小</th>';
-            html += '<th>创建时间</th>'; 
+            html += '<th width="20%">创建时间</th>'; 
         }
     }
 
@@ -44,7 +47,7 @@ function htmlListTable(data){
     html += '            <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>';
     html += '          </div>';
     html += '          <p class="hui-ellipsis check">';
-    html += '            <span class="fileName" value='+data.id+' isDir='+data.isDir+' onclick=openDir('+data.id+',this)>'+data.fileName+'</span>';
+    html += '            <span class="fileName" value='+data.id+' isDir='+data.isDir+' permission='+data.permission+' onclick=openDir('+data.id+',this)>'+data.name+'</span>';
     html += '          </p>';
     html += '          <div class="hui-table-operate">';
     html += '            <a href="###">下载</a>';
@@ -57,9 +60,21 @@ function htmlListTable(data){
     html += '          </div>';
     html += '        </div>';
     html += '      </td>';
-    html += '      <td class="check">'+data.ownerName+'</td>';
-    html += '      <td class="check">'+data.fileSize+'</td>';
-    html += '      <td class="check">'+data.createTime+'</td>';
+    if(curType == 0){
+        html += '      <td class="check">'+data.ownername+'</td>';
+        html += '      <td class="check">'+data.filesize+'</td>';
+        html += '      <td class="check">'+data.createTime+'</td>';
+    }else{
+        var curDir = util.getCurDir();
+        if(curDir.id == 1){ //收到的文件的标题
+            html += '      <td class="check">'+data.ownername+'</td>';
+            html += '      <td class="check">'+data.filesize+'</td>';
+            html += '      <td class="check">'+data.createTime+'</td>';
+        }else{
+            html += '      <td class="check">'+data.filesize+'</td>';
+            html += '      <td class="check">'+data.createTime+'</td>';
+        }
+    }
     html += '    </tr>';
 
     return html;
@@ -79,7 +94,7 @@ function appendViewTable(data){
     html += '              <img src='+data.fileIcon+' class="filetype" />';
     html += '              <input type="checkbox" class="list-checkbox" name="selected" />';
     html += '          </div>';
-    html += '          <div class="listTitle" >'+data.fileName+'</div>';
+    html += '          <div class="listTitle" >'+data.name+'</div>';
     html += '          <div class="popup">';
     html += '            <input type="text" class="rename" />';
     html += '            <button class="hui-btn btn-sure"><img src="img/success.png" /></button>';
@@ -104,7 +119,7 @@ function appendTableHeader(obj){
     var html = '';
     html += '<span>';
     html += '    <span> ＞ </span>';
-    html += '    <a class="hui-step" href="###" id='+obj.id+' onclick=gotoFile(this,'+obj.id+')>'+obj.fileName+'</a>';
+    html += '    <a class="hui-step" href="###" id='+obj.id+' onclick=gotoFile(this,'+obj.id+')>'+obj.name+'</a>';
     html += '</span>';
 
     $('#tablebar').append(html);
@@ -146,22 +161,20 @@ function showTableHeader(data){
 }
 
 //通过id值获取信息
-function getInfoById(/*data,*/id,callback){
-    // if(id == data.id){
-    //     //设置当前的目录
-    //     channel.setCurDir(data.fileName)
-    //     callback(data);
-    //     return false;
-    // }else{
-    //     if(data.isDir){
-    //         var children = data.children;
-    //         for(var i=0; i<children.length; i++){
-    //             var value = children[i];
-    //             getInfoById(value,id,callback);
-    //         }
-    //     }
-    // }
-    util.getCurType().getCurData(id,callback);
+function getInfoById(data,id,callback){
+    if(id == data.id){
+         callback(data);
+         return false;
+    }else{
+        var son = data.son;
+        for(var i=0; i<son.length; i++){
+            var value = son[i];
+            if(value.isDir == 1){
+                getInfoById(value,id,callback);
+            }
+            
+        }
+     }
 }
 
 // function getIndexById(data,id){
@@ -173,65 +186,65 @@ function getInfoById(/*data,*/id,callback){
 //     }
 // }
 
-function openDirParse(data,addHeader)
-{
+function openDirParse(data,addHeader){
+    var curDir = {id:data.id,name:data.name};
+    util.getCurType().setCurDir(curDir);
+
     if(addHeader){
-        var curDir = {id:data.id,fileName:data.filename};
         util.getCurType().appendTitleArr(curDir);
         appendTableHeader(data);
     }
-    
+
     if(curType == 0){//切换公共目录的工具栏
         if(util.getCurType().curDir.id == 0){  //根目录
             channel.setToolBar(0);
         }else{//子目录
+            console.log("curType == 1")
             channel.setToolBar(2);
         }
     }
     setTableHeader();
-    util.setTableSort(data.children);
-    util.getCurType().setCurPage(data.children);
+    util.setTableSort(data.son);
+    util.getCurType().setCurPage(data.son);
     //设置当前的目录
-    channel.setCurDir(data.filename);
+    channel.setCurDir(data.name);
 }
 
 //打开文件夹
-function openDir(id,obj=true,addHeader=true){
-    var isDir = false;
-    if(typeof obj == 'boolean'){
+function openDir(id,obj=1,addHeader=true){
+    var isDir = 2;
+    if(typeof obj == 'number'){
         isDir = obj;
     }else{
         isDir = $(obj).attr('isDir');
-    }  
-    if(isDir){
-        getInfoById(/*util.getTotalDir(),*/id,function(data){
-            if(data.isDir){
-                openDirParse(data,addHeader);
-                showListTable(data.children);
-            }
+    }
+    if(isDir == 1){
+        console.log(util.getTotalDir())
+        getInfoById(util.getTotalDir(),id,function(data){
+            openDirParse(data,addHeader);
+            showListTable(data.son);
         });
     }
 }
 
-function openViewDir(id,obj=true,addHeader=true){
-    var isDir = false;
-    if(typeof obj == 'boolean'){
+function openViewDir(id,obj=1,addHeader=true){
+    var isDir = 2;
+    if(typeof obj == 'number'){
         isDir = obj;
     }else{
         isDir = $(obj).attr('isDir');
     } 
-    if(isDir){
-        getInfoById(/*util.getTotalDir(),*/id,function(data){
-            if(data.isDir){
-                openDirParse(data,addHeader);
-                showViewTable(data.children);
-            }
+    if(isDir == 1){
+        getInfoById(util.getTotalDir(),id,function(data){
+            openDirParse(data,addHeader);
+            showViewTable(data.son);
         });
     }
 }
 
 //点击表头跳转到相应的文件夹
 function gotoFile(obj,id){
+    console.log("goto id="+id)
     openDirByMode(id);
     var data = $(obj).parent().nextAll(); 
     for(var i=0; i<data.length; i++){
@@ -242,9 +255,9 @@ function gotoFile(obj,id){
 
 function openDirByMode(id){
     if(curMode == 0){
-        openDir(id,true,false);
+        openDir(id,1,false);
     }else{
-        openViewDir(id,true,false);
+        openViewDir(id,1,false);
     }
 }
 
@@ -255,8 +268,8 @@ function deleteFile(id){
 
 function renameFile(data,oldName,newName){
     $.each(data,function(index,value){
-        if(value.fileName == oldName){
-            value.fileName = newName;
+        if(value.name == oldName){
+            value.name = newName;
         }
     });
 }
@@ -265,10 +278,10 @@ function newDir(){
     if(curMode == 0){  //列表模式
         var data = {
             id:100,
-            isDir:true,
-            fileName:"新建文件夹",
-            ownerName:"lileimt",
-            fileSize:"11.1 MB",
+            isDir:1,
+            name:"新建文件夹",
+            ownername:"lileimt",
+            filesize:"11.1 MB",
             createTime:"11:11"
         };
         var html = htmlListTable(data);
@@ -278,3 +291,5 @@ function newDir(){
 
     }
 }
+
+//function getChecked

@@ -10,19 +10,21 @@ ListType.prototype.getCurData = function(id,callback){
     if(curType == 0){//获取公共目录的数据
         oauth2.getShareFilesById(id,{
             success:function(data){
-                curPage = data
-                tablesort.sort(curPage,"fileName",curSort)
-                callback(data)
+                console.log(data)
+                curPage = data;
+                tablesort.sort(curPage,"name",curSort);
+                callback(data);
             },error:function(xhr,type,errorThrown){
                 console.log(xhr);
             }
         });
     }else{
-        oauth2.getMyFilesByIds(id,{
+        oauth2.getMyFilesById(id,{
             success:function(data){
-                curPage = data
-                tablesort.sort(curPage,"fileName",curSort)
-                callback(FormData)
+                console.log(data)
+                curPage = data;
+                tablesort.sort(curPage,"name",curSort);
+                callback(data);
             },error:function(xhr,type,errorThrown){
                 console.log(xhr);
             }
@@ -48,27 +50,27 @@ ListType.prototype.removeTitleArr = function(count){
 }
 
 ListType.prototype.checkFile = function(fileName){
-    var children = curPage.children;
-    for(var i=0; i<children.length; i++){
-        var data = children[i];
-        if(data.fileName == fileName){
+    var son = curPage.son;
+    for(var i=0; i<son.length; i++){
+        var data = son[i];
+        if(data.name == fileName){
             return true;
         }
     }
     return false;
 }
 
-ListType.prototype.getIndexOfRename = function(fileName){
+ListType.prototype.getIndexOfRename = function(name){
     var tempList = curPage;
     if(curSort == 0){//降序
-        tablesort.sort(tempList,"fileName",1);
+        tablesort.sort(tempList,"name",1);
     }
     var count = 0;
-    //var re = new RegExp("^"+fileName+"(\\(\\d+\\))?$","g")
-    var children = tempList.children;;
-    for(var i=0; i<children.length; i++){
-        var data = children[i];
-        if(data.fileName.indexof(fileName) > 0){
+    //var re = new RegExp("^"+name+"(\\(\\d+\\))?$","g")
+    var son = tempList.son;;
+    for(var i=0; i<son.length; i++){
+        var data = son[i];
+        if(data.name.indexof(name) > 0){
             count++;
             continue;
         }

@@ -1,6 +1,6 @@
 #include "qchannel.h"
 #include <QMessageBox>
-
+#include <QDebug>
 
 QChannel::QChannel(QObject *parent)
 	: QObject(parent)
@@ -36,8 +36,18 @@ void QChannel::setCurType(int type)
 {
 	emit sigCurType(type);
 }
+void QChannel::setCurFiles()
+{
+	emit sigCurFiles();
+}
 
 void QChannel::slotChangeToolBar(int index)
 {
 	emit sigChangeToolBar(index);
+}
+
+//js调用开始下载
+void QChannel::slotCurFiles(QString curFiles){
+	qDebug() << curFiles;
+	emit sigStartDownload(curFiles);
 }

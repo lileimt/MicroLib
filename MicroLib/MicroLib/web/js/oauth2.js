@@ -24,11 +24,11 @@ var oauth2 = {};
 
         $.ajax(url, settings);
     };
-
+    //使用同一个接口
     obj.getShareFilesById = function(/*access_token,*/ id,callback){
-        obj.requestApi('/microlib/v1/documents/'+id,'get',{},callback);
+        obj.requestApi('/microlib/v1/files/'+id+"?share_type=2",'get',{},callback);
     }
     obj.getMyFilesById = function(/*access_token,*/ id,callback){
-        obj.requestApi('/microlib/v1/myfiles/'+id,'get',{},callback);
+        obj.requestApi('/microlib/v1/files/'+id+"?share_type=1",'get',{},callback);
     }
 })(jQuery,oauth2);

@@ -1,12 +1,12 @@
 var util = {
     setTableSort:function(curList){
-        tablesort.sort(curList,"fileName",curSort);
+        tablesort.sort(curList,"name",curSort);
     },
     showTable:function() {
         var obj = this.getCurType();
         this.setTableSort(obj.curPage);
         this.showHeader();
-        channel.setCurDir(obj.curDir.fileName);
+        channel.setCurDir(obj.curDir.name);
         if(curMode == 0){
             showListTable(obj.curPage);
         }else{
@@ -16,7 +16,7 @@ var util = {
     showHeader:function(){
         clearTableHeader();
         setTableHeader();
-        showFirstHeader(this.getCurType().curDir.fileName)
+        showFirstHeader(this.getCurType().curDir.name)
         showTableHeader(this.getCurType().titleArr);
     },
     getCurType:function(){
@@ -51,10 +51,10 @@ var util = {
     },
     getFileIcon:function(data){
         var iconPath = "filetype/";
-        if(data.isDir){
+        if(data.isDir == 1){
             return iconPath+"barcode_result_page_type_file_dir_icon.png";
         }else{
-            var suffix = this.getSuffix(data.fileName);
+            var suffix = this.getSuffix(data.name);
             if(suffix == 'apk'){
                 return iconPath+"barcode_result_page_type_apk_icon.png";
             }else if(suffix == 'doc' || suffix == 'docx'){

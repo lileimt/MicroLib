@@ -150,10 +150,10 @@ $(function(){
         if($("#allChecked").prop("checked")){
              $("input[name='checked']").prop("checked", true);
              $('#tbody').find('td').addClass('bground boderColor');
-         }else{
+        }else{
              $("input[name='checked']").prop("checked", false);
              $('#tbody').find('td').removeClass('bground boderColor');
-         }
+        }
     });
     var allSelect = function(){
         var number =  $("input[name='checked']").length;
@@ -188,7 +188,7 @@ $(function(){
     });
     //刷新
     $('#refreshBtn').bind('click',function(){
-        tablesort.sort(util.getCurPage(),"fileName",curSort)
+        tablesort.sort(util.getCurPage(),"name",curSort)
         if($('#sample2').is(':visible')){
             clearListTable();
             showListTable(util.getCurPage());
@@ -205,24 +205,24 @@ $(function(){
         if($(this).find('img').attr('src')=='img/down.png'){
              $(this).find('img').attr('src','img/up.png');
              curSort = 1
-             tablesort.sort(util.getCurPage(),"fileName",curSort)
+             tablesort.sort(util.getCurPage(),"name",curSort)
         }else{
             $(this).find('img').attr('src','img/down.png');
             curSort = 0
-            tablesort.sort(util.getCurPage(),"fileName",curSort)
+            tablesort.sort(util.getCurPage(),"name",curSort)
         }
         clearListTable();
         showListTable(util.getCurPage());
     });
     $('.hui-table-title').on('click','.header_name',function(){
         if($(this).find('img').attr('src')=='img/down.png'){
-             $(this).find('img').attr('src','img/up.png');
-             curSort = 1
-             tablesort.sort(util.getCurPage(),"fileName",curSort)
+            $(this).find('img').attr('src','img/up.png');
+            curSort = 1
+            tablesort.sort(util.getCurPage(),"name",curSort)
         }else{
             $(this).find('img').attr('src','img/down.png');
             curSort = 0
-            tablesort.sort(util.getCurPage(),"fileName",curSort)
+            tablesort.sort(util.getCurPage(),"name",curSort)
         }
         clearListTable();
         showListTable(util.getCurPage());

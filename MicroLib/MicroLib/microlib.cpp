@@ -118,6 +118,11 @@ void MicroLib::sigConnect()
 	connect(m_toolWidget, &QToolWidget::sigUploadClicked, [=](){
 		openUploadFileDialog();
 	});
+	//下载文件
+	connect(m_toolWidget, &QToolWidget::sigDownloadClicked, [=](){
+		//downloadFiles();
+		getChannel()->setCurFiles();
+	});
 	connect(m_toolWidget, &QToolWidget::sigNewShareClicked, [=](){
 		//创建子窗口
 		RELEASE(m_newDirsWidget);
@@ -152,6 +157,9 @@ void MicroLib::sigConnect()
 	//js端控制窗口
 	connect(getChannel(), &QChannel::sigChangeToolBar, [=](int index){
 		m_toolWidget->showIndex((TOOLINDEX)index);
+	});
+	connect(getChannel(), &QChannel::sigStartDownload, [=](QString curFiles){
+		downloadFiles(curFiles);
 	});
 }
 
@@ -285,9 +293,11 @@ void MicroLib::openUploadFileDialog()
 			st.status = 0;//正常
 			m_transWidget->insertList(st);
 		}
-		QRect rect = m_webEngine->geometry();
-		m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
-		m_transWidget->show();
+		if (!m_transWidget->isVisible()){//窗口不可见
+			QRect rect = m_webEngine->geometry();
+			m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
+			m_transWidget->show();
+		}
 	}
 }
 
@@ -295,4 +305,21 @@ void MicroLib::getUserInfo()
 {
 	string userInfo = httpGet(USERURL, "9f2405958adc49e6b70a9294c238e179");
 	m_parseJson.getUserInfo(userInfo,m_user);
+}
+
+void MicroLib::downloadFiles(QString curFiles)
+{
+	//FILETRANSPORT st;
+	//st.fileName = fileInfo.fileName();
+	//st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
+	//st.filePath = fileInfo.filePath();
+	//st.fileSize = QString::number(fileInfo.size());
+	//st.state = 1;//上传
+	//st.status = 0;//正常
+	//m_transWidget->insertList(st);
+	//if (!m_transWidget->isVisible()){//窗口不可见，则显示窗口
+	//	QRect rect = m_webEngine->geometry();
+	//	m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
+	//	m_transWidget->show();
+	//}
 }

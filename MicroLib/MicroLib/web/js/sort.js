@@ -1,5 +1,5 @@
 var tablesort = {
-    sort:function (arry, parm, sortby) {
+    sort:function (array, parm, sortby) {
         var down = function (x, y) {
             if(x.isDir ^ y.isDir){
                 if(x.isDir)return -1;
@@ -14,10 +14,12 @@ var tablesort = {
             } 
             return (eval("x." + parm) < eval("y." + parm)) ? -1 : 1
         }
-        if (sortby == 0) {//down
-            arry.sort(down)
-        }else {
-            arry.sort(up)
-        }
+        if(array.length > 0){
+            if (sortby == 0) {//down
+                array.sort(down)
+            }else {
+                array.sort(up)
+            }
+        }  
     }
 }

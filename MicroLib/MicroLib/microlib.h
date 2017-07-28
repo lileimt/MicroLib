@@ -77,6 +77,7 @@ private:
 	QChannel *getChannel();
 	//获取用户数据
 	void getUserInfo();
+	void downloadFiles(QString curFiles);
 };
 
 #endif // MICROLIB_H
