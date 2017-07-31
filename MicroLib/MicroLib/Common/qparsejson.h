@@ -7,6 +7,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include "Common/quser.h"
+#include "Common/common.h"
 
 using namespace  std;
 
@@ -22,6 +23,7 @@ public:
 	void getUserInfo(string data, QUser *user);
 	void parseUserJson(QJsonObject obj, QUser *user);
 	void parseTokenJson(QJsonObject obj);
+	void parseDownloadJson(string data, QList<FILETRANSPORT> &transList);
 private:
 	QString m_token;
 };

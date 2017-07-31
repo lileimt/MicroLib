@@ -2,6 +2,7 @@
 #define  _COMMON_H
 
 #include <QString>
+#include <QList>
 
 #define WIDTH 966
 #define HEIGHT 640
@@ -11,15 +12,20 @@
 enum OPERTYPE{sharefiles,myfiles};   //当前操作的类型
 enum TOOLINDEX{shareindex,myfilesindex,subshareindex};    //选择对应的工具栏索引
 
+enum FILESTATUS{normal,pause,error};
+enum FILESTATE{download,upload};
+
 #define USERURL  "http://api-x.sunfuedu.com/admin/v1/users"
 
 typedef struct{
+	int id;
 	QString fileName;
 	QString fileIcon;
+	QString curSize;
 	QString fileSize;
 	QString filePath;
-	int status;  //0 正常  1暂停 2错误
-	int state;   //0下载 1上传
+	FILESTATUS status;  //0 正常  1暂停 2错误
+	FILESTATE state;   //0下载 1上传
 }FILETRANSPORT;
 
 typedef struct {

@@ -289,8 +289,8 @@ void MicroLib::openUploadFileDialog()
 			st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
 			st.filePath = fileInfo.filePath();
 			st.fileSize = QString::number(fileInfo.size());
-			st.state = 1;//上传
-			st.status = 0;//正常
+			st.state = upload;//上传
+			st.status = normal;//正常
 			m_transWidget->insertList(st);
 		}
 		if (!m_transWidget->isVisible()){//窗口不可见
@@ -309,17 +309,17 @@ void MicroLib::getUserInfo()
 
 void MicroLib::downloadFiles(QString curFiles)
 {
-	//FILETRANSPORT st;
-	//st.fileName = fileInfo.fileName();
-	//st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
-	//st.filePath = fileInfo.filePath();
-	//st.fileSize = QString::number(fileInfo.size());
-	//st.state = 1;//上传
-	//st.status = 0;//正常
-	//m_transWidget->insertList(st);
-	//if (!m_transWidget->isVisible()){//窗口不可见，则显示窗口
-	//	QRect rect = m_webEngine->geometry();
-	//	m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
-	//	m_transWidget->show();
-	//}
+	QParseJson json;
+	QList<FILETRANSPORT> tmpTransList;
+	json.parseDownloadJson(curFiles.toStdString(), tmpTransList);
+	QList<FILETRANSPORT>::iterator it = tmpTransList.begin();
+	for (; it != tmpTransList.end(); it++){
+		m_transWidget->insertList(*it);
+		m_transList.append(*it);
+	}
+	if (!m_transWidget->isVisible()){//窗口不可见，则显示窗口
+		QRect rect = m_webEngine->geometry();
+		m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
+		m_transWidget->show();
+	}
 }

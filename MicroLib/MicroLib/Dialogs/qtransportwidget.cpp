@@ -20,7 +20,7 @@ QTransportWidget::QTransportWidget(QString strTitle, bool bShowMin, QWidget *par
 	m_listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	m_listWidget->setStyleSheet("border:none;");
 	m_pHeader = new QTransportItem(NULL, true,this);
-	m_pHeader->setFixedSize(620, 40);
+	m_pHeader->setFixedSize(620, 30);
 	m_pLayout->addWidget(m_pHeader);
 	m_pLayout->addWidget(m_listWidget);
 	m_pLayout->setContentsMargins(0, 0, 0, 0);

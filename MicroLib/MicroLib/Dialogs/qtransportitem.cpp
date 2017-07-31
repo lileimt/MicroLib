@@ -6,8 +6,8 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 	ui.setupUi(this);
 	if (!bFirst){
 		ui.lblOperation->setVisible(false);
-		setStyleSheet("QLabel{color:#000000;font: 14pt Î¢ÈíÑÅºÚ;}"
-							  "QToolButton{border:none;}");
+		setStyleSheet("QLabel{color:#000000;font: 12pt Î¢ÈíÑÅºÚ;}"
+							 "QToolButton{border:none;}");
 
 		if (stFileTransport->state){
 			ui.lblPix->setPixmap(QPixmap(":/images/uploadt"));
@@ -26,7 +26,9 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 			ui.lblStatus->setPixmap(QPixmap(":/images/error"));
 		}
 
+		ui.lblSize->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 		ui.lblSize->setText(stFileTransport->fileSize);
+		ui.lblPath->setAlignment(Qt::AlignCenter);
 		ui.lblPath->setText(stFileTransport->filePath);
 		ui.btnStatus->setIcon(QIcon(":/images/pause"));
 		ui.btnOperate->setIcon(QIcon(":/images/filedelete"));
@@ -36,6 +38,8 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 		ui.lblIcon->setVisible(false);
 		ui.btnStatus->setVisible(false);
 		ui.btnOperate->setVisible(false);
+		ui.lblSize->setAlignment(Qt::AlignCenter);
+		ui.lblPath->setAlignment(Qt::AlignCenter);
 		setStyleSheet("QTransportItem{background:white;}"
 							 "QLabel{color:#858585;font: 14pt Î¢ÈíÑÅºÚ;}"
 							 "QToolButton{border:none;}");

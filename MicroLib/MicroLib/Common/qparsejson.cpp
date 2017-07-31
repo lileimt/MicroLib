@@ -1,5 +1,8 @@
 #include "qparsejson.h"
 #include <QVariant>
+#include <QDebug>
+#include "Common/common.h"
+#include "Common/commonhelper.h"
 
 QParseJson::QParseJson(QObject *parent)
 	: QObject(parent)
@@ -29,8 +32,7 @@ void QParseJson::getUserInfo(string data, QUser *user)
 {
 	QJsonParseError json_error;
 	QJsonDocument parse_doucment = QJsonDocument::fromJson(data.data(), &json_error);
-	if (json_error.error == QJsonParseError::NoError)
-	{
+	if (json_error.error == QJsonParseError::NoError){
 		//qDebug() << data.data();
 		if (parse_doucment.isObject()){
 			QJsonObject obj = parse_doucment.object();
@@ -93,6 +95,46 @@ void QParseJson::parseTokenJson(QJsonObject obj)
 		QJsonValue value = obj.take("user_id");
 		if (value.toDouble()){
 			//qDebug() << "user_id" << value.toInt();
+		}
+	}
+}
+
+//解析文件下载的JSON数据
+void QParseJson::parseDownloadJson(string data,QList<FILETRANSPORT> &transList)
+{
+	QJsonParseError json_error;
+	QJsonDocument parse_doucment = QJsonDocument::fromJson(data.data(), &json_error);
+	if (json_error.error == QJsonParseError::NoError){
+		if (parse_doucment.isArray()){
+			QJsonArray arrValue = parse_doucment.array();
+			for (int i = 0; i < arrValue.size(); i++){
+				QJsonValue objValue = arrValue.at(i);
+				QJsonObject obj = objValue.toObject();
+
+				FILETRANSPORT st;		
+				st.state = download;
+				st.status = normal;
+				if (obj.contains("id")){
+					QJsonValue id = obj.take("id");
+					qDebug() << id.toInt();
+					st.id = id.toInt();
+				}
+				if (obj.contains("name")){
+					QJsonValue name = obj.take("name");
+					qDebug() << name.toString();
+					st.fileName = name.toString();
+					st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
+				}
+				if (obj.contains("size")){
+					QJsonValue size = obj.take("size");
+					st.fileSize = size.toString();
+				}
+				if (obj.contains("path")){
+					QJsonValue path = obj.take("path");
+					st.filePath = path.toString();
+				}
+				transList.append(st);
+			}
 		}
 	}
 }
