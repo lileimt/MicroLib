@@ -76,6 +76,7 @@ QToolWidget::QToolWidget(QWidget *parent)
 	connect(m_editShare, SIGNAL(clicked()), this, SIGNAL(sigEditShareClicked()));
 	connect(m_downloadFile, SIGNAL(clicked()), this, SIGNAL(sigDownloadClicked()));
 	connect(m_downloadFile1, SIGNAL(clicked()), this, SIGNAL(sigDownloadClicked()));
+	connect(m_deleteFile, SIGNAL(clicked()), this, SIGNAL(sigDeleteClicked()));
 }
 
 QToolWidget::~QToolWidget()

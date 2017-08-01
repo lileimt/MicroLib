@@ -40,6 +40,10 @@ void QChannel::setCurFiles()
 {
 	emit sigCurFiles();
 }
+void QChannel::deleteFiles()
+{
+	emit sigDeleteFiles();
+}
 
 void QChannel::slotChangeToolBar(int index)
 {
@@ -50,4 +54,9 @@ void QChannel::slotChangeToolBar(int index)
 void QChannel::slotCurFiles(QString curFiles){
 	qDebug() << curFiles;
 	emit sigStartDownload(curFiles);
+}
+
+void QChannel::slotSendFiles(QStringList ids)
+{
+	emit sigSendFiles(ids);
 }

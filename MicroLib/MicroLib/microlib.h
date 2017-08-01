@@ -18,6 +18,7 @@
 #include "Dialogs/qnewdirsnextwidget.h"
 #include "Dialogs/qsidewidget.h"
 #include "Dialogs/qmsgwidget.h"
+#include "Dialogs/qsendwidget.h"
 #include "Common/qchannel.h"
 #include "Common/quser.h"
 #include "Common/qparsejson.h"
@@ -38,6 +39,8 @@ public:
 	void showNewDirsWidget();
 	//显示新建公共目录下一步窗口
 	void showNewDirsNextWidget();
+	//显示发送文件窗口
+	void ShowSendFilesWidget(int count);
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
@@ -60,6 +63,7 @@ private:
 	QNewDirsNextWidget *m_newDirsNextWidget;
 	QSideWidget *m_sideWidget;
 	QMsgWidget *m_msgWidget;
+	QSendWidget *m_sendWidget;
 
 	QParseJson m_parseJson;
 	QUser *m_user;

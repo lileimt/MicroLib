@@ -50,8 +50,8 @@ function htmlListTable(data){
     html += '            <span class="fileName" value='+data.id+' isDir='+data.isDir+' permission='+data.permission+' onclick=openDir('+data.id+',this)>'+data.name+'</span>';
     html += '          </p>';
     html += '          <div class="hui-table-operate">';
-    html += '            <a href="###">下载</a>';
-    html += '            <a href="###">发送</a>';
+    html += '            <a href="###" class="download">下载</a>';
+    html += '            <a href="###" class="send">发送</a>';
     html += '            <a href="###" class="more">更多</a>';
     html += '            <ul class="hui-moreBox">';
     html += '              <li class="btn-delete">删除</li>';
@@ -62,16 +62,19 @@ function htmlListTable(data){
     html += '      </td>';
     if(curType == 0){
         html += '      <td class="check">'+data.ownername+'</td>';
-        html += '      <td class="check">'+data.filesize+'</td>';
+        var size = data.isDir == 1?'':data.filesize;
+        html += '      <td class="check">'+size+'</td>';
         html += '      <td class="check">'+data.createTime+'</td>';
     }else{
         var curDir = util.getCurDir();
         if(curDir.id == 1){ //收到的文件的标题
             html += '      <td class="check">'+data.ownername+'</td>';
-            html += '      <td class="check">'+data.filesize+'</td>';
+            var size = data.isDir == 1?'':data.filesize;
+            html += '      <td class="check">'+size+'</td>';
             html += '      <td class="check">'+data.createTime+'</td>';
         }else{
-            html += '      <td class="check">'+data.filesize+'</td>';
+            var size = data.isDir == 1?'':data.filesize;
+            html += '      <td class="check">'+size+'</td>';
             html += '      <td class="check">'+data.createTime+'</td>';
         }
     }
@@ -94,7 +97,7 @@ function appendViewTable(data){
     html += '              <img src='+data.fileIcon+' class="filetype" />';
     html += '              <input type="checkbox" class="list-checkbox" name="selected" />';
     html += '          </div>';
-    html += '          <div class="listTitle" >'+data.name+'</div>';
+    html += '          <div class="listTitle" value='+data.id+'>'+data.name+'</div>';
     html += '          <div class="popup">';
     html += '            <input type="text" class="rename" />';
     html += '            <button class="hui-btn btn-sure"><img src="img/success.png" /></button>';
@@ -177,14 +180,14 @@ function getInfoById(data,id,callback){
      }
 }
 
-// function getIndexById(data,id){
-//     for(var i=0; i<data.length; i++){
-//         var value = data[i];
-//         if(value.id == id){
-//             return i;
-//         }
-//     }
-// }
+function getIndexById(data,id){
+    for(var i=0; i<data.length; i++){
+        var value = data[i];
+        if(value.id == id){
+            return i;
+        }
+    }
+}
 
 function openDirParse(data,addHeader){
     var curDir = {id:data.id,name:data.name};
@@ -261,17 +264,77 @@ function openDirByMode(id){
     }
 }
 
+function sendFileIds(){
+    var all = null;
+    var ids = [];
+    if(curMode == 0){
+        all = $("input[name='checked']:checked");
+        $.each(all,function(index,value){
+            var id = $(value).closest('tr').find('.fileName').attr('value');
+            ids.push(id);
+        })
+    }else{
+        all = $("input[name='selected']:checked");
+        $.each(all,function(index,value){
+            var id = $(value).closest('li').find('.listTitle').attr('value');
+            ids.push(id);
+        })
+    }
+    return ids
+}
+
 function deleteFile(id){
     var index = getIndexById(util.getCurPage(),id);
     util.getCurPage().splice(index,1);
 }
 
-function renameFile(data,oldName,newName){
-    $.each(data,function(index,value){
-        if(value.name == oldName){
-            value.name = newName;
+function deleteFiles(){
+    console.log('deleteFiles')
+    var all = null;
+    var ids = [];
+    if(curMode == 0){
+        all = $("input[name='checked']:checked");
+        console.log(all)
+        $.each(all,function(index,value){
+            console.log($(value))
+            var id = $(value).closest('tr').find('.fileName').attr('value');
+            ids.push(id);
+        })
+    }else{
+        all = $("input[name='selected']:checked");
+        $.each(all,function(index,value){
+            var id = $(value).closest('li').find('.listTitle').attr('value');
+            ids.push(id);
+        })
+    }
+    console.log(ids)
+    //oauth2.deleteFile(ids,function(data){
+    //    if(data.error_code == 0){
+            $.each(ids,function(index,value){
+                deleteFile(value);
+            })
+            $.each(all,function(index,value){
+                if(curMode == 0){
+                    $(value).closest('tr').remove();
+                }else{
+                    $(value).closest('li').remove();
+                }
+            })
+    //    }
+    //})
+}
+
+function renameFile(data,id,oldName,newName,callback){
+    oauth2.renameFile(id,newName,function(value){
+        if(value.error_code == 0){
+            $.each(data,function(index,value){
+                if(value.name == oldName){
+                    value.name = newName;
+                }
+            });
         }
-    });
+        callback(value.error_code);
+    })
 }
 
 function newDir(){

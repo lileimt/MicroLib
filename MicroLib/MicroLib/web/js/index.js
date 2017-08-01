@@ -51,11 +51,12 @@ $(function(){
             $('.rightKeyDelete').off('click').bind('click',function(){
                 if(self.find('.hui-checkbox').prop('checked')){
                     var id = self.find('.fileName').attr('value');
-                    //var fileName = self.find('.fileName').text();
-                    //var index = getIndexByName(util.getCurPage(),fileName);
-                    //util.getCurPage().splice(index,1);
-                    deleteFile(id);
-                    self.remove();
+                    oauth2.deleteFile([id],function(data){
+                        if(data.error_code == 0){
+                            deleteFile(id);
+                            self.remove();
+                        }
+                    })
                 }
                 $('#rightKey').hide();
             });
@@ -105,6 +106,11 @@ $(function(){
     $('#tbody').on('click','.more',function(){
         $(this).next('.hui-moreBox').toggle();
     })
+    //发送文件
+    $('#tbody').on('click','.send',function(){
+        var id = $(this).closest('td').find('.fileName').attr('value');
+        channel.sendFiles([id]);
+    });
     $('#tbody').on('click','.btn-rename,.btn-delete',function(){
         $('.hui-moreBox').hide();
     })
@@ -126,12 +132,16 @@ $(function(){
     })
     //确定重命名 ——按钮
     $('#tbody').on('click','.btn-sure',function(){
-        var newName = $(this).prev('.hui-rename').val();
+        var id = $(this).closest('td').find('.fileName').attr('value');
         var oldName = $(this).closest('td').find('.fileName').text();
-        renameFile(util.getCurPage(),oldName,newName);
-        $(this).closest('.hui-popup').hide();
-        $(this).closest('td').find('.fileName').text(newName);
-        $(this).closest('tr').find('.hui-checkbox').prop('checked',false);
+        var newName = $(this).prev('.hui-rename').val();
+        renameFile(util.getCurPage(),id,oldName,newName,function(data){
+            if(data == 0){
+                $(this).closest('td').find('.fileName').text(newName);
+            }
+            $(this).closest('.hui-popup').hide();
+            $(this).closest('tr').find('.hui-checkbox').prop('checked',false);
+        }); 
     })
     //重命名 —— 回车
     $(document).keyup(function(event){
@@ -184,7 +194,14 @@ $(function(){
     });
     //删除
     $('#tbody').on('click','.btn-delete',function(){
-        $(this).closest('tr').remove();
+        var self =  $(this);
+        var id = self.closest('tr').find('.fileName').attr('value');
+        oauth2.deleteFile([id],function(data){
+            if(data.error_code == 0){
+                deleteFile(id);
+                self.closest('tr').remove();
+            }
+        })
     });
     //刷新
     $('#refreshBtn').bind('click',function(){
@@ -346,13 +363,18 @@ $(function(){
     });
     //确定重命名 ——按钮
     $('#vbody').on('click','.popup .btn-sure',function(){
-        var newName = $(this).prev('.rename').val();
+        var id = $(this).closest('li').find('.listTitle').attr('value');
         var oldName = $(this).closest('li').find('.listTitle').text();
-        renameFile(util.getCurPage(),oldName,newName);
-        $(this).closest('li').find('.popup').hide();
-        $(this).closest('li').find('.listTitle').text(newName);
-        $(this).closest('li').find('.list-checkbox').prop('checked',false);
-        $(this).closest('li').find('.listWrap').removeClass('active');
+        var newName = $(this).prev('.rename').val();
+        
+        renameFile(util.getCurPage(),id,oldName,newName,function(data){
+            if(data == 0){
+                $(this).closest('li').find('.listTitle').text(newName);
+            }
+            $(this).closest('li').find('.popup').hide();
+            $(this).closest('li').find('.list-checkbox').prop('checked',false);
+            $(this).closest('li').find('.listWrap').removeClass('active');
+        });
     })
     
     //点击返回按钮

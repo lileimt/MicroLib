@@ -9,7 +9,7 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 		setStyleSheet("QLabel{color:#000000;font: 12pt Î¢ÈíÑÅºÚ;}"
 							 "QToolButton{border:none;}");
 
-		if (stFileTransport->state){
+		if (stFileTransport->state == upload){
 			ui.lblPix->setPixmap(QPixmap(":/images/uploadt"));
 		}else{
 			ui.lblPix->setPixmap(QPixmap(":/images/downloadt"));
@@ -18,9 +18,9 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 		ui.lblIcon->setPixmap(QPixmap(stFileTransport->fileIcon));
 		ui.lblName->setText(stFileTransport->fileName);
 
-		if (stFileTransport->status == 0){
+		if (stFileTransport->status == normal){
 			ui.lblStatus->setPixmap(QPixmap(":/images/ok"));
-		}else if (stFileTransport->status == 1){
+		}else if (stFileTransport->status == pause){
 			ui.lblStatus->setPixmap(QPixmap(":/images/pause"));
 		}else{
 			ui.lblStatus->setPixmap(QPixmap(":/images/error"));

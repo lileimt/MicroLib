@@ -31,4 +31,26 @@ var oauth2 = {};
     obj.getMyFilesById = function(/*access_token,*/ id,callback){
         obj.requestApi('/microlib/v1/files/'+id+"?share_type=1",'get',{},callback);
     }
+    obj.renameFile = function(id,newName,callback){
+        var data ={
+            newName:newName,
+            src_type:"files"
+        }
+        obj.requestApi('/microlib/v1/files/'+id+'/name','put',data,callback);
+    }
+    obj.deleteFile = function(ids,callback){
+        var data = {
+            ids:ids,
+            src_type:"files"
+        }
+        obj.requestApi('/microlib/v1/files/ids/status','delete',data,callback);
+    }
+    // obj.sendFiles = function(ids,receiveIds,comment,callback){
+    //     var data = {
+    //         ids:ids,
+    //         receiveIds:receiveIds,
+    //         comment:comment
+    //     }
+    //     obj.requestApi('/microlib/v1/files/ids/content','post',data,callback);
+    // }
 })(jQuery,oauth2);
