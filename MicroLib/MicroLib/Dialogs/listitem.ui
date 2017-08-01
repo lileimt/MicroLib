@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QListItem{
-	background:white;
+	background:transparent;
 }
 QLabel{
 	font: 75 10pt &quot;微软雅黑&quot;;

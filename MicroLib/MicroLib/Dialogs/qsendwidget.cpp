@@ -15,6 +15,16 @@ QSendWidget::QSendWidget(QWidget *parent, QUser *user,int count)
 
 	connect(ui.btnClose, SIGNAL(clicked()), this, SIGNAL(sigCloseClicked()));
 	connect(ui.btnOk, SIGNAL(clicked()), this, SIGNAL(sigOKClicked()));
+	connect(ui.btnArrow, &QToolButton::clicked, [=](){
+		QTreeWidgetItem *curItem = ui.treeWidget->currentItem();
+		QString username = curItem->text(0);
+		int id = curItem->text(1).toInt();
+		if (m_ids.contains(id)){
+			return;
+		}
+		QListItem *item = new QListItem(username, id, 2);
+		addItem(id,item);
+	});
 }
 
 QSendWidget::~QSendWidget()
@@ -43,11 +53,19 @@ void QSendWidget::setTreeWidget(QUser *pUser, QTreeWidgetItem *parent, bool top)
 	}
 }
 
-void QSendWidget::addItem(QListItem *pItem)
+void QSendWidget::addItem(int id,QListItem *pItem)
 {
 	QListWidgetItem *aItem = new QListWidgetItem(ui.listWidget);
 	QSize size = pItem->size();
 	aItem->setSizeHint(QSize(pItem->width() - 6, pItem->height()));
 	ui.listWidget->addItem(aItem);
 	ui.listWidget->setItemWidget(aItem, pItem);
+	m_ids.insert(id, aItem);
+
+	connect(pItem, &QListItem::sigCancelClicked, [=](int id){
+		ItemList::iterator it = m_ids.find(id);
+		ui.listWidget->removeItemWidget(it.value());
+		delete it.value();
+		m_ids.remove(id);
+	});
 }

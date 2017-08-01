@@ -6,6 +6,8 @@
 #include "Common/quser.h"
 #include "Dialogs/qlistitem.h"
 
+typedef QMap<int, QListWidgetItem *> ItemList;
+
 class QNewDirsNextWidget : public QBaseWidget
 {
 	Q_OBJECT
@@ -21,10 +23,10 @@ private:
 	Ui::QNewDirsNextWidget ui;
 	QUser *m_user;
 	//QList<int> m_idList;
-	QMap<int, QListItem *> m_map;
+	ItemList m_map;
 
 	void setTreeWidget(QUser *user, QTreeWidgetItem *parent, bool top = false);
-	void addItem(QListItem *pItem);
+	void addItem(int id,QListItem *pItem);
 
 	void createDocuments();
 };

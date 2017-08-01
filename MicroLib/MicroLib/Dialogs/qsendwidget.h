@@ -6,6 +6,8 @@
 #include "Common/quser.h"
 #include "Dialogs/qlistitem.h"
 
+typedef QMap<int,QListWidgetItem *> ItemList;
+
 class QSendWidget : public QBaseWidget
 {
 	Q_OBJECT
@@ -22,7 +24,9 @@ private:
 	QUser *m_user;
 
 	void setTreeWidget(QUser *user, QTreeWidgetItem *parent, bool top = false);
-	void addItem(QListItem *pItem);
+	void addItem(int id,QListItem *pItem);
+
+	ItemList m_ids;
 };
 
 #endif // QSENDWIDGET_H

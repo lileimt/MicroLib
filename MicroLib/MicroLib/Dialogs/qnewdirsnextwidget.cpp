@@ -36,9 +36,11 @@ QNewDirsNextWidget::QNewDirsNextWidget(QWidget *parent, QUser *user)
 		}
 		QString username = curItem->text(0);
 		int id = curItem->text(1).toInt();
+		if (m_map.contains(id)){
+			return;
+		}
 		QListItem *item = new QListItem(username, id, type);
-		addItem(item);
-		m_map.insert(id, item);
+		addItem(id,item);
 	});
 
 	connect(ui.btnCreate, &QToolButton::clicked, [=](){
@@ -71,13 +73,21 @@ void QNewDirsNextWidget::setTreeWidget(QUser *pUser,QTreeWidgetItem *parent,bool
 	}
 }
 
-void QNewDirsNextWidget::addItem(QListItem *pItem)
+void QNewDirsNextWidget::addItem(int id,QListItem *pItem)
 {
 	QListWidgetItem *aItem = new QListWidgetItem(ui.listWidget);
 	QSize size = pItem->size();
 	aItem->setSizeHint(QSize(pItem->width()-6, pItem->height()));
 	ui.listWidget->addItem(aItem);
 	ui.listWidget->setItemWidget(aItem,pItem);
+	m_map.insert(id, aItem);
+
+	connect(pItem, &QListItem::sigCancelClicked, [=](int id){
+		ItemList::iterator it = m_map.find(id);
+		ui.listWidget->removeItemWidget(it.value());
+		delete it.value();
+		m_map.remove(id);
+	});
 }
 
 void QNewDirsNextWidget::createDocuments()
