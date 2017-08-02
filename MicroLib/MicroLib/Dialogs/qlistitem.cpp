@@ -23,3 +23,8 @@ QListItem::~QListItem()
 {
 
 }
+
+QString QListItem::getName()
+{
+	return ui.lblUser->text();
+}

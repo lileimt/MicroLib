@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <QCryptographicHash>
+#include <QStandardPaths> 
 
 #ifdef QT_DEBUG
     #include <QDebug>
@@ -125,6 +126,15 @@ public:
 		localFile.close();
 		QByteArray md5 = ch.result();
 		return md5.toHex();
+	}
+
+	static QString getDownloadDir(){ 
+		QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/MicroLib/";
+		QDir dir(path);
+		if (!dir.exists()){
+			dir.mkdir(path);
+		}
+		return path;
 	}
 };
 

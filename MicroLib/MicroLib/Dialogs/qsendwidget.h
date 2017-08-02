@@ -6,7 +6,7 @@
 #include "Common/quser.h"
 #include "Dialogs/qlistitem.h"
 
-typedef QMap<int,QListWidgetItem *> ItemList;
+typedef QMap<int,QListWidgetItem *> ItemMap;
 
 class QSendWidget : public QBaseWidget
 {
@@ -16,6 +16,9 @@ public:
 	QSendWidget(QWidget *parent = 0, QUser *user = NULL, int count = 1);
 	~QSendWidget();
 
+	QString getName(int id);
+	ItemMap getItemMap();
+	QString getComment();
 signals:
 	void sigCloseClicked();
 	void sigOKClicked();
@@ -25,8 +28,9 @@ private:
 
 	void setTreeWidget(QUser *user, QTreeWidgetItem *parent, bool top = false);
 	void addItem(int id,QListItem *pItem);
+	QListItem *getItemWiget(QListWidgetItem *pItem);
 
-	ItemList m_ids;
+	ItemMap m_ids;
 };
 
 #endif // QSENDWIDGET_H

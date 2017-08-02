@@ -12,6 +12,7 @@ public:
 	QListItem(QString user,int id,int type,QWidget *parent = 0);
 	~QListItem();
 
+	QString getName();
 signals:
 	void sigCancelClicked(int id);
 private:

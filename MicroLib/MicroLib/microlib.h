@@ -40,7 +40,7 @@ public:
 	//显示新建公共目录下一步窗口
 	void showNewDirsNextWidget();
 	//显示发送文件窗口
-	void ShowSendFilesWidget(int count);
+	void ShowSendFilesWidget(QString ids);
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
@@ -84,6 +84,8 @@ private:
 	//获取用户数据
 	void getUserInfo();
 	void downloadFiles(QString curFiles);
+
+	void sendFile(QJsonArray ids, QString comment);
 };
 
 #endif // MICROLIB_H

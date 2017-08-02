@@ -165,8 +165,10 @@ void MicroLib::sigConnect()
 	connect(getChannel(), &QChannel::sigStartDownload, [=](QString curFiles){
 		downloadFiles(curFiles);
 	});
-	connect(getChannel(), &QChannel::sigSendFiles, [=](QStringList ids){
-		ShowSendFilesWidget(ids.length());
+	connect(getChannel(), &QChannel::sigSendFiles, [=](QString ids){		
+		QJsonValue val(ids);
+		QJsonArray arr = val.toArray();
+		ShowSendFilesWidget(ids);
 	});
 }
 
@@ -253,11 +255,15 @@ void MicroLib::showNewDirsNextWidget()
 	});
 }
 
-void MicroLib::ShowSendFilesWidget(int count)
+//ÏÔÊ¾·¢ËÍ´°¿Ú
+void MicroLib::ShowSendFilesWidget(QString ids)
 {
+	QParseJson json;
+	QJsonArray arrIds = json.parseSendFileId(ids);
+
 	m_bCovered = true;
 	RELEASE(m_sendWidget);
-	m_sendWidget = new QSendWidget(m_baseTransWidget, m_user, count);
+	m_sendWidget = new QSendWidget(m_baseTransWidget, m_user, arrIds.count());
 	m_sendWidget->move((WIDTH - m_sendWidget->width()) / 2, (HEIGHT - m_sendWidget->height()) / 2);
 	m_sendWidget->show();
 	m_baseTransWidget->show();
@@ -269,6 +275,8 @@ void MicroLib::ShowSendFilesWidget(int count)
 	});
 
 	connect(m_sendWidget, &QSendWidget::sigOKClicked, [=](){
+		sendFile(arrIds, m_sendWidget->getComment());
+
 		m_sendWidget->close();
 		m_baseTransWidget->close();
 		m_bCovered = false;
@@ -349,4 +357,11 @@ void MicroLib::downloadFiles(QString curFiles)
 		m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
 		m_transWidget->show();
 	}
+}
+
+void MicroLib::sendFile(QJsonArray ids, QString comment)
+{
+	QParseJson json;
+	string strPost = json.getSendFileJson(m_sendWidget,ids,comment).toStdString();
+	string  strRes = httpPost(SendFileURL, strPost);
 }

@@ -56,7 +56,8 @@ void QChannel::slotCurFiles(QString curFiles){
 	emit sigStartDownload(curFiles);
 }
 
-void QChannel::slotSendFiles(QStringList ids)
+void QChannel::slotSendFiles(QString ids)
 {
+	qDebug() << ids;
 	emit sigSendFiles(ids);
 }

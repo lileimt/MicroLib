@@ -108,8 +108,11 @@ $(function(){
     })
     //发送文件
     $('#tbody').on('click','.send',function(){
+        var ids = [];
         var id = $(this).closest('td').find('.fileName').attr('value');
-        channel.sendFiles([id]);
+        var name = $(this).closest('td').find('.fileName').text();
+        ids.push({id:id,name:name});
+        channel.sendFiles(JSON.stringify(ids));
     });
     $('#tbody').on('click','.btn-rename,.btn-delete',function(){
         $('.hui-moreBox').hide();

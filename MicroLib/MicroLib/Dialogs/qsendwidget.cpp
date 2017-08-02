@@ -63,9 +63,30 @@ void QSendWidget::addItem(int id,QListItem *pItem)
 	m_ids.insert(id, aItem);
 
 	connect(pItem, &QListItem::sigCancelClicked, [=](int id){
-		ItemList::iterator it = m_ids.find(id);
+		ItemMap::iterator it = m_ids.find(id);
 		ui.listWidget->removeItemWidget(it.value());
 		delete it.value();
 		m_ids.remove(id);
 	});
+}
+
+QListItem *QSendWidget::getItemWiget(QListWidgetItem *pItem)
+{
+	return static_cast<QListItem *>(ui.listWidget->itemWidget(pItem));
+}
+
+QString QSendWidget::getName(int id)
+{
+	QListWidgetItem *pItem = m_ids.find(id).value();
+	return getItemWiget(pItem)->getName();
+}
+
+ItemMap QSendWidget::getItemMap()
+{
+	return m_ids;
+}
+
+QString QSendWidget::getComment()
+{
+	return ui.textEdit->toPlainText();
 }

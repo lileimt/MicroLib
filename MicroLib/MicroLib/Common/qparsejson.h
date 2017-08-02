@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include "Common/quser.h"
 #include "Common/common.h"
+#include "Dialogs/qsendwidget.h"
 
 using namespace  std;
 
@@ -24,6 +25,8 @@ public:
 	void parseUserJson(QJsonObject obj, QUser *user);
 	void parseTokenJson(QJsonObject obj);
 	void parseDownloadJson(string data, QList<FILETRANSPORT> &transList);
+	QJsonArray parseSendFileId(QString ids);
+	QString getSendFileJson(QSendWidget *widget, QJsonArray ids, QString comment);
 private:
 	QString m_token;
 };

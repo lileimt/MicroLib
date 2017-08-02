@@ -16,9 +16,11 @@ enum FILESTATUS{normal,pause,error};
 enum FILESTATE{download,upload};
 
 #define USERURL  "http://api-x.sunfuedu.com/admin/v1/users"
+#define SendFileURL "http://api-x.sunfuedu.com/microlib/v1/files/ids/content"
 
 typedef struct{
 	int id;
+	QString md5;
 	QString fileName;
 	QString fileIcon;
 	QString curSize;

@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 
 	//CommonHelper::setStyle(":/qss/skin");
+	//CommonHelper::getDownloadDir();
 
 	MicroLib w;
 	w.show();

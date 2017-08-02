@@ -27,12 +27,12 @@ signals:
 	//C++信号
 	void sigChangeToolBar(int index);  //发信号改变工具栏
 	void sigStartDownload(QString curFiles);//获取到当前选中的文件信息后开始下载
-	void sigSendFiles(QStringList ids);
+	void sigSendFiles(QString ids);
 public slots :
 	void slotCurDir(QString curDir);   //C++端更新当前路径(js调用)
 	void slotChangeToolBar(int index);  //C++端更新工具栏(js调用)
 	void slotCurFiles(QString curFiles);  //C++端获取需要下载的文件信息(js调用)
-	void slotSendFiles(QStringList ids);//C++端获取
+	void slotSendFiles(QString ids);//C++端获取
 private:
 	QString m_curDir;
 };

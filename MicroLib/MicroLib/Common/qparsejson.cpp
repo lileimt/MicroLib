@@ -138,3 +138,42 @@ void QParseJson::parseDownloadJson(string data,QList<FILETRANSPORT> &transList)
 		}
 	}
 }
+
+QJsonArray QParseJson::parseSendFileId(QString ids)
+{
+	QJsonParseError json_error;
+	QJsonDocument parse_doucment = QJsonDocument::fromJson(ids.toStdString().data(), &json_error);
+	if (json_error.error == QJsonParseError::NoError){
+		if (parse_doucment.isArray()){
+			QJsonArray arrValue = parse_doucment.array();
+			return arrValue;
+		}
+	}
+}
+
+QString QParseJson::getSendFileJson(QSendWidget *widget, QJsonArray ids, QString comment)
+{
+	QJsonArray json;
+	ItemMap map = widget->getItemMap();
+	ItemMap::iterator it = map.begin();
+	for (; it != map.end(); it++){
+		QJsonObject obj;
+		int id = it.key();
+		QString name = widget->getName(id);
+		obj.insert("id", id);
+		obj.insert("name", name);
+		json.append(obj);
+	}
+
+	QJsonObject obj;
+	obj.insert("ids", QJsonValue(ids));
+	obj.insert("receiveIds", QJsonValue(json));
+	obj.insert("comment", comment);
+
+	QJsonDocument document;
+	document.setObject(obj);
+	QByteArray byteArray = document.toJson(QJsonDocument::Compact);
+	QString strJson(byteArray);
+	qDebug() << strJson;
+	return strJson;
+}
