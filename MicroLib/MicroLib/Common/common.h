@@ -17,6 +17,7 @@ enum FILESTATE{download,upload};
 
 #define USERURL  "http://api-x.sunfuedu.com/admin/v1/users"
 #define SendFileURL "http://api-x.sunfuedu.com/microlib/v1/files/ids/content"
+#define HOSTURL "http://api-x.sunfuedu.com/microlib/v1/files/md5?md5_str="
 
 typedef struct{
 	int id;

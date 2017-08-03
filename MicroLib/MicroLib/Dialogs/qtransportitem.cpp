@@ -1,11 +1,13 @@
 #include "qtransportitem.h"
+#include "../Net/Net/Net.h"
+#include "Common/qparsejson.h"
 
 QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWidget *parent)
-: QBaseWidget(parent),
-m_downloadManager(NULL),
-m_timeInterval(0),
-m_intervalDownload(0),
-m_currentDownload(0)
+							: QBaseWidget(parent),
+							m_downloadManager(NULL),
+							m_timeInterval(0),
+							m_intervalDownload(0),
+							m_currentDownload(0)
 {
 	ui.setupUi(this);
 	m_stFileTransport = stFileTransport;
@@ -155,4 +157,13 @@ void QTransportItem::slotStatus()
 		}
 		onStartDownload(m_stFileTransport->url, m_stFileTransport->fileName);
 	}
+}
+
+QString QTransportItem::getStorageHost(QString md5)
+{
+	string strUrl = HOSTURL + md5.toStdString();
+	string strRes = httpGet(strUrl);
+	QParseJson json;
+	int id = 0;
+	return json.parseHostJson(strRes, id);
 }

@@ -22,6 +22,7 @@ public:
 	~QTransportItem();
 
 	QString transformUnit(qint64 bytes, bool isSpeed = false);
+	QString getStorageHost(QString md5);
 public slots:
 	void onStartDownload(QString url, QString fileName);
 	void onStopDownload();

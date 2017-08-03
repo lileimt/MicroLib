@@ -27,6 +27,7 @@ public:
 	void parseDownloadJson(string data, QList<FILETRANSPORT *> &transList);
 	QJsonArray parseSendFileId(QString ids);
 	QString getSendFileJson(QSendWidget *widget, QJsonArray ids, QString comment);
+	QString parseHostJson(string data,int &baseId);
 private:
 	QString m_token;
 };

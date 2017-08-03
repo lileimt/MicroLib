@@ -177,3 +177,22 @@ QString QParseJson::getSendFileJson(QSendWidget *widget, QJsonArray ids, QString
 	qDebug() << strJson;
 	return strJson;
 }
+
+QString QParseJson::parseHostJson(string data, int &baseId)
+{
+	QJsonParseError json_error;
+	QJsonDocument parse_doucment = QJsonDocument::fromJson(data.data(), &json_error);
+	if (json_error.error == QJsonParseError::NoError){
+		if (parse_doucment.isObject()){
+			QJsonObject obj = parse_doucment.object();
+			if (obj.contains("baseId")){
+				QJsonValue id = obj.take("baseId");
+				baseId = id.toInt();
+			}
+			if (obj.contains("storageHost")){
+				QJsonValue host = obj.take("storageHost");
+				return host.toString();
+			}
+		}
+	}
+}
