@@ -20,6 +20,7 @@ enum FILESTATE{download,upload};
 
 typedef struct{
 	int id;
+	QString url;
 	QString md5;
 	QString fileName;
 	QString fileIcon;

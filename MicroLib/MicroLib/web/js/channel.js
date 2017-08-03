@@ -31,7 +31,7 @@ var channel = {};
     //监听事件--点击下载按钮获取下载文件的信息
     obj.getCurFiles = function(){
         bridge.sigCurFiles.connect(function(){   //当事件触发时，将数据发送给C++端
-            var downloadFiles = [{id:1,name:"name",size:"1023.99MB",path:"我的文件"},{id:1,name:"name",size:"1.2MB",path:"我的文件"},{id:1,name:"name",size:"1.2MB",path:"我的文件"}]
+            var downloadFiles = [{id:1,name:"name.apk",size:"1023.99MB",path:"我的文件"},{id:1,name:"name",size:"1.2MB",path:"我的文件"},{id:1,name:"name",size:"1.2MB",path:"我的文件"}]
             bridge.slotCurFiles(JSON.stringify(downloadFiles));
         })
     }

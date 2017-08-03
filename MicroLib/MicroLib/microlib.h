@@ -73,7 +73,7 @@ private:
 	bool m_bCovered;
 	OPERTYPE m_eOperType;
 
-	QList<FILETRANSPORT> m_transList;  //文件上传下载列表
+	QList<FILETRANSPORT *> m_transList;  //文件上传下载列表
 
 	//打开上传文件对话框
 	void openUploadFileDialog();

@@ -53,15 +53,15 @@ void QTransportWidget::showList()
 {
 	TRANSLIST::iterator it = m_transList.begin();
 	for (; it != m_transList.end(); it++){
-		QTransportItem *item = new QTransportItem(&(*it), false);
+		QTransportItem *item = new QTransportItem((*it), false);
 		addItem(item);
 	}
 }
 
-void QTransportWidget::insertList(FILETRANSPORT &st)
+void QTransportWidget::insertList(FILETRANSPORT *st)
 {
 	m_transList.append(st);
-	QTransportItem *pItem = new QTransportItem(&st, false);
+	QTransportItem *pItem = new QTransportItem(st, false);
 	QListWidgetItem *aItem = new QListWidgetItem(m_listWidget);
 	QSize size = pItem->size();
 	aItem->setSizeHint(QSize(pItem->width() - 5, pItem->height()));

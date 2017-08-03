@@ -24,7 +24,7 @@ public:
 	void getUserInfo(string data, QUser *user);
 	void parseUserJson(QJsonObject obj, QUser *user);
 	void parseTokenJson(QJsonObject obj);
-	void parseDownloadJson(string data, QList<FILETRANSPORT> &transList);
+	void parseDownloadJson(string data, QList<FILETRANSPORT *> &transList);
 	QJsonArray parseSendFileId(QString ids);
 	QString getSendFileJson(QSendWidget *widget, QJsonArray ids, QString comment);
 private:

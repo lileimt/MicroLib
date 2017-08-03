@@ -100,7 +100,7 @@ void QParseJson::parseTokenJson(QJsonObject obj)
 }
 
 //解析文件下载的JSON数据
-void QParseJson::parseDownloadJson(string data,QList<FILETRANSPORT> &transList)
+void QParseJson::parseDownloadJson(string data,QList<FILETRANSPORT *> &transList)
 {
 	QJsonParseError json_error;
 	QJsonDocument parse_doucment = QJsonDocument::fromJson(data.data(), &json_error);
@@ -111,27 +111,27 @@ void QParseJson::parseDownloadJson(string data,QList<FILETRANSPORT> &transList)
 				QJsonValue objValue = arrValue.at(i);
 				QJsonObject obj = objValue.toObject();
 
-				FILETRANSPORT st;		
-				st.state = download;
-				st.status = normal;
+				FILETRANSPORT *st = new FILETRANSPORT;		
+				st->state = download;
+				st->status = normal;
 				if (obj.contains("id")){
 					QJsonValue id = obj.take("id");
 					qDebug() << id.toInt();
-					st.id = id.toInt();
+					st->id = id.toInt();
 				}
 				if (obj.contains("name")){
 					QJsonValue name = obj.take("name");
 					qDebug() << name.toString();
-					st.fileName = name.toString();
-					st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
+					st->fileName = name.toString();
+					st->fileIcon = CommonHelper::getIconBySuffix(st->fileName);
 				}
 				if (obj.contains("size")){
 					QJsonValue size = obj.take("size");
-					st.fileSize = size.toString();
+					st->fileSize = size.toString();
 				}
 				if (obj.contains("path")){
 					QJsonValue path = obj.take("path");
-					st.filePath = path.toString();
+					st->filePath = path.toString();
 				}
 				transList.append(st);
 			}

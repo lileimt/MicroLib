@@ -10,7 +10,7 @@
 #include <QListWidget>
 #include "Dialogs/qtransportitem.h"
 
-typedef QList<FILETRANSPORT> TRANSLIST;
+typedef QList<FILETRANSPORT *> TRANSLIST;
 
 class QTransportWidget : public QBaseWidget
 {
@@ -20,7 +20,7 @@ public:
 	QTransportWidget(QString strTitle, bool bShowMin = false, QWidget *parent = 0);
 	~QTransportWidget();
 
-	void insertList(FILETRANSPORT &st);
+	void insertList(FILETRANSPORT *st);
 signals:
 	void sigMinClicked();
 private:

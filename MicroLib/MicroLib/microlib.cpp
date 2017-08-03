@@ -319,13 +319,13 @@ void MicroLib::openUploadFileDialog()
 		QStringList fileNames = dialog.selectedFiles();
 		for (int i = 0; i < fileNames.length(); i++){
 			QFileInfo fileInfo(fileNames[i]);
-			FILETRANSPORT st;
-			st.fileName = fileInfo.fileName();
-			st.fileIcon = CommonHelper::getIconBySuffix(st.fileName);
-			st.filePath = fileInfo.filePath();
-			st.fileSize = QString::number(fileInfo.size());
-			st.state = upload;//上传
-			st.status = normal;//正常
+			FILETRANSPORT *st = new FILETRANSPORT;
+			st->fileName = fileInfo.fileName();
+			st->fileIcon = CommonHelper::getIconBySuffix(st->fileName);
+			st->filePath = fileInfo.filePath();
+			st->fileSize = QString::number(fileInfo.size());
+			st->state = upload;//上传
+			st->status = normal;//正常
 			m_transWidget->insertList(st);
 		}
 		if (!m_transWidget->isVisible()){//窗口不可见
@@ -345,9 +345,9 @@ void MicroLib::getUserInfo()
 void MicroLib::downloadFiles(QString curFiles)
 {
 	QParseJson json;
-	QList<FILETRANSPORT> tmpTransList;
+	QList<FILETRANSPORT *> tmpTransList;
 	json.parseDownloadJson(curFiles.toStdString(), tmpTransList);
-	QList<FILETRANSPORT>::iterator it = tmpTransList.begin();
+	QList<FILETRANSPORT *>::iterator it = tmpTransList.begin();
 	for (; it != tmpTransList.end(); it++){
 		m_transWidget->insertList(*it);
 		m_transList.append(*it);
