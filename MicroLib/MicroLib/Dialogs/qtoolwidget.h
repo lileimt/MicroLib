@@ -17,6 +17,7 @@ public:
 	~QToolWidget();
 
 	void showIndex(TOOLINDEX index);
+	void setButtonEnable(bool enable);
 signals:
 	void sigUploadClicked();
 	void sigNewShareClicked();
@@ -55,6 +56,7 @@ private:
 
 	QToolButton *m_transSave;   //×ª´æ
 
+	TOOLINDEX m_index;
 	QToolButton *getNewButton(QString name, QString icon);
 };
 

@@ -170,6 +170,18 @@ void MicroLib::sigConnect()
 		QJsonArray arr = val.toArray();
 		ShowSendFilesWidget(ids);
 	});
+	connect(getChannel(), &QChannel::sigShowSideBar, [=](bool bVisble){
+		if (bVisble){
+			if (!m_sideWidget->isVisible()){
+				m_sideWidget->show();
+			}
+		}else{
+			m_sideWidget->hide();
+		}
+	});
+	connect(getChannel(), &QChannel::sigDeleteEnable, [=](bool enable){
+		
+	});
 }
 
 MicroLib::~MicroLib()
@@ -237,6 +249,7 @@ void MicroLib::showNewDirsWidget()
 void MicroLib::showNewDirsNextWidget()
 {
 	m_bCovered = true;
+	m_newDirsNextWidget->setInfo(m_newDirsWidget->getFileName(), m_newDirsWidget->getComment());
 	m_newDirsNextWidget->show();
 	connect(m_newDirsNextWidget, &QNewDirsNextWidget::sigCloseClicked, [=](){
 		m_newDirsNextWidget->close();
@@ -249,9 +262,33 @@ void MicroLib::showNewDirsNextWidget()
 		showNewDirsWidget();
 	});
 	connect(m_newDirsNextWidget, &QNewDirsNextWidget::sigCreateClicked, [=](){
-		m_newDirsNextWidget->close();
-		m_baseTransWidget->close();
-		m_bCovered = false;
+		QParseJson json;
+		int id = getChannel()->getId();
+		QString filename = m_newDirsNextWidget->getFileName();
+		QString comment = m_newDirsNextWidget->getComment();
+		int notice = m_newDirsNextWidget->getNotice();
+		QString msg = m_newDirsNextWidget->getMsg();
+		string strPost = json.getCreateDocumentJson(id, filename, m_newDirsNextWidget->getListWidget(), m_newDirsNextWidget->getSubmitter(), comment, notice, msg).toStdString();
+		string  strRes = httpPost(NEWSHAREURL, strPost, TOKEN);
+		QJsonParseError json_error;
+		QJsonDocument parse_doucment = QJsonDocument::fromJson(strRes.data(), &json_error);
+		if (json_error.error == QJsonParseError::NoError){
+			if (parse_doucment.isObject()){
+				QJsonObject obj = parse_doucment.object();
+				if (obj.contains("id")){
+					QJsonValue value = obj.take("id");
+					int id = value.toString().toInt();
+					getChannel()->setNewCommonDir(id, filename, 1);
+					m_newDirsNextWidget->close();
+					m_baseTransWidget->close();
+					m_bCovered = false;
+				}else{
+					qDebug() << "error1";
+				}
+			}else{
+				qDebug() << "error2";
+			}
+		}
 	});
 }
 
@@ -338,7 +375,7 @@ void MicroLib::openUploadFileDialog()
 
 void MicroLib::getUserInfo()
 {
-	string userInfo = httpGet(USERURL, "9f2405958adc49e6b70a9294c238e179");
+	string userInfo = httpGet(USERURL, TOKEN);
 	m_parseJson.getUserInfo(userInfo,m_user);
 }
 
@@ -356,11 +393,5 @@ void MicroLib::sendFile(QJsonArray ids, QString comment)
 {
 	QParseJson json;
 	string strPost = json.getSendFileJson(m_sendWidget,ids,comment).toStdString();
-	string  strRes = httpPost(SendFileURL, strPost);
-}
-
-void MicroLib::createDocuments()
-{
-	QParseJson json;
-
+	string  strRes = httpPost(SendFileURL, strPost, TOKEN);
 }

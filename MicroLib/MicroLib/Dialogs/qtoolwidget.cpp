@@ -67,6 +67,7 @@ QToolWidget::QToolWidget(QWidget *parent)
 	m_pLayout->setSpacing(0);
 	setLayout(m_pLayout);
 
+	m_index = shareindex;
 	showIndex(shareindex);
 
 	connect(m_uploadFile, SIGNAL(clicked()), this, SIGNAL(sigUploadClicked()));
@@ -122,10 +123,25 @@ QToolButton *QToolWidget::getNewButton(QString name, QString icon)
 
 void QToolWidget::showIndex(TOOLINDEX index)
 {
+	m_index = index;
 	m_stackLayout->setCurrentIndex((int)index);
 	if (index == myfilesindex){
 		m_searchWidget->setPlaceholderText(QStringLiteral("搜索公共目录"));
 	}else{
 		m_searchWidget->setPlaceholderText(QStringLiteral("搜索我的文件"));
+	}
+}
+
+void QToolWidget::setButtonEnable(bool enable)
+{
+	if (m_index == myfilesindex){
+
+	}else if (m_index == subshareindex){
+		m_downloadFile1->setEnabled(enable);
+		m_transSave->setEnabled(enable);
+	}else{
+		m_downloadFile->setEnabled(enable);
+		m_shareFile->setEnabled(enable);
+		m_deleteFile->setEnabled(enable);
 	}
 }

@@ -18,8 +18,9 @@ QString QChannel::getCurDir()
 	return m_curDir;
 }
 
-void QChannel::slotCurDir(QString curDir)
+void QChannel::slotCurDir(int id, QString curDir)
 {
+	m_id = id;
 	m_curDir = curDir;
 }
 
@@ -27,6 +28,12 @@ void QChannel::setNewDir()
 {
 	emit sigNewDir();
 }
+
+void QChannel::setNewCommonDir(int id, QString fileName, int permission)
+{
+	emit sigNewCommonDir(id, fileName, permission);
+}
+
 void QChannel::setToken(QString token)
 {
 	emit sigToken(token);
@@ -60,4 +67,19 @@ void QChannel::slotSendFiles(QString ids)
 {
 	qDebug() << ids;
 	emit sigSendFiles(ids);
+}
+
+void QChannel::slotSideBar(bool bVisible)
+{
+	emit sigShowSideBar(bVisible);
+}
+
+void QChannel::slotDeleteEnable(bool enable)
+{
+	emit sigDeleteEnable(enable);
+}
+
+int QChannel::getId()
+{
+	return m_id;
 }

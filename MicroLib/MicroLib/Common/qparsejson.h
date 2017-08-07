@@ -38,7 +38,7 @@ public:
 	//解析下载文件存放路径的url
 	QString parseHostJson(string data,int &baseId);
 	//创建公共目录
-	QString getCreateDocumentJson(int pid, QString filename, ItemList map, QString comment, int notice, QString msg);
+	QString getCreateDocumentJson(int pid, QString filename, QListWidget *pWidget,ItemList map, QString comment, int notice, QString msg="");
 private:
 	QString m_token;
 };

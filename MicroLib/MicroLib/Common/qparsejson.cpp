@@ -201,7 +201,7 @@ QString QParseJson::parseHostJson(string data, int &baseId)
 	}
 }
 
-QString QParseJson::getCreateDocumentJson(int pid, QString filename, ItemList map, QString comment, int notice, QString msg)
+QString QParseJson::getCreateDocumentJson(int pid, QString filename, QListWidget *pWidget, ItemList map, QString comment, int notice, QString msg)
 {
 	QJsonObject obj;
 	obj.insert("pid", pid);
@@ -215,7 +215,11 @@ QString QParseJson::getCreateDocumentJson(int pid, QString filename, ItemList ma
 	for (; it != map.end(); it++){
 		QJsonObject ob;
 		ob.insert("id", it.key());
+		QListItem *pItem = static_cast<QListItem *>(pWidget->itemWidget(it.value()));
+		ob.insert("permission", pItem->getPermission());
+		arr.append(ob);
 	}
+	obj.insert("submitter", QJsonValue(arr));
 
 	QJsonDocument document;
 	document.setObject(obj);

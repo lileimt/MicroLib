@@ -43,6 +43,7 @@ var oauth2 = {};
             ids:ids,
             src_type:"files"
         }
+        //console.log(data)
         obj.requestApi('/microlib/v1/files/ids/status','delete',data,callback);
     }
     // obj.sendFiles = function(ids,receiveIds,comment,callback){

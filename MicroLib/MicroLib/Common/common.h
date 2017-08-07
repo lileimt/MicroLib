@@ -15,9 +15,12 @@ enum TOOLINDEX{shareindex,myfilesindex,subshareindex};    //选择对应的工具栏索引
 enum FILESTATUS{normal,pause,error};
 enum FILESTATE{download,upload};
 
+#define TOKEN "9f2405958adc49e6b70a9294c238e179"
+
 #define USERURL  "http://api-x.sunfuedu.com/admin/v1/users"
 #define SendFileURL "http://api-x.sunfuedu.com/microlib/v1/files/ids/content"
 #define HOSTURL "http://api-x.sunfuedu.com/microlib/v1/files/md5?md5_str="
+#define NEWSHAREURL "http://api-x.sunfuedu.com/microlib/v1/sharefiles/documents"
 
 typedef struct{
 	int id;

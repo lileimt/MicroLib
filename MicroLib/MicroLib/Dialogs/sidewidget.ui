@@ -16,9 +16,10 @@
   <property name="styleSheet">
    <string notr="true">QSideWidget{
 	background:white;
+	border-left:2px solid #aaaaaa;
 }
 QBaseWidget#subWidget{
-	background:#e7e7e7;
+	background:#f6f6f6;
 }
 QTextEdit#textEdit{
 	background:transparent;
@@ -64,7 +65,7 @@ QListWidget{
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="topMargin">
     <number>0</number>

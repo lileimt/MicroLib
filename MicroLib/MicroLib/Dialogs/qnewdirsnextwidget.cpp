@@ -90,3 +90,41 @@ ItemList QNewDirsNextWidget::getSubmitter()
 {
 	return m_map;
 }
+
+QListWidget *QNewDirsNextWidget::getListWidget()
+{
+	return ui.listWidget;
+}
+
+QString QNewDirsNextWidget::getFileName()
+{
+	return m_fileName;
+}
+
+QString QNewDirsNextWidget::getComment()
+{
+	return m_comment;
+}
+
+int QNewDirsNextWidget::getNotice()
+{
+	if (ui.chkBox->isChecked()){
+		return 1;
+	}else{
+		return 0;
+	}
+}
+
+QString QNewDirsNextWidget::getMsg()
+{
+	if (getNotice() == 1){
+		return ui.txtEdt->toPlainText();
+	}
+	return "";
+}
+
+void QNewDirsNextWidget::setInfo(QString fileName, QString comment)
+{
+	m_fileName = fileName;
+	m_comment = comment;
+}

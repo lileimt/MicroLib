@@ -86,7 +86,6 @@ private:
 	void downloadFiles(QString curFiles);
 
 	void sendFile(QJsonArray ids, QString comment);
-	void createDocuments();
 };
 
 #endif // MICROLIB_H

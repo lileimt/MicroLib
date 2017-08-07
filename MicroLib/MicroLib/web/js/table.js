@@ -174,8 +174,7 @@ function getInfoById(data,id,callback){
             var value = son[i];
             if(value.isDir == 1){
                 getInfoById(value,id,callback);
-            }
-            
+            } 
         }
     }
 }
@@ -201,16 +200,18 @@ function openDirParse(data,addHeader){
     if(curType == 0){//切换公共目录的工具栏
         if(util.getCurType().curDir.id == 0){  //根目录
             channel.setToolBar(0);
+            channel.showSideBar(false);
         }else{//子目录
             console.log("curType == 1")
             channel.setToolBar(2);
+            channel.showSideBar(true);
         }
     }
     setTableHeader();
     util.setTableSort(data.son);
     util.getCurType().setCurPage(data.son);
     //设置当前的目录
-    channel.setCurDir(data.name);
+    channel.setCurDir(data.id,data.name);
 }
 
 //打开文件夹
@@ -308,33 +309,35 @@ function deleteFiles(){
         })
     }
     console.log(ids)
-    //oauth2.deleteFile(ids,function(data){
-    //    if(data.error_code == 0){
-            $.each(ids,function(index,value){
-                deleteFile(value);
-            })
-            $.each(all,function(index,value){
-                if(curMode == 0){
-                    $(value).closest('tr').remove();
-                }else{
-                    $(value).closest('li').remove();
-                }
-            })
-    //    }
-    //})
+    oauth2.deleteFile(ids,function(data){
+        $.each(ids,function(index,value){
+            deleteFile(value);
+        })
+        $.each(all,function(index,value){
+            if(curMode == 0){
+                $(value).closest('tr').remove();
+            }else{
+                $(value).closest('li').remove();
+            }
+        })
+    })
 }
 
 function renameFile(data,id,oldName,newName,callback){
-    oauth2.renameFile(id,newName,function(value){
-        if(value.error_code == 0){
+    oauth2.renameFile(id,newName,{
+        success:function(value){ 
             $.each(data,function(index,value){
                 if(value.name == oldName){
                     value.name = newName;
                 }
             });
+            callback(value);
+        },
+        error:function(xhr,status,res){
+            console.log(xhr)
+            console.log(status)
         }
-        callback(value.error_code);
-    })
+    });
 }
 
 function newDir(){
@@ -345,6 +348,24 @@ function newDir(){
             name:"新建文件夹",
             ownername:"lileimt",
             filesize:"11.1 MB",
+            createTime:"11:11"
+        };
+        var html = htmlListTable(data);
+        $("#tbody").prepend(html);
+        util.getCurPage().splice(0,0,data)
+    }else{
+
+    }
+}
+
+function newCommonDir(id,filename,permission){
+    if(curMode == 0){  //列表模式
+        var data = {
+            id:id,
+            isDir:1,
+            name:filename,
+            ownername:"lileimt",
+            permission:permission,
             createTime:"11:11"
         };
         var html = htmlListTable(data);

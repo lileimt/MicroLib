@@ -51,12 +51,18 @@ $(function(){
             $('.rightKeyDelete').off('click').bind('click',function(){
                 if(self.find('.hui-checkbox').prop('checked')){
                     var id = self.find('.fileName').attr('value');
-                    oauth2.deleteFile([id],function(data){
-                        if(data.error_code == 0){
-                            deleteFile(id);
-                            self.remove();
+                    oauth2.deleteFile([id],{
+                        success:function(data){
+                            //if(data.error_code == 0){
+                                deleteFile(id);
+                                self.remove();
+                            //}
+                        },
+                        error:function(xhr, status, res){
+                            console.log(status)
+                            console.log(xhr)
                         }
-                    })
+                    });
                 }
                 $('#rightKey').hide();
             });
@@ -138,12 +144,11 @@ $(function(){
         var id = $(this).closest('td').find('.fileName').attr('value');
         var oldName = $(this).closest('td').find('.fileName').text();
         var newName = $(this).prev('.hui-rename').val();
+        var self =  $(this);
         renameFile(util.getCurPage(),id,oldName,newName,function(data){
-            if(data == 0){
-                $(this).closest('td').find('.fileName').text(newName);
-            }
-            $(this).closest('.hui-popup').hide();
-            $(this).closest('tr').find('.hui-checkbox').prop('checked',false);
+            self.closest('td').find('.fileName').text(newName);
+            self.closest('.hui-popup').hide();
+            self.closest('tr').find('.hui-checkbox').prop('checked',false);
         }); 
     })
     //重命名 —— 回车
@@ -161,19 +166,23 @@ $(function(){
     $(".hui-table-title").on('click','#allChecked',function(e){
         e.stopPropagation();
         if($("#allChecked").prop("checked")){
-             $("input[name='checked']").prop("checked", true);
-             $('#tbody').find('td').addClass('bground boderColor');
+            channel.setDeleteEnable(true);
+            $("input[name='checked']").prop("checked", true);
+            $('#tbody').find('td').addClass('bground boderColor');
         }else{
-             $("input[name='checked']").prop("checked", false);
-             $('#tbody').find('td').removeClass('bground boderColor');
+            channel.setDeleteEnable(false);
+            $("input[name='checked']").prop("checked", false);
+            $('#tbody').find('td').removeClass('bground boderColor');
         }
     });
     var allSelect = function(){
         var number =  $("input[name='checked']").length;
         var count =  $("input[name='checked']:checked").length;
         if(number == count){
+            channel.setDeleteEnable(true);
             $("#allChecked").prop("checked", true);
         }else{
+            channel.setDeleteEnable(false);
             $("#allChecked").prop("checked", false);
         }
     }
@@ -189,6 +198,7 @@ $(function(){
     });
     //点击行选中
     $('#tbody').on('click','.check',function(){
+        channel.setDeleteEnable(true);
         $(this).closest('tr').find('td').addClass('bground boderColor');
         $(this).closest('tr').find('.hui-checkbox').prop("checked",true);
         $(this).closest('tr').siblings().find('td').removeClass('bground boderColor');
@@ -199,12 +209,16 @@ $(function(){
     $('#tbody').on('click','.btn-delete',function(){
         var self =  $(this);
         var id = self.closest('tr').find('.fileName').attr('value');
-        oauth2.deleteFile([id],function(data){
-            if(data.error_code == 0){
+        oauth2.deleteFile([id],{
+            success:function(data){
                 deleteFile(id);
                 self.closest('tr').remove();
+            },
+            error:function(xhr, status, res){
+                console.log(status)
+                console.log(xhr)
             }
-        })
+        });
     });
     //刷新
     $('#refreshBtn').bind('click',function(){
@@ -369,14 +383,15 @@ $(function(){
         var id = $(this).closest('li').find('.listTitle').attr('value');
         var oldName = $(this).closest('li').find('.listTitle').text();
         var newName = $(this).prev('.rename').val();
+        var self = $(this);
         
         renameFile(util.getCurPage(),id,oldName,newName,function(data){
-            if(data == 0){
-                $(this).closest('li').find('.listTitle').text(newName);
-            }
-            $(this).closest('li').find('.popup').hide();
-            $(this).closest('li').find('.list-checkbox').prop('checked',false);
-            $(this).closest('li').find('.listWrap').removeClass('active');
+            //if(data == 0){
+                self.closest('li').find('.listTitle').text(newName);
+            //}
+            self.closest('li').find('.popup').hide();
+            self.closest('li').find('.list-checkbox').prop('checked',false);
+            self.closest('li').find('.listWrap').removeClass('active');
         });
     })
     

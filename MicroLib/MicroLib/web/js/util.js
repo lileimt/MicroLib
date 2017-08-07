@@ -6,7 +6,7 @@ var util = {
         var obj = this.getCurType();
         this.setTableSort(obj.curPage);
         this.showHeader();
-        channel.setCurDir(obj.curDir.name);
+        channel.setCurDir(obj.curDir.id,obj.curDir.name);
         if(curMode == 0){
             showListTable(obj.curPage);
         }else{
