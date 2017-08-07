@@ -5,6 +5,7 @@ QListItem::QListItem(QString user, int id, int type, QWidget *parent)
 {
 	ui.setupUi(this);
 	m_id = id;
+	m_type = type;
 	ui.lblUser->setText(user);
 	if (type == 0){
 		ui.lblOther->setText(QStringLiteral("½ö²é¿´"));
@@ -27,4 +28,10 @@ QListItem::~QListItem()
 QString QListItem::getName()
 {
 	return ui.lblUser->text();
+}
+
+
+int QListItem::getPermission()
+{
+	return m_type;
 }

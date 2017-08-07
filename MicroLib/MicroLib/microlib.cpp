@@ -344,14 +344,7 @@ void MicroLib::getUserInfo()
 
 void MicroLib::downloadFiles(QString curFiles)
 {
-	QParseJson json;
-	QList<FILETRANSPORT *> tmpTransList;
-	json.parseDownloadJson(curFiles.toStdString(), tmpTransList);
-	QList<FILETRANSPORT *>::iterator it = tmpTransList.begin();
-	for (; it != tmpTransList.end(); it++){
-		m_transWidget->insertList(*it);
-		m_transList.append(*it);
-	}
+	m_transWidget->initTransList(curFiles);
 	if (!m_transWidget->isVisible()){//窗口不可见，则显示窗口
 		QRect rect = m_webEngine->geometry();
 		m_transWidget->setGeometry(rect.right() - m_transWidget->width(), rect.bottom() - m_transWidget->height(), m_transWidget->width(), m_transWidget->height());
@@ -364,4 +357,10 @@ void MicroLib::sendFile(QJsonArray ids, QString comment)
 	QParseJson json;
 	string strPost = json.getSendFileJson(m_sendWidget,ids,comment).toStdString();
 	string  strRes = httpPost(SendFileURL, strPost);
+}
+
+void MicroLib::createDocuments()
+{
+	QParseJson json;
+
 }

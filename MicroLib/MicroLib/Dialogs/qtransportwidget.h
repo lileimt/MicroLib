@@ -10,7 +10,8 @@
 #include <QListWidget>
 #include "Dialogs/qtransportitem.h"
 
-typedef QList<FILETRANSPORT *> TRANSLIST;
+//typedef QList<FILETRANSPORT *> TRANSLIST;
+typedef QList<QListWidgetItem *> ITEMLIST;
 
 class QTransportWidget : public QBaseWidget
 {
@@ -21,18 +22,24 @@ public:
 	~QTransportWidget();
 
 	void insertList(FILETRANSPORT *st);
+	void initTransList(QString curFiles);
 signals:
 	void sigMinClicked();
+
+public slots:
+	void slotUpdate(int id);
 private:
 	Ui::QTransportWidget ui;
 	QBaseTitleWidget *m_titleWidget;
 	QVBoxLayout *m_pLayout;
-	TRANSLIST m_transList;
+	//TRANSLIST m_transList;    //上传下载队列
+	//TRANSLIST m_finishList;   //上传下载完成队列
 	QListWidget *m_listWidget; 
 	QTransportItem *m_pHeader;
+	ITEMLIST m_itemList;             //上传下载队列
+	ITEMLIST m_itemFinishList;    //上传下载完成队列
 
 	void addItem(QTransportItem *pItem);
-	void showList();
 	void clearList();
 };
 

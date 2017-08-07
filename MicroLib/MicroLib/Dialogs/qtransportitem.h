@@ -23,18 +23,16 @@ public:
 
 	QString transformUnit(qint64 bytes, bool isSpeed = false);
 	QString getStorageHost(QString md5);
+	int getId();
 public slots:
-	void onStartDownload(QString url, QString fileName);
-	void onStopDownload();
-	void onCloseDownload();
 	void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 	void onReplyFinished(int statusCode);
 
 	void slotStatus();
 signals:
 	void sigStatusClicked();
-	void sigOperateClicked();
-
+	void sigCloseClicked();
+	void sigDownloadFinished(int id);
 private:
 	Ui::QTransportItem ui;
 	QDownloadNetworkManager *m_downloadManager;
@@ -43,6 +41,10 @@ private:
 	qint64 m_intervalDownload;
 	qint64 m_currentDownload;
 	FILETRANSPORT *m_stFileTransport;
+
+	void startDownload(QString url, QString fileName);
+	void stopDownload();
+	void closeDownload();
 };
 
 #endif // QTRANSPORTITEM_H

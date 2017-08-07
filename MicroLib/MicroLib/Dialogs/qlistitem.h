@@ -13,11 +13,13 @@ public:
 	~QListItem();
 
 	QString getName();
+	int getPermission();
 signals:
 	void sigCancelClicked(int id);
 private:
 	Ui::QListItem ui;
 	int m_id;
+	int m_type;
 };
 
 #endif // QLISTITEM_H

@@ -41,14 +41,15 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 		ui.lblPath->setText(stFileTransport->filePath);
 		stFileTransport->status = normal;
 		ui.btnStatus->setIcon(QIcon(":/images/pause"));
-		ui.btnOperate->setIcon(QIcon(":/images/filedelete"));
-	}
-	else{
+		ui.btnClose->setIcon(QIcon(":/images/filedelete"));
+
+		startDownload(m_stFileTransport->url, m_stFileTransport->fileName);
+	}else{
 		ui.lblName->move(ui.lblIcon->pos().x(), 0);
 		ui.lblPix->setVisible(false);
 		ui.lblIcon->setVisible(false);
 		ui.btnStatus->setVisible(false);
-		ui.btnOperate->setVisible(false);
+		ui.btnClose->setVisible(false);
 		ui.lblSize->setAlignment(Qt::AlignCenter);
 		ui.lblPath->setAlignment(Qt::AlignCenter);
 		setStyleSheet("QTransportItem{background:white;}"
@@ -56,6 +57,10 @@ QTransportItem::QTransportItem(FILETRANSPORT *stFileTransport, bool bFirst, QWid
 			"QToolButton{border:none;}");
 	}
 	connect(ui.btnStatus, SIGNAL(clicked()), this, SLOT(slotStatus()));
+	connect(ui.btnClose, &QToolButton::clicked, [=](){
+		closeDownload();
+		emit sigCloseClicked();
+	});
 }
 
 QTransportItem::~QTransportItem()
@@ -63,7 +68,7 @@ QTransportItem::~QTransportItem()
 
 }
 
-void QTransportItem::onStartDownload(QString url, QString fileName)
+void QTransportItem::startDownload(QString url, QString fileName)
 {
 	if (m_downloadManager == NULL){
 		m_downloadManager = new QDownloadNetworkManager(this);
@@ -76,14 +81,14 @@ void QTransportItem::onStartDownload(QString url, QString fileName)
 	m_timeInterval = 0;
 }
 
-void QTransportItem::onStopDownload()
+void QTransportItem::stopDownload()
 {
 	if (m_downloadManager == NULL){
 		m_downloadManager->stopDownload();
 	}
 }
 
-void QTransportItem::onCloseDownload()
+void QTransportItem::closeDownload()
 {
 	m_downloadManager->closeDownload();
 }
@@ -113,6 +118,7 @@ void QTransportItem::onReplyFinished(int statusCode)
 		qDebug() << "error";
 	}else{
 		qDebug() << "success";
+		emit sigDownloadFinished(m_stFileTransport->id);
 	}
 }
 
@@ -150,12 +156,12 @@ void QTransportItem::slotStatus()
 		if (m_stFileTransport->status == normal){
 			m_stFileTransport->status = pause;
 			ui.btnStatus->setIcon(QIcon(":/images/start"));
-		}
-		else{
+			stopDownload();
+		}else{
 			m_stFileTransport->status = normal;
 			ui.btnStatus->setIcon(QIcon(":/images/pause"));
+			startDownload(m_stFileTransport->url, m_stFileTransport->fileName);
 		}
-		onStartDownload(m_stFileTransport->url, m_stFileTransport->fileName);
 	}
 }
 
@@ -166,4 +172,9 @@ QString QTransportItem::getStorageHost(QString md5)
 	QParseJson json;
 	int id = 0;
 	return json.parseHostJson(strRes, id);
+}
+
+int QTransportItem::getId()
+{
+	return m_stFileTransport->id;
 }

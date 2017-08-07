@@ -42,10 +42,6 @@ QNewDirsNextWidget::QNewDirsNextWidget(QWidget *parent, QUser *user)
 		QListItem *item = new QListItem(username, id, type);
 		addItem(id,item);
 	});
-
-	connect(ui.btnCreate, &QToolButton::clicked, [=](){
-		
-	});
 }
 
 QNewDirsNextWidget::~QNewDirsNextWidget()
@@ -90,7 +86,7 @@ void QNewDirsNextWidget::addItem(int id,QListItem *pItem)
 	});
 }
 
-void QNewDirsNextWidget::createDocuments()
+ItemList QNewDirsNextWidget::getSubmitter()
 {
-
+	return m_map;
 }

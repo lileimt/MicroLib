@@ -1,4 +1,5 @@
 #include "qtransportwidget.h"
+#include "Common/qparsejson.h"
 
 QTransportWidget::QTransportWidget(QString strTitle, bool bShowMin, QWidget *parent)
 	: QBaseWidget(parent)
@@ -28,7 +29,7 @@ QTransportWidget::QTransportWidget(QString strTitle, bool bShowMin, QWidget *par
 	m_pLayout->setMargin(0);
 	setLayout(m_pLayout);
 
-	showList();
+	//showList();
 }
 
 QTransportWidget::~QTransportWidget()
@@ -49,32 +50,62 @@ void QTransportWidget::addItem(QTransportItem *pItem)
 	m_listWidget->setItemWidget(aItem, pItem);
 }
 
-void QTransportWidget::showList()
-{
-	TRANSLIST::iterator it = m_transList.begin();
-	for (; it != m_transList.end(); it++){
-		QTransportItem *item = new QTransportItem((*it), false);
-		addItem(item);
-	}
-}
-
 void QTransportWidget::insertList(FILETRANSPORT *st)
 {
-	m_transList.append(st);
+	//m_transList.append(st);
 	QTransportItem *pItem = new QTransportItem(st, false);
+	connect(pItem, SIGNAL(sigDownloadFinished(int)), this, SLOT(slotUpdate(int)));
+	connect(pItem, &QTransportItem::sigCloseClicked, [=](){
+		
+	});
 	QListWidgetItem *aItem = new QListWidgetItem(m_listWidget);
 	QSize size = pItem->size();
 	aItem->setSizeHint(QSize(pItem->width() - 5, pItem->height()));
 	m_listWidget->insertItem(0,aItem);
 	m_listWidget->setItemWidget(aItem, pItem);
+	m_itemList.append(aItem);
 }
 
 void QTransportWidget::clearList()
 {
-	m_transList.clear();
+	m_itemList.clear();
+	m_itemFinishList.clear();
 	int count = m_listWidget->count();
 	for (int i = 0; i < count; i++){
 		QListWidgetItem *pItem = m_listWidget->takeItem(0);
 		delete pItem;
+	}
+}
+
+void QTransportWidget::initTransList(QString curFiles)
+{
+	QParseJson json;
+	QList<FILETRANSPORT *> tmpTransList;
+	json.parseDownloadJson(curFiles.toStdString(), tmpTransList);
+	QList<FILETRANSPORT *>::iterator it = tmpTransList.begin();
+	for (; it != tmpTransList.end(); it++){
+		insertList(*it);
+	}
+}
+
+void QTransportWidget::slotUpdate(int id)
+{
+	clearList();
+	ITEMLIST::iterator it = m_itemList.begin();
+	for (; it != m_itemList.end();){
+		QListWidgetItem *item = *it;
+		QTransportItem *pItem = (QTransportItem *)m_listWidget->itemWidget(item);
+		if (pItem->getId() == id){
+			m_itemFinishList.append(item);
+			it = m_itemList.erase(it);
+		}else{
+			addItem(pItem);
+			it++;
+		}
+	}
+	it = m_itemFinishList.begin();
+	for (; it != m_itemFinishList.end(); it++){
+		QTransportItem *pItem = (QTransportItem *)m_listWidget->itemWidget(*it);
+		addItem(pItem);
 	}
 }

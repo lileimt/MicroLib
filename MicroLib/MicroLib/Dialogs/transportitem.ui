@@ -168,7 +168,7 @@
     <string>目标位置</string>
    </property>
   </widget>
-  <widget class="QToolButton" name="btnOperate">
+  <widget class="QToolButton" name="btnClose">
    <property name="geometry">
     <rect>
      <x>560</x>
@@ -297,7 +297,7 @@
   <zorder>lblStatus</zorder>
   <zorder>lblSize</zorder>
   <zorder>lblPath</zorder>
-  <zorder>btnOperate</zorder>
+  <zorder>btnClose</zorder>
   <zorder>btnStatus</zorder>
   <zorder>lblPix</zorder>
   <zorder>lblOperation</zorder>

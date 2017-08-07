@@ -125,6 +125,10 @@ void QParseJson::parseDownloadJson(string data,QList<FILETRANSPORT *> &transList
 					st->fileName = name.toString();
 					st->fileIcon = CommonHelper::getIconBySuffix(st->fileName);
 				}
+				//if (obj.contains("url")){
+				//	QJsonValue url = obj.take("url");
+				//	st->url = url.toString();
+				//}
 				if (obj.contains("size")){
 					QJsonValue size = obj.take("size");
 					st->fileSize = size.toString();
@@ -195,4 +199,28 @@ QString QParseJson::parseHostJson(string data, int &baseId)
 			}
 		}
 	}
+}
+
+QString QParseJson::getCreateDocumentJson(int pid, QString filename, ItemList map, QString comment, int notice, QString msg)
+{
+	QJsonObject obj;
+	obj.insert("pid", pid);
+	obj.insert("filename", filename);
+	obj.insert("comment", comment);
+	obj.insert("notice", notice);
+	obj.insert("msg", msg);
+
+	QJsonArray arr;
+	ItemList::iterator it = map.begin();
+	for (; it != map.end(); it++){
+		QJsonObject ob;
+		ob.insert("id", it.key());
+	}
+
+	QJsonDocument document;
+	document.setObject(obj);
+	QByteArray byteArray = document.toJson(QJsonDocument::Compact);
+	QString strJson(byteArray);
+	qDebug() << strJson;
+	return strJson;
 }

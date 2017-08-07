@@ -53,4 +53,7 @@ var oauth2 = {};
     //     }
     //     obj.requestApi('/microlib/v1/files/ids/content','post',data,callback);
     // }
+    obj.getStorageHost = function(md5,callback){
+        obj.requestApi('/microlib/v1/files/md5?md5='+md5,'get',{},callback);
+    }
 })(jQuery,oauth2);

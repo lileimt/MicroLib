@@ -47,7 +47,7 @@ function htmlListTable(data){
     html += '            <button class="hui-btn btn-cancel"><img src="img/close.png" /></button>';
     html += '          </div>';
     html += '          <p class="hui-ellipsis check">';
-    html += '            <span class="fileName" value='+data.id+' isDir='+data.isDir+' permission='+data.permission+' onclick=openDir('+data.id+',this)>'+data.name+'</span>';
+    html += '            <span class="fileName" value='+data.id+' isDir='+data.isDir+' md5='+data.md5+' permission='+data.permission+' onclick=openDir('+data.id+',this)>'+data.name+'</span>';
     html += '          </p>';
     html += '          <div class="hui-table-operate">';
     html += '            <a href="###" class="download">下载</a>';
@@ -63,18 +63,18 @@ function htmlListTable(data){
     if(curType == 0){
         html += '      <td class="check">'+data.ownername+'</td>';
         var size = data.isDir == 1?'':data.filesize;
-        html += '      <td class="check">'+size+'</td>';
+        html += '      <td class="check size">'+size+'</td>';
         html += '      <td class="check">'+data.createTime+'</td>';
     }else{
         var curDir = util.getCurDir();
         if(curDir.id == 1){ //收到的文件的标题
             html += '      <td class="check">'+data.ownername+'</td>';
             var size = data.isDir == 1?'':data.filesize;
-            html += '      <td class="check">'+size+'</td>';
+            html += '      <td class="check size">'+size+'</td>';
             html += '      <td class="check">'+data.createTime+'</td>';
         }else{
             var size = data.isDir == 1?'':data.filesize;
-            html += '      <td class="check">'+size+'</td>';
+            html += '      <td class="check size">'+size+'</td>';
             html += '      <td class="check">'+data.createTime+'</td>';
         }
     }
@@ -97,7 +97,7 @@ function appendViewTable(data){
     html += '              <img src='+data.fileIcon+' class="filetype" />';
     html += '              <input type="checkbox" class="list-checkbox" name="selected" />';
     html += '          </div>';
-    html += '          <div class="listTitle" value='+data.id+'>'+data.name+'</div>';
+    html += '          <div class="listTitle" value='+data.id+' md5='+data.md5+' permission'+data.permission+' size='+data.size+'>'+data.name+'</div>';
     html += '          <div class="popup">';
     html += '            <input type="text" class="rename" />';
     html += '            <button class="hui-btn btn-sure"><img src="img/success.png" /></button>';
@@ -177,7 +177,7 @@ function getInfoById(data,id,callback){
             }
             
         }
-     }
+    }
 }
 
 function getIndexById(data,id){
@@ -355,4 +355,43 @@ function newDir(){
     }
 }
 
-//function getChecked
+function getDownloadFiles(){
+    var all = null;
+    var downloadFiles = [];
+    if(curMode == 0){
+        all = $("input[name='checked']:checked");
+        $.each(all,function(index,value){
+            var obj = $(value).closest('tr').find('.fileName');
+            var id = obj.attr('value');
+            var md5 = obj.attr('md5');
+            var filename = obj.text();
+            var size = $(value).closest('tr').find('size').text();
+            var data = {
+                id:id,
+                md5:md5,
+                name:filename,
+                size:size,
+                path:"MicroLib"
+            }
+            downloadFiles.push(data);
+        });
+    }else{
+        all = $("input[name='selected']:checked");
+        $.each(all,function(index,value){
+            var obj = $(value).closest('li').find('.listTitle');
+            var id = obj.attr('value');
+            var md5 = obj.attr('md5');
+            var filename = obj.text();
+            var size = obj.attr('size');
+            var data = {
+                id:id,
+                md5:md5,
+                name:filename,
+                size:size,
+                path:"MicroLib"
+            }
+            downloadFiles.push(data);
+        });
+    }
+    return downloadFiles;
+}

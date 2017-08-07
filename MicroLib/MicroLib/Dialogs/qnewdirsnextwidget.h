@@ -15,6 +15,9 @@ class QNewDirsNextWidget : public QBaseWidget
 public:
 	QNewDirsNextWidget(QWidget *parent = 0, QUser *user = NULL);
 	~QNewDirsNextWidget();
+
+	//获取当前选中的用户
+	ItemList getSubmitter();
 signals:
 	void sigCloseClicked();
 	void sigBackClicked();
@@ -27,8 +30,6 @@ private:
 
 	void setTreeWidget(QUser *user, QTreeWidgetItem *parent, bool top = false);
 	void addItem(int id,QListItem *pItem);
-
-	void createDocuments();
 };
 
 #endif // QNEWDIRSNEXTWIDGET_H
