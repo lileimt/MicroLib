@@ -17,7 +17,8 @@ public:
 	~QToolWidget();
 
 	void showIndex(TOOLINDEX index);
-	void setButtonEnable(bool enable);
+	void setButtonEnable(TOOLINDEX index,bool enable);
+	TOOLINDEX getIndex();
 signals:
 	void sigUploadClicked();
 	void sigNewShareClicked();

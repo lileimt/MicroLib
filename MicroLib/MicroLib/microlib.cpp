@@ -180,7 +180,7 @@ void MicroLib::sigConnect()
 		}
 	});
 	connect(getChannel(), &QChannel::sigDeleteEnable, [=](bool enable){
-		
+		m_toolWidget->setButtonEnable(m_toolWidget->getIndex(),enable);
 	});
 }
 

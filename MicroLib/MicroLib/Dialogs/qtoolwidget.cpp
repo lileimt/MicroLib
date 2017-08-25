@@ -69,6 +69,8 @@ QToolWidget::QToolWidget(QWidget *parent)
 
 	m_index = shareindex;
 	showIndex(shareindex);
+	setButtonEnable(myfilesindex,false);
+	setButtonEnable(subshareindex, false);
 
 	connect(m_uploadFile, SIGNAL(clicked()), this, SIGNAL(sigUploadClicked()));
 	connect(m_uploadFile1, SIGNAL(clicked()), this, SIGNAL(sigUploadClicked()));
@@ -132,16 +134,38 @@ void QToolWidget::showIndex(TOOLINDEX index)
 	}
 }
 
-void QToolWidget::setButtonEnable(bool enable)
+void QToolWidget::setButtonEnable(TOOLINDEX index,bool enable)
 {
-	if (m_index == myfilesindex){
-
-	}else if (m_index == subshareindex){
-		m_downloadFile1->setEnabled(enable);
-		m_transSave->setEnabled(enable);
-	}else{
+	if (index == myfilesindex){
 		m_downloadFile->setEnabled(enable);
 		m_shareFile->setEnabled(enable);
 		m_deleteFile->setEnabled(enable);
+		if (enable){
+			m_downloadFile->setStyleSheet("border:none;color:#3ba79a;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+			m_shareFile->setStyleSheet("border:none;color:#3ba79a;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+			m_deleteFile->setStyleSheet("border:none;color:#3ba79a;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+		}
+		else{
+			m_downloadFile->setStyleSheet("border:none;color:#858585;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+			m_shareFile->setStyleSheet("border:none;color:#858585;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+			m_deleteFile->setStyleSheet("border:none;color:#858585;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+		}
+	}else if (index == subshareindex){
+		m_downloadFile1->setEnabled(enable);
+		m_transSave->setEnabled(enable);
+		if (enable){
+			m_downloadFile1->setStyleSheet("border:none;color:#3ba79a;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+			m_transSave->setStyleSheet("border:none;color:#3ba79a;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+		}else{
+			m_downloadFile1->setStyleSheet("border:none;color:#858585;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+			m_transSave->setStyleSheet("border:none;color:#858585;font-family:Î¢ÈíÑÅºÚ;font-size:12px;");
+		}
+	}else{
+
 	}
+}
+
+TOOLINDEX QToolWidget::getIndex()
+{
+	return m_index;
 }

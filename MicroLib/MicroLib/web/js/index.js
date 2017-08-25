@@ -27,6 +27,7 @@ $(function(){
     $("#tbody").on("contextmenu", 'tr',function(e){
         //右键为3
         if ( e.which == 3) {
+            channel.setDeleteEnable(true);
             var self = $(this);
             $('#operate').hide();
 
@@ -182,7 +183,12 @@ $(function(){
             channel.setDeleteEnable(true);
             $("#allChecked").prop("checked", true);
         }else{
-            channel.setDeleteEnable(false);
+            if(count > 0){
+                channel.setDeleteEnable(true);
+            }else{
+                console.log("number == 0")
+                channel.setDeleteEnable(false);
+            }
             $("#allChecked").prop("checked", false);
         }
     }
@@ -293,11 +299,13 @@ $(function(){
      //全选
     $("#imgAllChecked").bind('click',function(){
         if($("#imgAllChecked").prop("checked")){
-             $("input[name='selected']").prop("checked", true).show();
-             $('.listBox').find('.listWrap').addClass('active');
+            channel.setDeleteEnable(true);
+            $("input[name='selected']").prop("checked", true).show();
+            $('.listBox').find('.listWrap').addClass('active');
          }else{
-             $("input[name='selected']").prop("checked", false).hide();
-             $('.listBox').find('.listWrap').removeClass('active');
+            channel.setDeleteEnable(false);
+            $("input[name='selected']").prop("checked", false).hide();
+            $('.listBox').find('.listWrap').removeClass('active');
          }
     });
     //单击选择
@@ -312,8 +320,14 @@ $(function(){
         var number =  $("input[name='selected']").length;
         var count =  $("input[name='selected']:checked").length;
         if(number == count){
+            channel.setDeleteEnable(true);
             $("#imgAllChecked").prop("checked", true);
         }else{
+            if(count > 0){
+                channel.setDeleteEnable(true);
+            }else{
+                channel.setDeleteEnable(false);
+            }
             $("#imgAllChecked").prop("checked", false);
         }
     });
@@ -322,6 +336,7 @@ $(function(){
     $("#vbody").on("contextmenu", "li",function(e){
         //右键为3
         if ( e.which == 3) {
+            channel.setDeleteEnable(true);
             var self = $(this);
 
             $('#rightKey').show().css({left:e.pageX+'px',top:e.pageY-30+'px'});
